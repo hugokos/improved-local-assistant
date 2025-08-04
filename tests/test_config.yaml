@@ -1,0 +1,84 @@
+# Test configuration for dynamic KG pipeline tests
+# This file allows customization of test parameters and thresholds
+
+# Performance budgets and thresholds
+performance:
+  max_extraction_latency_ms: 400
+  max_retrieval_latency_ms: 200
+  max_memory_usage_mb: 512
+  min_triples_per_turn: 1
+  max_triples_per_turn: 10
+
+# Test execution settings
+execution:
+  unit_test_timeout_seconds: 300
+  integration_test_timeout_seconds: 600
+  enable_performance_tests: true
+  enable_stress_tests: false
+  parallel_test_execution: false
+
+# Mock settings (when real services aren't available)
+mocking:
+  use_mock_extraction: true
+  use_mock_retrieval: true
+  use_mock_graph_manager: true
+  mock_extraction_delay_ms: 100
+  mock_retrieval_delay_ms: 50
+
+# Fixture settings
+fixtures:
+  validate_fixture_integrity: true
+  required_fixtures:
+    - fixture_1
+    - fixture_2
+    - fixture_3
+  min_turns_per_fixture: 5
+  max_turns_per_fixture: 15
+
+# Graph validation settings
+graph:
+  min_nodes_per_fixture: 5
+  min_edges_per_fixture: 3
+  validate_node_content: true
+  validate_edge_relationships: true
+
+# Retrieval validation settings
+retrieval:
+  top_k_for_probes: 5
+  min_chunks_per_query: 1
+  validate_answer_presence: true
+  fuzzy_match_threshold: 0.8
+
+# Logging and reporting
+reporting:
+  log_level: INFO
+  save_detailed_report: true
+  report_filename: "dynamic_kg_test_report.json"
+  include_performance_metrics: true
+  include_error_details: true
+
+# Model configuration for testing
+models:
+  knowledge_model: "phi3:mini"
+  conversation_model: "hermes3:3b"
+  fallback_to_mock: true
+  test_model_availability: true
+
+# System requirements
+system:
+  min_python_version: "3.8"
+  required_packages:
+    - pytest
+    - tiktoken
+    - rapidfuzz
+    - psutil
+    - pyyaml
+  optional_packages:
+    - ollama
+
+# Test data validation
+validation:
+  check_jsonl_format: true
+  validate_role_content_pairs: true
+  check_expected_facts: true
+  validate_probe_questions: true

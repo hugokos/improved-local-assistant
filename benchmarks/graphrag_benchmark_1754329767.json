@@ -1,0 +1,111 @@
+{
+  "timestamp": 1754329767.9165227,
+  "test_queries": [
+    "What is artificial intelligence?",
+    "Tell me about machine learning applications",
+    "How do neural networks work?",
+    "What are the benefits of local AI?",
+    "Explain knowledge graphs"
+  ],
+  "query_results": {
+    "What is artificial intelligence?": {
+      "query": "What is artificial intelligence?",
+      "runs": 1,
+      "avg_retrieval": 0.2097926139831543,
+      "avg_prep": 0.0,
+      "avg_ttft": 0.2044069766998291,
+      "avg_ttlt": 12.066838264465332,
+      "avg_tokens": 191
+    },
+    "Tell me about machine learning applications": {
+      "query": "Tell me about machine learning applications",
+      "runs": 1,
+      "avg_retrieval": 0.21072006225585938,
+      "avg_prep": 0.0,
+      "avg_ttft": 0.16579866409301758,
+      "avg_ttlt": 27.11456036567688,
+      "avg_tokens": 435
+    },
+    "How do neural networks work?": {
+      "query": "How do neural networks work?",
+      "runs": 1,
+      "avg_retrieval": 0.20144319534301758,
+      "avg_prep": 0.0,
+      "avg_ttft": 0.19241571426391602,
+      "avg_ttlt": 18.081340789794922,
+      "avg_tokens": 288
+    },
+    "What are the benefits of local AI?": {
+      "query": "What are the benefits of local AI?",
+      "runs": 1,
+      "avg_retrieval": 0.193864107131958,
+      "avg_prep": 0.0,
+      "avg_ttft": 0.1762237548828125,
+      "avg_ttlt": 26.215373754501343,
+      "avg_tokens": 419
+    },
+    "Explain knowledge graphs": {
+      "query": "Explain knowledge graphs",
+      "runs": 1,
+      "avg_retrieval": 0.22185349464416504,
+      "avg_prep": 0.0,
+      "avg_ttft": 0.20635056495666504,
+      "avg_ttlt": 25.335115432739258,
+      "avg_tokens": 397
+    }
+  },
+  "overall_stats": {
+    "total_queries": 5,
+    "successful_runs": 5,
+    "avg_retrieval_time": 0.20753469467163085,
+    "avg_prep_time": 0.0,
+    "avg_ttft": 0.18903913497924804,
+    "avg_total_time": 21.762645721435547,
+    "avg_tokens": 346,
+    "retrieval_std": 0.0105387870111769,
+    "ttft_std": 0.01768905670681265,
+    "total_std": 6.496018114511344
+  },
+  "raw_results": [
+    {
+      "retrieval": 0.2097926139831543,
+      "prep": 0.0,
+      "ttft": 0.2044069766998291,
+      "ttlt": 12.066838264465332,
+      "tokens": 191,
+      "success": true
+    },
+    {
+      "retrieval": 0.21072006225585938,
+      "prep": 0.0,
+      "ttft": 0.16579866409301758,
+      "ttlt": 27.11456036567688,
+      "tokens": 435,
+      "success": true
+    },
+    {
+      "retrieval": 0.20144319534301758,
+      "prep": 0.0,
+      "ttft": 0.19241571426391602,
+      "ttlt": 18.081340789794922,
+      "tokens": 288,
+      "success": true
+    },
+    {
+      "retrieval": 0.193864107131958,
+      "prep": 0.0,
+      "ttft": 0.1762237548828125,
+      "ttlt": 26.215373754501343,
+      "tokens": 419,
+      "success": true
+    },
+    {
+      "retrieval": 0.22185349464416504,
+      "prep": 0.0,
+      "ttft": 0.20635056495666504,
+      "ttlt": 25.335115432739258,
+      "tokens": 397,
+      "success": true
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+{
+  "timestamp": 1754328782.0045931,
+  "test_queries": [
+    "What is artificial intelligence?",
+    "Tell me about machine learning applications",
+    "How do neural networks work?",
+    "What are the benefits of local AI?",
+    "Explain knowledge graphs"
+  ],
+  "query_results": {
+    "What is artificial intelligence?": {
+      "query": "What is artificial intelligence?",
+      "runs": 2,
+      "avg_retrieval": 0.0,
+      "avg_prep": 0.0063707828521728516,
+      "avg_ttft": 0.15137839317321777,
+      "avg_ttlt": 10.765074491500854,
+      "avg_tokens": 186
+    },
+    "Tell me about machine learning applications": {
+      "query": "Tell me about machine learning applications",
+      "runs": 2,
+      "avg_retrieval": 0.0,
+      "avg_prep": 0.008264541625976562,
+      "avg_ttft": 0.15973210334777832,
+      "avg_ttlt": 25.113707184791565,
+      "avg_tokens": 423
+    },
+    "How do neural networks work?": {
+      "query": "How do neural networks work?",
+      "runs": 2,
+      "avg_retrieval": 0.0,
+      "avg_prep": 0.013224482536315918,
+      "avg_ttft": 0.14093637466430664,
+      "avg_ttlt": 17.283915162086487,
+      "avg_tokens": 297.5
+    },
+    "What are the benefits of local AI?": {
+      "query": "What are the benefits of local AI?",
+      "runs": 2,
+      "avg_retrieval": 0.0,
+      "avg_prep": 0.012969017028808594,
+      "avg_ttft": 0.15834522247314453,
+      "avg_ttlt": 22.3588730096817,
+      "avg_tokens": 386.5
+    },
+    "Explain knowledge graphs": {
+      "query": "Explain knowledge graphs",
+      "runs": 2,
+      "avg_retrieval": 0.0,
+      "avg_prep": 0.01150655746459961,
+      "avg_ttft": 0.14761662483215332,
+      "avg_ttlt": 21.002182006835938,
+      "avg_tokens": 361
+    }
+  },
+  "overall_stats": {
+    "total_queries": 5,
+    "successful_runs": 10,
+    "avg_retrieval_time": 0.0,
+    "avg_prep_time": 0.010467076301574707,
+    "avg_ttft": 0.15160174369812013,
+    "avg_total_time": 19.30475037097931,
+    "avg_tokens": 330.8,
+    "retrieval_std": 0.0,
+    "ttft_std": 0.009124250266854358,
+    "total_std": 5.2450605557541365
+  },
+  "raw_results": [
+    {
+      "retrieval": 0.0,
+      "prep": 0.008264303207397461,
+      "ttft": 0.15465331077575684,
+      "ttlt": 11.307258367538452,
+      "tokens": 196,
+      "success": true
+    },
+    {
+      "retrieval": 0.0,
+      "prep": 0.004477262496948242,
+      "ttft": 0.1481034755706787,
+      "ttlt": 10.222890615463257,
+      "tokens": 176,
+      "success": true
+    },
+    {
+      "retrieval": 0.0,
+      "prep": 0.01123666763305664,
+      "ttft": 0.15464305877685547,
+      "ttlt": 24.764552116394043,
+      "tokens": 416,
+      "success": true
+    },
+    {
+      "retrieval": 0.0,
+      "prep": 0.005292415618896484,
+      "ttft": 0.16482114791870117,
+      "ttlt": 25.462862253189087,
+      "tokens": 430,
+      "success": true
+    },
+    {
+      "retrieval": 0.0,
+      "prep": 0.012349128723144531,
+      "ttft": 0.14431452751159668,
+      "ttlt": 16.640885591506958,
+      "tokens": 284,
+      "success": true
+    },
+    {
+      "retrieval": 0.0,
+      "prep": 0.014099836349487305,
+      "ttft": 0.1375582218170166,
+      "ttlt": 17.926944732666016,
+      "tokens": 311,
+      "success": true
+    },
+    {
+      "retrieval": 0.0,
+      "prep": 0.012240409851074219,
+      "ttft": 0.16671466827392578,
+      "ttlt": 22.32271146774292,
+      "tokens": 385,
+      "success": true
+    },
+    {
+      "retrieval": 0.0,
+      "prep": 0.013697624206542969,
+      "ttft": 0.14997577667236328,
+      "ttlt": 22.395034551620483,
+      "tokens": 388,
+      "success": true
+    },
+    {
+      "retrieval": 0.0,
+      "prep": 0.01374673843383789,
+      "ttft": 0.1437060832977295,
+      "ttlt": 20.934756755828857,
+      "tokens": 362,
+      "success": true
+    },
+    {
+      "retrieval": 0.0,
+      "prep": 0.009266376495361328,
+      "ttft": 0.15152716636657715,
+      "ttlt": 21.069607257843018,
+      "tokens": 360,
+      "success": true
+    }
+  ]
+}

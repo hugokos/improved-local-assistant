@@ -1,0 +1,17 @@
+{
+  "timestamp": 1754329188.7591524,
+  "test_queries": [
+    "What is artificial intelligence?",
+    "Tell me about machine learning applications",
+    "How do neural networks work?",
+    "What are the benefits of local AI?",
+    "Explain knowledge graphs"
+  ],
+  "query_results": {},
+  "overall_stats": {
+    "total_queries": 5,
+    "successful_runs": 0,
+    "error": "No successful runs"
+  },
+  "raw_results": []
+}

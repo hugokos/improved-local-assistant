@@ -1,0 +1,49 @@
+# Core dependencies - Updated versions
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+websockets>=12.0
+pydantic>=2.8.0
+pydantic-settings>=2.1.0
+python-multipart
+
+# AI/ML dependencies - Updated to latest versions (August 2025)
+ollama>=0.5.1           # satisfies embeddings plug‑in
+llama-index==0.13.0     # Latest core LlamaIndex
+llama-index-embeddings-ollama==0.7.0
+llama-index-embeddings-huggingface==0.6.0  # Latest HuggingFace embeddings package
+llama-index-llms-ollama==0.7.0
+llama-index-llms-openai==0.5.0  # Latest OpenAI LLM support (optional)
+llama-index-readers-file>=0.5.0  # For file reading capabilities
+sentence-transformers>=2.5.0  # For local embeddings
+
+# Knowledge graph dependencies
+networkx==3.2.1
+pyvis==0.3.2
+# neo4j==5.14.1  # Not needed for SimplePropertyGraphStore
+
+# Text processing dependencies
+tiktoken>=0.7.0
+rapidfuzz>=3.0.0
+
+# Data processing
+pyyaml>=6.0.1
+python-dotenv>=1.0.0
+aiofiles>=23.2.1
+
+# System monitoring
+psutil>=5.9.6
+asyncio-throttle>=1.0.2
+pywin32>=306; sys_platform == 'win32'  # Windows-specific dependency for process management
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx[http2]==0.27.0 
+
+# CLI tools
+prompt-toolkit>=3.0.0  # For enhanced REPL experience
+
+# Development
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1

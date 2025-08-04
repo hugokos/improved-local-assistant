@@ -1,0 +1,113 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Data directories
+data/graphs/*/
+!data/graphs/README.md
+!data/graphs/.gitkeep
+temp/
+cache/
+
+# Model files
+models/
+*.bin
+*.safetensors
+
+# Graph visualizations
+temp_graph.html
+demo*.html
+sample*.html
+
+# Test outputs
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment variables
+.env.local
+.env.production
+
+# Temporary files
+tmp/
+temp/
+*.tmp# 
+Development artifacts
+*.bak
+*.backup
+*_old
+*_temp
+debug_*
+test_server.py
+
+# Documentation artifacts
+CLEANUP_SUMMARY.md
+UTF8_FIXES_*.md
+RUNTIME_RAG_*.md
+*_FIXES_*.md
+*_STATUS.md
+VICTORY_REPORT.md
+*_SUMMARY.md
+*_STRATEGY.md
+
+# Test files in root (should be in tests/)
+test_*.py
+debug_*.py
+inspect_*.py
+validate_*.py
+
+# Test output directories
+test_*/
+*_test_report.json
+
+# Migration scripts (temporary)
+migrate_*.py

@@ -1,0 +1,18 @@
+{
+  "session_caches": {
+    "test_session": {
+      "node1": 1753717906.7150562,
+      "node2": 1753717906.7150562,
+      "node3": 1753717906.7150562
+    }
+  },
+  "metrics": {
+    "cache_hits": 0,
+    "cache_misses": 3,
+    "evictions": 0,
+    "sessions_created": 1,
+    "sessions_evicted": 0,
+    "total_nodes_cached": 3
+  },
+  "timestamp": 1754324003.656715
+}

@@ -1,0 +1,2 @@
+# This file ensures the graphs directory is preserved in Git
+# Actual graph files are downloaded separately using scripts/download_graphs.py

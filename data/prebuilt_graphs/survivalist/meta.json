@@ -1,0 +1,23 @@
+{
+  "graph_id": "survivalist",
+  "embed_model": "BAAI/bge-small-en-v1.5",
+  "embedding_dim": 384,
+  "built_by": "graph_builder_v8_fixed_embeddings",
+  "build_time": "2025-08-03T10:52:22.750178",
+  "statistics": {
+    "triplets": 258,
+    "entities": 340,
+    "entity_kg_nodes": 340,
+    "valid_entity_kg_nodes": 340,
+    "context_nodes": 41,
+    "valid_text_nodes": 381,
+    "total_text_nodes": 381,
+    "relations": 258,
+    "context_relations": 1330,
+    "total_embeddings": 721,
+    "entity_embeddings": 340,
+    "context_embeddings": 381,
+    "has_context_linking": true,
+    "single_token_entities_padded": 89
+  }
+}
