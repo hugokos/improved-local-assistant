@@ -10,11 +10,8 @@ Use the download script to get prebuilt graphs:
 # Interactive selection
 python scripts/download_graphs.py
 
-# Download specific graphs
-python scripts/download_graphs.py survivalist medical
-
-# Download all graphs
-python scripts/download_graphs.py all
+# Download survivalist knowledge base
+python scripts/download_graphs.py survivalist
 
 # List available graphs
 python scripts/download_graphs.py --list
@@ -29,19 +26,7 @@ python scripts/download_graphs.py --list
 - **Content**: Outdoor survival, bushcraft, emergency preparedness, wilderness skills
 - **Use Cases**: Survival questions, outdoor activities, emergency planning
 
-### Medical Knowledge Base
-- **Size**: 78MB compressed, ~320MB extracted  
-- **Entities**: 4,521 unique entities
-- **Relationships**: 12,847 relationships
-- **Content**: Health information, medical procedures, anatomy, pharmacology
-- **Use Cases**: Health questions, medical research, symptom analysis
-
-### Technical Documentation
-- **Size**: 92MB compressed, ~380MB extracted
-- **Entities**: 5,234 unique entities
-- **Relationships**: 15,672 relationships
-- **Content**: Programming languages, frameworks, APIs, development tools
-- **Use Cases**: Programming help, API documentation, technical troubleshooting
+*Additional knowledge domains (medical, technical, etc.) will be added in future releases.*
 
 ## 🔧 Custom Graphs
 
@@ -62,15 +47,11 @@ After downloading graphs, your directory will look like:
 ```
 data/graphs/
 ├── README.md                 # This file
-├── survivalist/             # Survivalist knowledge graph
-│   ├── kg.json              # Property graph data
-│   ├── graph_meta.json      # Graph metadata
-│   ├── triples.json         # Compatibility triples
-│   └── vector_store.json    # Vector embeddings
-├── medical/                 # Medical knowledge graph
-│   └── ...
-└── technical/               # Technical knowledge graph
-    └── ...
+└── survivalist/             # Survivalist knowledge graph
+    ├── kg.json              # Property graph data
+    ├── graph_meta.json      # Graph metadata
+    ├── triples.json         # Compatibility triples
+    └── vector_store.json    # Vector embeddings
 ```
 
 ## 🚀 Usage

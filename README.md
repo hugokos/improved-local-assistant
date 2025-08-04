@@ -361,16 +361,14 @@ Get started quickly with ready-to-use knowledge bases:
 # See available graphs
 python scripts/download_graphs.py --list
 
-# Download specific domains
-python scripts/download_graphs.py survivalist    # Outdoor/survival knowledge
-python scripts/download_graphs.py medical       # Health/medical information  
-python scripts/download_graphs.py technical     # Programming/tech docs
+# Download survivalist knowledge base
+python scripts/download_graphs.py survivalist
 ```
 
 **Available Knowledge Graphs:**
 - **Survivalist** (45MB): 2,847 entities, 8,234 relationships - Outdoor survival, bushcraft, emergency preparedness
-- **Medical** (78MB): 4,521 entities, 12,847 relationships - Health information, medical procedures, anatomy
-- **Technical** (92MB): 5,234 entities, 15,672 relationships - Programming languages, frameworks, documentation
+
+*Additional knowledge domains (medical, technical, etc.) will be added in future releases.*
 
 ### Command Line Interface
 Test GraphRAG capabilities directly:

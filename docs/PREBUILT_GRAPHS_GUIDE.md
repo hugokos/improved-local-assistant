@@ -51,8 +51,6 @@ This guide explains how to distribute and use prebuilt knowledge graphs for the 
    
    # Create compressed archives with metadata
    tar -czf survivalist-knowledge-v1.0.tar.gz survivalist/
-   tar -czf medical-knowledge-v1.0.tar.gz medical/
-   tar -czf technical-docs-v1.0.tar.gz technical/
    
    # Generate checksums
    sha256sum *.tar.gz > checksums.txt
@@ -79,31 +77,14 @@ This guide explains how to distribute and use prebuilt knowledge graphs for the 
 - **Content**: Outdoor survival, bushcraft, emergency preparedness, wilderness skills
 - **Sources**: Survival manuals, outdoor guides, emergency response documentation
 
-### Medical Knowledge Base  
-- **File**: `medical-knowledge-v1.0.tar.gz`
-- **Size**: 78MB compressed, 320MB extracted
-- **Entities**: 4,521 unique entities
-- **Relationships**: 12,847 relationships
-- **Content**: Health information, medical procedures, anatomy, pharmacology
-- **Sources**: Medical textbooks, health guides, clinical documentation
-
-### Technical Documentation
-- **File**: `technical-docs-v1.0.tar.gz`
-- **Size**: 92MB compressed, 380MB extracted
-- **Entities**: 5,234 unique entities
-- **Relationships**: 15,672 relationships
-- **Content**: Programming languages, frameworks, APIs, development tools
-- **Sources**: Official documentation, technical guides, programming references
+*Additional knowledge domains (medical, technical, etc.) will be added in future releases.*
 
 ## 🔧 Installation
 
 ### Automatic Download (Recommended)
 ```bash
-# Download specific graphs
-python scripts/download_graphs.py survivalist medical
-
-# Download all graphs
-python scripts/download_graphs.py all
+# Download survivalist knowledge base
+python scripts/download_graphs.py survivalist
 ```
 
 ### Manual Download
@@ -134,12 +115,10 @@ aws s3 mb s3://improved-local-assistant-graphs
 
 # Upload graphs with public read access
 aws s3 cp survivalist-knowledge-v1.0.tar.gz s3://improved-local-assistant-graphs/v1.0/ --acl public-read
-aws s3 cp medical-knowledge-v1.0.tar.gz s3://improved-local-assistant-graphs/v1.0/ --acl public-read
-aws s3 cp technical-docs-v1.0.tar.gz s3://improved-local-assistant-graphs/v1.0/ --acl public-read
 aws s3 cp checksums.txt s3://improved-local-assistant-graphs/v1.0/ --acl public-read
 
 # Create index file
-echo '{"version": "1.0.0", "graphs": ["survivalist", "medical", "technical"]}' > index.json
+echo '{"version": "1.0.0", "graphs": ["survivalist"]}' > index.json
 aws s3 cp index.json s3://improved-local-assistant-graphs/v1.0/ --acl public-read
 ```
 
@@ -228,8 +207,8 @@ python scripts/download_graphs.py all
 ## Available Graphs
 
 - **survivalist**: Outdoor survival and bushcraft knowledge
-- **medical**: Health and medical information
-- **technical**: Programming and technical documentation
+
+*Additional knowledge domains will be added in future releases.*
 
 ## Custom Graphs
 
@@ -303,15 +282,11 @@ jobs:
       run: |
         cd kg_builder
         python src/graph_builder.py --input data/survivalist/ --output ../data/graphs/survivalist/
-        python src/graph_builder.py --input data/medical/ --output ../data/graphs/medical/
-        python src/graph_builder.py --input data/technical/ --output ../data/graphs/technical/
     
     - name: Package graphs
       run: |
         cd data/graphs
         tar -czf survivalist-knowledge-${{ github.event.inputs.version }}.tar.gz survivalist/
-        tar -czf medical-knowledge-${{ github.event.inputs.version }}.tar.gz medical/
-        tar -czf technical-docs-${{ github.event.inputs.version }}.tar.gz technical/
         sha256sum *.tar.gz > checksums.txt
     
     - name: Create Release

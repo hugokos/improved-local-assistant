@@ -33,24 +33,6 @@ GRAPHS_CONFIG = {
             "entities": "2,847",
             "relationships": "8,234",
             "checksum": "sha256:abc123..."
-        },
-        {
-            "name": "medical",
-            "filename": "medical-knowledge-v1.0.tar.gz", 
-            "description": "Medical and health information",
-            "size": "78MB",
-            "entities": "4,521",
-            "relationships": "12,847",
-            "checksum": "sha256:def456..."
-        },
-        {
-            "name": "technical",
-            "filename": "technical-docs-v1.0.tar.gz",
-            "description": "Technical documentation and programming",
-            "size": "92MB", 
-            "entities": "5,234",
-            "relationships": "15,672",
-            "checksum": "sha256:ghi789..."
         }
     ]
 }
