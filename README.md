@@ -148,14 +148,11 @@ User Request → FastAPI → ModelManager → Ollama (CPU) → Response
   - Knowledge graph persistence with optimized indexing
   - Session data with configurable retention policies
 
-#### **Hardware Requirements by Use Case**
+#### **System Requirements**
 
-| Use Case | CPU | RAM | Storage | Expected Performance |
-|----------|-----|-----|---------|---------------------|
-| **Light Usage** | 4 cores | 8GB | 10GB | 10-15 tokens/sec |
-| **Standard Usage** | 6-8 cores | 16GB | 20GB | 15-25 tokens/sec |
-| **Heavy Usage** | 8+ cores | 32GB | 50GB | 25-40 tokens/sec |
-| **Edge Devices** | 2-4 cores | 4GB | 10GB | 5-10 tokens/sec |
+- **Minimum**: 4GB RAM, 2+ CPU cores, 10GB storage
+- **Recommended**: 8GB+ RAM, 4+ CPU cores, 20GB+ storage
+- **Operating Systems**: Windows 10+, macOS 10.15+, Linux (Ubuntu 18.04+)
 
 #### **Performance Optimization Features**
 
@@ -270,30 +267,19 @@ python cli/test_system.py --performance
 
 ---
 
-## 📊 Performance Benchmarks
+## � Key oFeatures
 
-### Response Performance
-| Metric | Industry Standard | Our Performance | Improvement |
-|--------|------------------|-----------------|-------------|
-| **Time-to-First-Token** | 2-5 seconds | <500ms | **80% faster** |
-| **Average Response Time** | 5-10 seconds | 1-3 seconds | **70% faster** |
-| **Knowledge Retrieval** | 2-3 seconds | <1 second | **67% faster** |
-| **Concurrent Users** | 2-5 users | 10+ users | **200% more** |
+### GraphRAG Technology
+- **Dynamic Knowledge Graphs**: Real-time entity extraction and relationship mapping
+- **Hybrid Retrieval**: Combines graph traversal, semantic search, and keyword matching
+- **Source Attribution**: Complete citation tracking with confidence scores
+- **Property Graphs**: Rich metadata and relationship properties
 
-### Resource Efficiency
-| Metric | Before Optimization | After Optimization | Improvement |
-|--------|-------------------|-------------------|-------------|
-| **Memory Usage** | 6-8GB | 2-4GB | **50% reduction** |
-| **Startup Time** | 180 seconds | 9 seconds | **95% reduction** |
-| **CPU Utilization** | 90-100% | 60-80% | **25% reduction** |
-| **Model Loading** | Every restart | Cached | **100% optimization** |
-
-### Scalability Metrics
-- **Knowledge Graph Capacity**: 50,000+ entities and 100,000+ relationships
-- **Session Management**: Unlimited concurrent sessions with intelligent summarization
-- **Throughput**: 1,000+ queries per hour per instance
-- **Storage Efficiency**: 90% compression ratio for knowledge graphs
-- **Network Optimization**: 70% bandwidth reduction through connection pooling
+### Production Architecture
+- **Edge Optimization**: Efficient performance on resource-constrained devices
+- **Circuit Breakers**: Fault tolerance with automatic recovery
+- **WebSocket Streaming**: Real-time response delivery
+- **Comprehensive Testing**: 90%+ code coverage with automated validation
 
 ---
 
@@ -611,7 +597,7 @@ improved-local-assistant/
 - Database schema and relationship documentation
 - Security architecture and threat model analysis
 - Deployment architecture with scaling considerations
-- Performance benchmarks and optimization guidelines
+- Deployment guides and optimization recommendations
 
 ### Developer Resources
 **Getting Started**: Comprehensive onboarding for new developers
