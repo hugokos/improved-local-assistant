@@ -11,6 +11,13 @@ import logging
 import time
 from typing import Any, AsyncGenerator, Dict, List, Optional
 
+# Fix nested async issues
+try:
+    import nest_asyncio
+    nest_asyncio.apply()
+except ImportError:
+    pass
+
 from services.connection_pool_manager import ConnectionPoolManager
 from services.system_monitor import SystemMonitor
 

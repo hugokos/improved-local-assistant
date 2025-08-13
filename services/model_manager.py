@@ -17,6 +17,11 @@ from datetime import datetime
 import ollama
 from ollama import AsyncClient
 
+# LlamaIndex imports for global configuration
+from llama_index.core import Settings
+from llama_index.llms.ollama import Ollama
+from llama_index.embeddings.ollama import OllamaEmbedding
+
 
 @dataclass
 class ModelConfig:
@@ -41,13 +46,48 @@ class ModelManager:
     """
     
     def __init__(self, host: str = "http://localhost:11434"):
-        """Initialize ModelManager with Ollama host."""
+        """Initialize ModelManager with Ollama host and set global LlamaIndex defaults."""
         self.host = host
         self.chat_client = AsyncClient(host=host)  # Hermes 3:3B - user-facing
         self.bg_client = AsyncClient(host=host)    # TinyLlama - background jobs
         
         self.conversation_model = "hermes3:3b"
         self.knowledge_model = "tinyllama"
+        
+        # Initialize LlamaIndex LLM instances
+        self.chat_llm = Ollama(
+            model=self.conversation_model, 
+            base_url=host, 
+            request_timeout=120.0
+        )
+        
+        self.kg_llm = Ollama(
+            model=self.knowledge_model, 
+            base_url=host, 
+            request_timeout=60.0
+        )
+        
+        # Set global LlamaIndex defaults to prevent OpenAI fallback
+        Settings.llm = self.chat_llm  # Default to Hermes for general operations
+        
+        # Set up local embeddings (use existing embedding singleton if available)
+        try:
+            from .embedding_singleton import get_embedding_model
+            Settings.embed_model = get_embedding_model("BAAI/bge-small-en-v1.5")
+        except ImportError:
+            # Fallback to Ollama embeddings if singleton not available
+            Settings.embed_model = OllamaEmbedding(
+                model_name="nomic-embed-text",
+                base_url=host,
+                request_timeout=60.0
+            )
+        
+        # Log the configuration to verify
+        self.logger = logging.getLogger(__name__)
+        self.logger.info(f"✅ LlamaIndex global LLM set to: {type(Settings.llm).__name__} ({self.conversation_model})")
+        self.logger.info(f"✅ LlamaIndex global embeddings set to: {type(Settings.embed_model).__name__}")
+        self.logger.info(f"✅ Chat LLM: {self.conversation_model}")
+        self.logger.info(f"✅ Knowledge Graph LLM: {self.knowledge_model}")
         
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.INFO)

@@ -131,9 +131,9 @@ class GraphRouter:
     async def initialize(self) -> bool:
         """Initialize all components."""
         try:
-            # 0. Configure global settings to avoid OpenAI errors
+            # 0. Configure global settings - LLM will be set by model manager
             from llama_index.core import Settings
-            Settings.llm = None  # Use MockLLM to avoid OpenAI API calls
+            # Note: Settings.llm will be configured by the model manager
             
             # 1. Initialize embedder only if not provided
             if self.embedder is None:

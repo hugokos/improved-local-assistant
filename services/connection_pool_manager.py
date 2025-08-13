@@ -334,9 +334,10 @@ class ConnectionPoolManager:
                 
                 # Check if expected models are loaded
                 for expected_model in self.keep_alive_models:
-                    is_loaded = any(expected_model in name for name in model_names)
+                    is_loaded = any(expected_model == name for name in model_names)
                     if not is_loaded:
                         self.logger.warning(f"Expected model {expected_model} is not loaded")
+                        self.logger.debug(f"Available models: {model_names}")
                 
             except asyncio.CancelledError:
                 break

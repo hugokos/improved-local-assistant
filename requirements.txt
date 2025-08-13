@@ -9,9 +9,9 @@ python-multipart
 # AI/ML dependencies - Updated to latest versions (August 2025)
 ollama>=0.5.1           # satisfies embeddings plug‑in
 llama-index==0.13.0     # Latest core LlamaIndex
-llama-index-embeddings-ollama==0.7.0
+llama-index-embeddings-ollama==0.7.0  # Ollama embeddings integration
 llama-index-embeddings-huggingface==0.6.0  # Latest HuggingFace embeddings package
-llama-index-llms-ollama==0.7.0
+llama-index-llms-ollama==0.7.0  # Ollama LLM integration (REQUIRED for local models)
 llama-index-llms-openai==0.5.0  # Latest OpenAI LLM support (optional)
 llama-index-readers-file>=0.5.0  # For file reading capabilities
 sentence-transformers>=2.5.0  # For local embeddings
@@ -43,7 +43,16 @@ httpx[http2]==0.27.0
 # CLI tools
 prompt-toolkit>=3.0.0  # For enhanced REPL experience
 
+# Voice processing dependencies
+vosk                    # Offline speech recognition
+sounddevice==0.4                # Audio capture and playback
+webrtcvad==2.0.10              # Voice activity detection (Phase 2)
+piper-tts              # Local text-to-speech
+
 # Development
 black==23.11.0
 flake8==6.1.0
 mypy==1.7.1
+
+# Async fixes
+nest-asyncio>=1.5.6  # Fix nested async issues in LlamaIndex

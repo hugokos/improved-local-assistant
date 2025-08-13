@@ -103,6 +103,19 @@ async def websocket_monitor(websocket: WebSocket):
     """WebSocket endpoint for real-time system monitoring."""
     await monitor_websocket(websocket, app)
 
+# Voice WebSocket endpoints
+@app.websocket("/ws/stt/{session_id}")
+async def websocket_stt(websocket: WebSocket, session_id: str):
+    """WebSocket endpoint for speech-to-text processing."""
+    from app.ws.voice_stt import stt_websocket
+    await stt_websocket(websocket, session_id, app)
+
+@app.websocket("/ws/tts/{session_id}")
+async def websocket_tts(websocket: WebSocket, session_id: str):
+    """WebSocket endpoint for text-to-speech processing."""
+    from app.ws.voice_tts import tts_websocket
+    await tts_websocket(websocket, session_id, app)
+
 # Initialize services
 init_app(app, config)
 

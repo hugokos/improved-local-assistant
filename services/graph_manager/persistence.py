@@ -106,15 +106,18 @@ class KnowledgeGraphPersistence:
                 
                 try:
                     # Try to get node/edge counts from the graph
-                    kg = storage_context.property_graph_store.graph
-                    if hasattr(kg, 'number_of_nodes'):
-                        nodes = kg.number_of_nodes()
-                        edges = kg.number_of_edges()
-                    elif hasattr(kg, 'nodes') and hasattr(kg, 'edges'):
-                        nodes = len(list(kg.nodes)) if hasattr(kg.nodes, '__iter__') else len(kg.nodes)
-                        edges = len(list(kg.edges)) if hasattr(kg.edges, '__iter__') else len(kg.edges)
+                    if hasattr(storage_context, 'property_graph_store') and storage_context.property_graph_store:
+                        kg = storage_context.property_graph_store.graph
+                        if hasattr(kg, 'number_of_nodes'):
+                            nodes = kg.number_of_nodes()
+                            edges = kg.number_of_edges()
+                        elif hasattr(kg, 'nodes') and hasattr(kg, 'edges'):
+                            nodes = len(list(kg.nodes)) if hasattr(kg.nodes, '__iter__') else len(kg.nodes)
+                            edges = len(list(kg.edges)) if hasattr(kg.edges, '__iter__') else len(kg.edges)
+                        else:
+                            raise AttributeError("Unknown graph type")
                     else:
-                        raise AttributeError("Unknown graph type")
+                        raise AttributeError("No property graph store available")
                 except (AttributeError, Exception):
                     # Fall back to raw JSON read
                     import json

@@ -5,7 +5,7 @@ api:
   port: 8000
 connection_pool:
   keep_alive_models:
-  - hermes3:3b
+  - phi3:mini  # Use smaller model that fits in available memory
   keepalive_expiry: 30.0
   max_connections: 10
   max_keepalive_connections: 5
@@ -81,11 +81,14 @@ extraction:
   skip_on_memory_pressure: true
   unload_after_extraction: true
 hybrid_retriever:
+  use_rrf: true
+  half_life_secs: 604800  # 1 week
+  rerank_top_n: 10
   budget:
-    bm25_top_k: 3
+    bm25_top_k: 4
     graph_depth: 2
     max_chunks: 12
-    vector_top_k: 3
+    vector_top_k: 4
   query_fusion:
     enabled: true
     num_queries: 3
@@ -95,9 +98,9 @@ hybrid_retriever:
     int8: true
     model: BAAI/bge-small-en-v1.5
   weights:
-    bm25: 0.2
+    bm25: 0.15
     graph: 0.6
-    vector: 0.2
+    vector: 0.25
 knowledge_graphs:
   chunk_size_tokens: 256
   dynamic_storage: ./data/dynamic_graph
@@ -109,6 +112,11 @@ knowledge_graphs:
 graph:
   type: property  # "simple" or "property"
   store: simple   # Use SimplePropertyGraphStore (in-memory)
+
+dynamic_kg:
+  episode_every_turns: 8
+  persist_every_updates: 20
+  persist_interval_secs: 300
 models:
   conversation:
     context_window: 8000
@@ -175,3 +183,25 @@ working_set_cache:
   max_edges_per_query: 40
   nodes_per_session: 100
   persist_dir: ./storage
+
+# Voice processing configuration
+voice:
+  enabled: true
+  stt:
+    enabled: true
+    model_name: small-en  # vosk-model-small-en-us
+    model_path: ./models/vosk/vosk-model-small-en
+    sample_rate: 16000
+  tts:
+    enabled: true
+    voice_name: en_US-lessac-medium
+    voice_path: ./models/piper/en_US-lessac-medium/en_US-lessac-medium.onnx
+    sample_rate: 22050
+    chunk_size: 1024
+    speed: 1.0
+  vad:
+    enabled: true
+    aggressiveness: 2  # 0-3, higher = more aggressive
+    frame_duration_ms: 30  # 10, 20, or 30ms
+    speech_threshold: 3  # Frames to confirm speech start
+    silence_threshold: 10  # Frames to confirm speech end

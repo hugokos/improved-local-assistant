@@ -123,7 +123,7 @@ class ConversationManager:
 
             # Start background knowledge graph update (fire-and-forget)
             # This uses TinyLlama for entity extraction without blocking conversation
-            bg_task = asyncio.create_task(self._update_dynamic_graph_with_callback(session_id, user_message))
+            bg_task = asyncio.create_task(self._update_dynamic_graph_with_callback(session_id, user_message, "user"))
             bg_task.set_name(f"kg_update_{session_id}_{int(time.time())}")
 
             # Stream response from conversation model (Hermes 3:3B)
@@ -296,7 +296,7 @@ class ConversationManager:
                     # Start background knowledge graph update (fire-and-forget)
                     # This uses TinyLlama for entity extraction without blocking conversation
                     self.logger.info(f"Starting background knowledge graph update for session {session_id}")
-                    bg_task = asyncio.create_task(self._update_dynamic_graph_with_callback(session_id, user_message))
+                    bg_task = asyncio.create_task(self._update_dynamic_graph_with_callback(session_id, user_message, "user"))
                     bg_task.set_name(f"kg_update_context_{session_id}_{int(time.time())}")
 
                     # Add error handling for background task
@@ -935,11 +935,11 @@ class ConversationManager:
 
     # Duplicate get_citations method removed - using the enhanced version above
 
-    async def _update_dynamic_graph_with_callback(self, session_id: str, user_message: str):
+    async def _update_dynamic_graph_with_callback(self, session_id: str, user_message: str, speaker: str = "user"):
         """Update dynamic graph and store extracted triples for WebSocket transmission."""
         try:
-            # Call the original update method
-            success = await self.kg_manager.update_dynamic_graph(user_message)
+            # Call the original update method with speaker information
+            success = await self.kg_manager.update_dynamic_graph(user_message, speaker)
             
             # Enhanced triple extraction from message content
             # This creates more meaningful triples for demonstration

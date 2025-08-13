@@ -50,9 +50,38 @@
                 <!-- Chat -->
                 <div id="chatBox"></div>
 
+                <!-- Voice Components -->
+                <div class="voice-components">
+                    <!-- Live Transcription -->
+                    <div class="live-transcription" id="liveTranscription" style="display: none;" aria-live="polite">
+                        <span class="partial-text" id="partialText"></span>
+                        <span class="cursor">|</span>
+                    </div>
+                    
+                    <!-- Mic Orb with Level-Reactive Glow -->
+                    <div class="mic-orb" id="micOrb" style="display: none;" aria-live="polite" aria-label="Microphone status"></div>
+                    
+                    <!-- Voice Status Indicator - HIDDEN -->
+                    <!-- <div class="voice-status" id="voiceStatus" style="display: none;"><span id="voiceStatusText">Ready</span></div> -->
+                </div>
+
                 <!-- Input -->
                 <form id="inputBar">
-                    <input id="messageInput" placeholder="Ask me anything…" class="emboss" disabled>
+                    <div class="input-container">
+                        <input id="messageInput" placeholder="Ask me anything…" class="emboss text-input" disabled>
+                        <button id="voiceToggle" 
+                                class="voice-toggle" 
+                                type="button"
+                                aria-pressed="false"
+                                accesskey="m"
+                                title="Switch to voice mode (Shift+M)">
+                            <svg class="mic-icon" viewBox="0 0 24 24" width="20" height="20">
+                                <path fill="currentColor" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                                <path fill="currentColor" d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                            </svg>
+                            <span>Voice</span>
+                        </button>
+                    </div>
                     <button id="sendButton" type="submit" disabled></button>
                 </form>
 
@@ -84,6 +113,29 @@
                 <div class="panel-content" id="dynamic-kg-content" role="region" aria-labelledby="dynamic-kg-panel">
                     <div class="panel-scroll">
                         <p class="no-data-message emboss">No dynamic updates available</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice Commands Panel -->
+            <div class="panel" id="voice-commands-panel">
+                <div class="panel-header" role="button" tabindex="0" aria-expanded="false" aria-controls="voice-commands-content">
+                    <span class="panel-title">Voice Commands</span>
+                    <span class="panel-chevron">▼</span>
+                </div>
+                <div class="panel-content" id="voice-commands-content" role="region" aria-labelledby="voice-commands-panel">
+                    <div class="panel-scroll">
+                        <ul class="cmd-list">
+                            <li><kbd>"stop"</kbd>, <kbd>"cancel"</kbd> — stop TTS</li>
+                            <li><kbd>"undo"</kbd> — delete last message</li>
+                            <li><kbd>"faster"</kbd> / <kbd>"slower"</kbd> — adjust TTS speed</li>
+                            <li><kbd>"new chat"</kbd> — start over</li>
+                            <li><kbd>"summarize"</kbd> — TL;DR the last answer</li>
+                            <li><kbd>"cite sources"</kbd> — show sources</li>
+                            <li><kbd>"repeat"</kbd> — repeat last response</li>
+                            <li><kbd>"louder"</kbd> / <kbd>"quieter"</kbd> — adjust volume</li>
+                            <li><kbd>"switch to text"</kbd> — exit voice mode</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -181,7 +233,9 @@
         </div>
     </div>
 
-    <script src="/static/script.js"></script>
+    <script src="/static/js/voice-controller.js?v=20250808l"></script>
+    <script src="/static/js/voice-debug.js?v=20250808l"></script>
+    <script src="/static/script.js?v=20250808l"></script>
 </body>
 
 </html>

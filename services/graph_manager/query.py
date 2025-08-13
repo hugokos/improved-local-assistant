@@ -148,42 +148,80 @@ class KnowledgeGraphQuery:
                 }
                 return empty_result
 
-            # Query all engines and combine results (simple approach)
-            if len(query_engines) > 1:
-                self.logger.info(f"Querying {len(query_engines)} knowledge graphs")
+            # Use HybridEnsembleRetriever as primary approach
+            try:
+                from services.hybrid_retriever import HybridEnsembleRetriever
+                from llama_index.core.schema import QueryBundle
                 
-                # Try each query engine and use the first one that returns good results
-                best_result = None
-                best_source = None
-                
-                for i, qe in enumerate(query_engines):
-                    try:
-                        result = qe.query(optimized_query)
-                        source_nodes = getattr(result, "source_nodes", [])
-                        
-                        # If we get good results (with source nodes), use this result
-                        if source_nodes and len(source_nodes) > 0:
-                            self.logger.info(f"Got {len(source_nodes)} results from {graph_sources[i]}")
-                            best_result = result
-                            best_source = graph_sources[i]
-                            break
-                        else:
-                            self.logger.debug(f"No results from {graph_sources[i]}")
-                            
-                    except Exception as e:
-                        self.logger.warning(f"Error querying {graph_sources[i]}: {str(e)}")
-                        continue
-                
-                # Use the best result, or fall back to first engine if none had good results
-                if best_result:
-                    result = best_result
-                    self.logger.info(f"Using results from {best_source}")
-                else:
-                    self.logger.info("No engines returned good results, using first engine")
-                    result = query_engines[0].query(optimized_query)
+                # Build hybrid retriever once and cache
+                if not hasattr(self, '_cached_hybrid_retriever'):
+                    graph_index = self.dynamic_kg or next(iter(self.kg_indices.values()), None)
+                    doc_nodes = []  # Could collect doc nodes from indices for BM25/vector
                     
-            else:
-                result = query_engines[0].query(optimized_query)
+                    self._cached_hybrid_retriever = await HybridEnsembleRetriever.create(
+                        graph_index=graph_index,
+                        document_nodes=doc_nodes,
+                        config=getattr(self, "config", {}),
+                        working_set_cache=getattr(self, "working_set_cache", None),
+                    )
+                    self.logger.info("Created cached HybridEnsembleRetriever")
+                
+                # Use hybrid retriever
+                query_bundle = QueryBundle(query_str=optimized_query)
+                nodes = self._cached_hybrid_retriever._retrieve(query_bundle)
+                
+                if nodes:
+                    # Create a mock result object with the nodes
+                    class MockResult:
+                        def __init__(self, nodes):
+                            self.response = self._synthesize_response_from_nodes(nodes, optimized_query)
+                            self.source_nodes = nodes
+                    
+                    result = MockResult(nodes)
+                    self.logger.info(f"HybridEnsembleRetriever returned {len(nodes)} nodes")
+                else:
+                    # Fallback to legacy approach
+                    raise Exception("No nodes from hybrid retriever")
+                    
+            except Exception as e:
+                self.logger.warning(f"HybridEnsembleRetriever failed, using legacy approach: {e}")
+                
+                # Legacy fallback
+                if len(query_engines) > 1:
+                    self.logger.info(f"Querying {len(query_engines)} knowledge graphs")
+                    
+                    # Try each query engine and use the first one that returns good results
+                    best_result = None
+                    best_source = None
+                    
+                    for i, qe in enumerate(query_engines):
+                        try:
+                            result = qe.query(optimized_query)
+                            source_nodes = getattr(result, "source_nodes", [])
+                            
+                            # If we get good results (with source nodes), use this result
+                            if source_nodes and len(source_nodes) > 0:
+                                self.logger.info(f"Got {len(source_nodes)} results from {graph_sources[i]}")
+                                best_result = result
+                                best_source = graph_sources[i]
+                                break
+                            else:
+                                self.logger.debug(f"No results from {graph_sources[i]}")
+                                
+                        except Exception as e:
+                            self.logger.warning(f"Error querying {graph_sources[i]}: {str(e)}")
+                            continue
+                    
+                    # Use the best result, or fall back to first engine if none had good results
+                    if best_result:
+                        result = best_result
+                        self.logger.info(f"Using results from {best_source}")
+                    else:
+                        self.logger.info("No engines returned good results, using first engine")
+                        result = query_engines[0].query(optimized_query)
+                        
+                else:
+                    result = query_engines[0].query(optimized_query)
 
             # Calculate query time
             query_time = time.time() - start_time
@@ -395,6 +433,35 @@ class KnowledgeGraphQuery:
         except Exception as e:
             self.logger.error(f"Error in graph traversal: {str(e)}")
             return []
+
+    def _synthesize_response_from_nodes(self, nodes, query: str) -> str:
+        """Synthesize a response from retrieved nodes."""
+        try:
+            if not nodes:
+                return "No relevant information found."
+            
+            # Extract content from nodes
+            contexts = []
+            for node in nodes[:5]:  # Use top 5 nodes
+                content = node.node.get_content()
+                if content:
+                    contexts.append(content)
+            
+            if not contexts:
+                return "No relevant information found."
+            
+            # Simple synthesis - in production you'd use an LLM
+            combined_context = "\n\n".join(contexts)
+            
+            # Truncate if too long
+            if len(combined_context) > 1000:
+                combined_context = combined_context[:1000] + "..."
+            
+            return f"Based on the available information:\n\n{combined_context}"
+            
+        except Exception as e:
+            self.logger.error(f"Error synthesizing response: {e}")
+            return "Error processing the retrieved information."
 
     def _try_vector_fallback(self, query: str, graph_sources: List[str]):
         """

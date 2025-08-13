@@ -149,17 +149,30 @@ class KnowledgeGraphConstruction:
                             from ..utf8_import_helper import get_utf8_filesystem
                             
                             if graph_type == "property":
+                                from llama_index.core.indices.property_graph import SchemaLLMPathExtractor
+                                
+                                # Define schema for chat-memory aware extraction
+                                SCHEMA = {
+                                    "entities": ["Person", "Utterance", "Preference", "Goal", "Task", "Fact",
+                                                "Episode", "CommunitySummary", "Tool", "Doc", "Claim", "Topic"],
+                                    "relations": ["MENTIONS", "ASSERTS", "REFERS_TO", "PREFERS", "GOAL_OF",
+                                                 "RELATES_TO", "SUMMARIZES", "CITES", "DERIVED_FROM", "SAID_BY"]
+                                }
+                                
                                 graph_store = SimplePropertyGraphStore()
                                 storage_ctx = StorageContext.from_defaults(
                                     property_graph_store=graph_store,
                                     fs=get_utf8_filesystem()
                                 )
                                 
-                                # Build property graph index
+                                # Use schema-guided extractor for stable types
+                                extractor = SchemaLLMPathExtractor(schema=SCHEMA)
+                                
+                                # Build property graph index with schema guidance
                                 kg_index = PropertyGraphIndex.from_documents(
                                     docs,
                                     storage_context=storage_ctx,
-                                    kg_extractors=[ImplicitPathExtractor()],
+                                    kg_extractors=[extractor],
                                     include_embeddings=True,
                                     show_progress=True,
                                 )
@@ -241,17 +254,30 @@ class KnowledgeGraphConstruction:
             from ..utf8_import_helper import get_utf8_filesystem
             
             if graph_type == "property":
+                from llama_index.core.indices.property_graph import SchemaLLMPathExtractor
+                
+                # Define schema for chat-memory aware extraction
+                SCHEMA = {
+                    "entities": ["Person", "Utterance", "Preference", "Goal", "Task", "Fact",
+                                "Episode", "CommunitySummary", "Tool", "Doc", "Claim", "Topic"],
+                    "relations": ["MENTIONS", "ASSERTS", "REFERS_TO", "PREFERS", "GOAL_OF",
+                                 "RELATES_TO", "SUMMARIZES", "CITES", "DERIVED_FROM", "SAID_BY"]
+                }
+                
                 graph_store = SimplePropertyGraphStore()
                 storage_ctx = StorageContext.from_defaults(
                     property_graph_store=graph_store,
                     fs=get_utf8_filesystem()
                 )
                 
-                # Build property graph index
+                # Use schema-guided extractor for stable types
+                extractor = SchemaLLMPathExtractor(schema=SCHEMA)
+                
+                # Build property graph index with schema guidance
                 kg_index = PropertyGraphIndex.from_documents(
                     docs,
                     storage_context=storage_ctx,
-                    kg_extractors=[ImplicitPathExtractor()],
+                    kg_extractors=[extractor],
                     include_embeddings=True,
                 )
             else:
@@ -416,21 +442,48 @@ class KnowledgeGraphConstruction:
             
             # Create index based on graph type
             if graph_type == "property":
-                # For property graphs, create with minimal extractors
-                # Use a simpler approach to avoid async issues
+                # For property graphs, create with schema-guided extractors for chat memory
                 try:
-                    # Create PropertyGraphIndex without extractors first
-                    from llama_index.core.indices.property_graph import PropertyGraphIndex
+                    from llama_index.core.indices.property_graph import PropertyGraphIndex, SchemaLLMPathExtractor
                     
-                    self.dynamic_kg = PropertyGraphIndex(
-                        nodes=[system_doc],
+                    # Define schema for chat-memory aware extraction
+                    SCHEMA = {
+                        "entities": ["Person", "Utterance", "Preference", "Goal", "Task", "Fact",
+                                    "Episode", "CommunitySummary", "Tool", "Doc", "Claim", "Topic"],
+                        "relations": ["MENTIONS", "ASSERTS", "REFERS_TO", "PREFERS", "GOAL_OF",
+                                     "RELATES_TO", "SUMMARIZES", "CITES", "DERIVED_FROM", "SAID_BY"]
+                    }
+                    
+                    # Use schema-guided extractor for stable types with KG LLM
+                    # Get the KG LLM from model manager if available
+                    kg_llm = None
+                    try:
+                        # Try to get KG LLM from orchestrated model manager
+                        if hasattr(self, 'model_manager') and hasattr(self.model_manager, 'kg_llm'):
+                            kg_llm = self.model_manager.kg_llm
+                        # Or check if it's set in Settings
+                        elif hasattr(Settings, 'llm') and Settings.llm is not None:
+                            # Use global LLM but log that we're using it for KG
+                            kg_llm = Settings.llm
+                            self.logger.info("Using global Settings.llm for KG extraction")
+                    except Exception as e:
+                        self.logger.warning(f"Could not get KG LLM: {e}")
+                    
+                    if kg_llm:
+                        extractor = SchemaLLMPathExtractor(schema=SCHEMA, llm=kg_llm)
+                        self.logger.info(f"Using {type(kg_llm).__name__} for KG extraction")
+                    else:
+                        extractor = SchemaLLMPathExtractor(schema=SCHEMA)
+                        self.logger.warning("No specific KG LLM found, using default")
+                    
+                    self.dynamic_kg = PropertyGraphIndex.from_documents(
+                        [system_doc],
                         storage_context=storage_ctx,
-                        embed_model=Settings.embed_model,
-                        llm=Settings.llm,
+                        kg_extractors=[extractor],
                         include_embeddings=True,
                         show_progress=False
                     )
-                    self.logger.info("Successfully created PropertyGraphIndex for dynamic graph")
+                    self.logger.info("Successfully created schema-guided PropertyGraphIndex for dynamic graph")
                 except Exception as e:
                     self.logger.warning(f"PropertyGraphIndex creation failed: {e}, falling back to KnowledgeGraphIndex")
                     # Fallback to KnowledgeGraphIndex if PropertyGraphIndex fails
@@ -469,12 +522,13 @@ class KnowledgeGraphConstruction:
             self.logger.error(f"Error initializing dynamic graph: {str(e)}")
             return False
 
-    async def update_dynamic_graph(self, conversation_text: str) -> bool:
+    async def update_dynamic_graph(self, conversation_text: str, speaker: str = "user") -> bool:
         """
         Update dynamic knowledge graph with new conversation data.
 
         Args:
             conversation_text: Text from conversation to extract entities from
+            speaker: Who said this (user/assistant)
 
         Returns:
             bool: True if update was successful
@@ -490,6 +544,9 @@ class KnowledgeGraphConstruction:
                 self.logger.debug("Skipping entity extraction for short text")
                 return True
 
+            # Add utterance as a node first (for provenance)
+            utt_id = self._add_utterance(conversation_text, speaker)
+
             # Extract entities in background using TinyLlama with optimizations
             if self.model_manager:
                 self.logger.info("Extracting entities from conversation text")
@@ -498,7 +555,7 @@ class KnowledgeGraphConstruction:
                 chunks = self._split_text_into_chunks(conversation_text, max_tokens=256)
                 
                 # Process chunks in background thread to avoid blocking WebSocket
-                asyncio.create_task(self._process_text_chunks_async(chunks))
+                asyncio.create_task(self._process_text_chunks_async(chunks, utt_id))
 
                 # Check if we need to persist
                 self._dynamic_updates_count += 1
@@ -512,6 +569,32 @@ class KnowledgeGraphConstruction:
         except Exception as e:
             self.logger.error(f"Error updating dynamic graph: {str(e)}")
             return False
+
+    def _add_utterance(self, text: str, speaker: str = "user"):
+        """Add utterance as a node for provenance tracking."""
+        if not hasattr(self, "_utt_seq"):
+            self._utt_seq = 0
+        self._utt_seq += 1
+        utt_id = f"utt_{int(time.time())}_{self._utt_seq}"
+        
+        if hasattr(self.dynamic_kg, "property_graph_store"):
+            self.dynamic_kg.property_graph_store.upsert_nodes([
+                {"id": utt_id, "label": "Utterance",
+                 "properties": {"text": text, "speaker": speaker, "ts": time.time()}}
+            ])
+            self.logger.debug(f"Added utterance node: {utt_id}")
+            
+            # Log to WAL for durability
+            if hasattr(self, '_append_wal'):
+                self._append_wal({
+                    "type": "utterance_add",
+                    "id": utt_id,
+                    "text": text,
+                    "speaker": speaker,
+                    "ts": time.time()
+                })
+        
+        return utt_id
 
     def _split_text_into_chunks(self, text: str, max_tokens: int = 256) -> List[str]:
         """Split text into smaller chunks for more efficient processing."""
@@ -537,37 +620,182 @@ class KnowledgeGraphConstruction:
         
         return chunks
 
-    async def _process_text_chunks_async(self, chunks: List[str]) -> None:
+    def _norm_key(self, name: str, etype: str) -> str:
+        """Normalize entity name and type for catalog lookup."""
+        return f"{etype.lower()}::{name.strip().lower()}"
+
+    def _load_catalog(self):
+        """Load entity catalog from disk."""
+        try:
+            with open(self._entity_catalog_path, "r", encoding="utf-8") as f:
+                self._entity_catalog = json.load(f)
+        except Exception:
+            self._entity_catalog = {}
+
+    def _save_catalog(self):
+        """Save entity catalog to disk."""
+        os.makedirs(os.path.dirname(self._entity_catalog_path), exist_ok=True)
+        with open(self._entity_catalog_path, "w", encoding="utf-8") as f:
+            json.dump(self._entity_catalog, f, ensure_ascii=False, indent=2)
+
+    def _canonical_entity(self, name: str, etype: str):
+        """Get canonical entity ID, creating new entry if needed."""
+        from llama_index.core import Settings
+        self._load_catalog()
+        key = self._norm_key(name, etype)
+        
+        # Hit - return existing ID
+        if key in self._entity_catalog:
+            return self._entity_catalog[key]["id"]
+        
+        # New entity - embed and create
+        emb = Settings.embed_model.get_text_embedding(name) if Settings.embed_model else None
+        ent_id = f"ent_{abs(hash((name, etype))) % 10**10}"
+        self._entity_catalog[key] = {
+            "id": ent_id, 
+            "name": name, 
+            "etype": etype, 
+            "embed": emb
+        }
+        self._save_catalog()
+        return ent_id
+
+    async def _process_text_chunks_async(self, chunks: List[str], utt_id: str = None) -> None:
         """Process text chunks asynchronously in background thread."""
         try:
             # Run in thread to avoid blocking the event loop
-            await asyncio.to_thread(self._process_text_chunks, chunks)
+            await asyncio.to_thread(self._process_text_chunks, chunks, utt_id)
         except Exception as e:
             self.logger.error(f"Error in background chunk processing: {e}")
 
-    def _process_text_chunks(self, chunks: List[str]) -> None:
+    def _process_text_chunks(self, chunks: List[str], utt_id: str = None) -> None:
         """Process text chunks synchronously in background thread."""
+        all_triples = []
+        
         for i, chunk in enumerate(chunks):
             try:
                 self.logger.debug(f"Processing chunk {i+1}/{len(chunks)}")
                 
-                # Use a more focused prompt for entity extraction
-                extraction_prompt = f"""Extract key entities and relationships from this text. 
+                # Extract triples using LLM
+                raw_triples = self._extract_triples_llm(chunk)
+                triples = self._parse_triple_lines(raw_triples)
+                all_triples.extend(triples)
+                
+            except Exception as e:
+                self.logger.warning(f"Error processing chunk {i}: {e}")
+                continue
+        
+        # Add triples to graph with utterance provenance
+        if all_triples:
+            asyncio.run(self._add_triples_with_provenance(all_triples, utt_id))
+
+    def _extract_triples_llm(self, chunk: str) -> str:
+        """Extract triples using local LLM."""
+        prompt = f"""Extract key entities and relationships from this text. 
 Format as simple triplets: (subject, relation, object)
 Limit to {self.max_triplets_per_chunk} most important triplets.
 
 Text: {chunk}
 
 Triplets:"""
-                
-                # This would be synchronous in the background thread
-                # For now, we'll skip the actual LLM call to avoid blocking
-                # In production, you'd want to use a lightweight NER model here
-                self.logger.debug(f"Would extract entities from: {chunk[:100]}...")
-                
-            except Exception as e:
-                self.logger.warning(f"Error processing chunk {i}: {e}")
+        
+        try:
+            # Use the model manager to get completions
+            if hasattr(self.model_manager, 'complete_sync'):
+                return self.model_manager.complete_sync(prompt, model="tinyllama")
+            else:
+                # Fallback - return empty for now
+                self.logger.debug("Model manager doesn't support sync completion")
+                return ""
+        except Exception as e:
+            self.logger.warning(f"LLM extraction failed: {e}")
+            return ""
+
+    def _parse_triple_lines(self, raw_text: str) -> List[tuple]:
+        """Parse triple lines from LLM output."""
+        triples = []
+        lines = raw_text.strip().split("\n")
+        
+        for line in lines:
+            line = line.strip()
+            if not line or line.startswith("#") or line.startswith("Triplets:"):
                 continue
+            
+            # Try to extract triplet from line
+            # Format could be: (subject, relation, object) or subject, relation, object
+            line = line.strip("()")
+            parts = [p.strip().strip("\"'") for p in line.split(",")]
+            
+            if len(parts) >= 3:
+                subject = parts[0]
+                relation = parts[1]
+                obj = parts[2]
+                
+                if subject and relation and obj:
+                    triples.append((subject, relation, obj))
+        
+        return triples
+
+    async def _add_triples_with_provenance(self, triples: List[tuple], utt_id: str = None):
+        """Add triples to graph with utterance provenance."""
+        try:
+            if not self.dynamic_kg:
+                return
+            
+            is_property_graph = hasattr(self.dynamic_kg, 'property_graph_store')
+            
+            for triplet in triples:
+                subject, predicate, obj = triplet
+                
+                if is_property_graph:
+                    # Use canonical entity IDs
+                    src_id = self._canonical_entity(subject, "Entity")
+                    tgt_id = self._canonical_entity(obj, "Entity")
+                    
+                    graph_store = self.dynamic_kg.property_graph_store
+                    
+                    # Add nodes with canonical IDs
+                    graph_store.upsert_nodes([
+                        {"id": src_id, "label": "ENTITY", 
+                         "properties": {"name": subject, "type": "conversation_entity"}},
+                        {"id": tgt_id, "label": "ENTITY", 
+                         "properties": {"name": obj, "type": "conversation_entity"}}
+                    ])
+                    
+                    # Add main relation
+                    graph_store.upsert_relations([{
+                        "source_id": src_id,
+                        "target_id": tgt_id,
+                        "label": predicate,
+                        "properties": {"source": "conversation", "timestamp": time.time()}
+                    }])
+                    
+                    # Connect utterance to entities if we have utterance ID
+                    if utt_id:
+                        graph_store.upsert_relations([
+                            {"source_id": utt_id, "target_id": src_id, "label": "MENTIONS", 
+                             "properties": {"ts": time.time()}},
+                            {"source_id": utt_id, "target_id": tgt_id, "label": "MENTIONS", 
+                             "properties": {"ts": time.time()}},
+                        ])
+                
+                else:
+                    # Fallback for simple graphs
+                    from llama_index.core.schema import TextNode
+                    node_text = f"{subject} {predicate} {obj}"
+                    node_id = f"conv_triplet_{hash(node_text)}_{int(time.time())}"
+                    node = TextNode(text=node_text, id_=node_id)
+                    
+                    try:
+                        self.dynamic_kg.upsert_triplet_and_node(triplet, node)
+                    except Exception:
+                        if hasattr(self.dynamic_kg, 'upsert_triplet'):
+                            self.dynamic_kg.upsert_triplet(triplet)
+                
+                self.logger.debug(f"Added triple with provenance: {triplet}")
+        
+        except Exception as e:
+            self.logger.error(f"Error adding triples with provenance: {e}")
 
     async def _process_entities(self, entities_text: str) -> None:
         """
@@ -625,6 +853,16 @@ Triplets:"""
                     self.logger.info(f"   Relation: {relation}")
                     self.logger.info(f"   Object: {obj}")
                     self.logger.info(f"   Node ID: {node_id}")
+                    
+                    # Log to WAL for durability
+                    if hasattr(self, '_append_wal'):
+                        self._append_wal({
+                            "type": "triple_add",
+                            "s": subject,
+                            "p": relation,
+                            "o": obj,
+                            "ts": time.time()
+                        })
                     
                     # Update graph statistics
                     if not hasattr(self, '_triple_count'):
@@ -759,8 +997,8 @@ Triplets:"""
             
             self.logger.info(f"🔗 Adding {len(triples)} triples to persistent dynamic graph")
             
-            # Check if this is a property graph
-            graph_type = getattr(self, 'config', {}).get('graph', {}).get('type', 'simple')
+            # Check if this is actually a property graph by inspecting the index type
+            is_property_graph = hasattr(self.dynamic_kg, 'property_graph_store')
             
             # Add each triple to the graph
             for i, triplet in enumerate(triples):
@@ -770,16 +1008,15 @@ Triplets:"""
                     # Enhanced logging for triple addition
                     self.logger.info(f"🔗 ADDING PERSISTENT TRIPLE {i+1}: [{subject}] --[{predicate}]--> [{obj}]")
                     
-                    if graph_type == "property":
+                    if is_property_graph:
                         # For property graphs, add nodes and edges directly to the graph store
                         graph_store = self.dynamic_kg.property_graph_store
                         
-                        # Create or update nodes
-                        import uuid
-                        src_id = str(uuid.uuid4())
-                        tgt_id = str(uuid.uuid4())
+                        # Use canonical entity IDs to prevent drift
+                        src_id = self._canonical_entity(subject, "Entity")
+                        tgt_id = self._canonical_entity(obj, "Entity")
                         
-                        # Add nodes with properties
+                        # Add nodes with canonical IDs
                         graph_store.upsert_nodes([
                             {"id": src_id, "label": "ENTITY", "properties": {"name": subject, "type": "conversation_entity"}},
                             {"id": tgt_id, "label": "ENTITY", "properties": {"name": obj, "type": "conversation_entity"}}

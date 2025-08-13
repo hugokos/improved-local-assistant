@@ -236,6 +236,18 @@ async def initialize_services(config: Dict[str, Any]) -> Dict[str, Any]:
         dynamic_model_manager = DynamicModelManager(config, connection_pool)
         services["dynamic_model_manager"] = dynamic_model_manager
         
+        # Voice manager for speech processing
+        logger.info("Initializing VoiceManager...")
+        try:
+            from services.voice_manager import VoiceManager
+            voice_manager = VoiceManager(config)
+            services["voice_manager"] = voice_manager
+            logger.info("Voice manager initialized successfully")
+        except Exception as e:
+            logger.warning(f"Failed to initialize voice manager: {str(e)}")
+            logger.info("Voice features will be disabled")
+            services["voice_manager"] = None
+        
         # Initialize dependencies for API
         from app.core.dependencies import initialize_dependencies
         initialize_dependencies(config, connection_pool, system_monitor)
@@ -302,6 +314,7 @@ def init_app(app: FastAPI, config: Dict[str, Any]) -> None:
                 app.state.conversation_manager = services.get("conversation_manager")
                 app.state.system_monitor = services.get("system_monitor")
                 app.state.dynamic_model_manager = services.get("dynamic_model_manager")
+                app.state.voice_manager = services.get("voice_manager")
                 app.state.connection_manager = getattr(app.state, "connection_manager", None)
                 
                 # Start background graph loading if enabled

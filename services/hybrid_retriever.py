@@ -142,6 +142,10 @@ class HybridEnsembleRetriever(BaseRetriever):
             else None
         )
         
+        # Initialize configuration first
+        retriever_config = self.config.get("hybrid_retriever", {})
+        self.use_rrf = retriever_config.get("use_rrf", True)
+        
         # Normalise weights over RETRIEVERS THAT EXIST
         g_w, v_w, b_w = weights
         live = [self.graph, self.vector, self.bm25]
@@ -156,10 +160,27 @@ class HybridEnsembleRetriever(BaseRetriever):
             r for r in live if r is not None
         ]
         
+        # Initialize RRF fusion retriever if available and requested
+        self.fuser = None
+        if self.use_rrf and QueryFusionRetriever and len(self.live_retrievers) > 1:
+            try:
+                self.fuser = QueryFusionRetriever(
+                    retrievers=self.live_retrievers,
+                    mode="reciprocal_rerank_fusion",
+                    num_queries=1,  # Can be raised to 3-4 for query variants
+                )
+                self.logger.info("Initialized RRF fusion retriever")
+            except Exception as e:
+                self.logger.warning(f"Could not initialize RRF fusion: {e}")
+                self.fuser = None
+        
         # Budget configuration from config
-        retriever_config = self.config.get("hybrid_retriever", {})
         budget_config = retriever_config.get("budget", {})
         self.max_chunks = budget_config.get("max_chunks", 12)
+        
+        # Scoring configuration
+        self.half_life_secs = retriever_config.get("half_life_secs", 7*24*3600)  # 1 week
+        self.rerank_top_n = retriever_config.get("rerank_top_n", 10)
         
         # Metrics
         self.metrics = {
@@ -179,51 +200,22 @@ class HybridEnsembleRetriever(BaseRetriever):
     def _retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
         """Override BaseRetriever interface."""
         start_time = time.time()
-        all_nodes: List[NodeWithScore] = []
         
         try:
             self.logger.debug(f"Processing query: {query_bundle.query_str[:100]}...")
             
-            for i, (retriever, w) in enumerate(zip(self.live_retrievers, self.weights)):
-                try:
-                    nodes = retriever.retrieve(query_bundle.query_str)
-                    
-                    # Apply weight to scores
-                    for n in nodes:
-                        if n.score is not None:
-                            n.score = n.score * w
-                        else:
-                            n.score = w * 0.5  # Default score if None
-                    
-                    all_nodes.extend(nodes)
-                    
-                    # Update metrics based on retriever type
-                    from llama_index.core.retrievers import VectorIndexRetriever
-                    try:
-                        from llama_index.core.retrievers import KnowledgeGraphRAGRetriever
-                    except ImportError:
-                        KnowledgeGraphRAGRetriever = None
-                    
-                    if KnowledgeGraphRAGRetriever and isinstance(retriever, KnowledgeGraphRAGRetriever):
-                        self.metrics["graph_retrievals"] += 1
-                    elif isinstance(retriever, VectorIndexRetriever):
-                        self.metrics["vector_retrievals"] += 1
-                    elif BM25Retriever and isinstance(retriever, BM25Retriever):
-                        self.metrics["bm25_retrievals"] += 1
-                    else:
-                        # Fallback for unknown retriever types - assume graph if first, vector otherwise
-                        if retriever == self.graph:
-                            self.metrics["graph_retrievals"] += 1
-                        else:
-                            self.metrics["vector_retrievals"] += 1
-                    
-                    self.logger.debug(f"Retriever {i} returned {len(nodes)} nodes")
-                    
-                except Exception as e:
-                    self.logger.error(f"Error in retriever {i}: {e}")
-                    continue
+            # Use RRF fusion if available
+            if self.fuser:
+                all_nodes = self.fuser.retrieve(query_bundle.query_str)
+                self.logger.debug(f"RRF fusion returned {len(all_nodes)} nodes")
+            else:
+                # Fallback to weighted combination
+                all_nodes = self._weighted_retrieve(query_bundle)
             
-            # Rank by weighted score, deduplicate on node_id
+            # Apply time-decay and confidence boosts
+            all_nodes = self._apply_scoring_boosts(all_nodes)
+            
+            # Deduplicate on node_id
             unique: dict[str, NodeWithScore] = {}
             for n in all_nodes:
                 node_id = n.node.node_id
@@ -233,6 +225,9 @@ class HybridEnsembleRetriever(BaseRetriever):
             # Sort by score and apply budget
             ranked_nodes = sorted(unique.values(), key=lambda n: n.score or 0.0, reverse=True)
             final_nodes = ranked_nodes[:self.max_chunks]
+            
+            # Apply ColBERT reranking if available
+            final_nodes = self._apply_colbert_rerank(final_nodes, query_bundle.query_str)
             
             if len(ranked_nodes) > self.max_chunks:
                 self.metrics["budget_exceeded"] += 1
@@ -265,6 +260,97 @@ class HybridEnsembleRetriever(BaseRetriever):
             self.metrics[metric_name] = (current_avg * (count - 1) + new_value) / count
         else:
             self.metrics[metric_name] = new_value
+
+    def _weighted_retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
+        """Fallback weighted retrieval when RRF is not available."""
+        all_nodes: List[NodeWithScore] = []
+        
+        for i, (retriever, w) in enumerate(zip(self.live_retrievers, self.weights)):
+            try:
+                nodes = retriever.retrieve(query_bundle.query_str)
+                
+                # Apply weight to scores
+                for n in nodes:
+                    if n.score is not None:
+                        n.score = n.score * w
+                    else:
+                        n.score = w * 0.5  # Default score if None
+                
+                all_nodes.extend(nodes)
+                
+                # Update metrics based on retriever type
+                self._update_retriever_metrics(retriever)
+                self.logger.debug(f"Retriever {i} returned {len(nodes)} nodes")
+                
+            except Exception as e:
+                self.logger.error(f"Error in retriever {i}: {e}")
+                continue
+        
+        return all_nodes
+
+    def _update_retriever_metrics(self, retriever):
+        """Update metrics based on retriever type."""
+        from llama_index.core.retrievers import VectorIndexRetriever
+        try:
+            from llama_index.core.retrievers import KnowledgeGraphRAGRetriever
+        except ImportError:
+            KnowledgeGraphRAGRetriever = None
+        
+        if KnowledgeGraphRAGRetriever and isinstance(retriever, KnowledgeGraphRAGRetriever):
+            self.metrics["graph_retrievals"] += 1
+        elif isinstance(retriever, VectorIndexRetriever):
+            self.metrics["vector_retrievals"] += 1
+        elif BM25Retriever and isinstance(retriever, BM25Retriever):
+            self.metrics["bm25_retrievals"] += 1
+        else:
+            # Fallback for unknown retriever types
+            if retriever == self.graph:
+                self.metrics["graph_retrievals"] += 1
+            else:
+                self.metrics["vector_retrievals"] += 1
+
+    def _apply_scoring_boosts(self, nodes: List[NodeWithScore]) -> List[NodeWithScore]:
+        """Apply time-decay and confidence boosts to node scores."""
+        import math
+        
+        def time_boost(ts):
+            if not ts:
+                return 0.0
+            return math.exp(-(time.time() - float(ts)) / self.half_life_secs)
+        
+        for n in nodes:
+            meta = n.node.metadata or {}
+            ts = meta.get("timestamp") or meta.get("ts")
+            conf = float(meta.get("confidence", 0.5))
+            
+            # Apply boosts
+            time_bonus = 0.15 * time_boost(ts) if ts else 0.0
+            conf_bonus = 0.10 * conf
+            
+            n.score = (n.score or 0.0) + time_bonus + conf_bonus
+        
+        return nodes
+
+    def _apply_colbert_rerank(self, nodes: List[NodeWithScore], query: str) -> List[NodeWithScore]:
+        """Apply ColBERT reranking to final results."""
+        try:
+            from llama_index.postprocessor.colbert_rerank import ColbertRerank
+            
+            if len(nodes) <= self.rerank_top_n:
+                return nodes  # No need to rerank if we have few nodes
+            
+            reranker = ColbertRerank(
+                model="colbert-ir/colbertv2.0", 
+                top_n=self.rerank_top_n
+            )
+            
+            reranked = reranker.postprocess_nodes(nodes, query_str=query)
+            self.logger.debug(f"ColBERT reranked {len(nodes)} -> {len(reranked)} nodes")
+            return reranked
+            
+        except Exception as e:
+            self.logger.debug(f"ColBERT rerank skipped: {e}")
+            return nodes[:self.rerank_top_n]
     
     @classmethod
     async def create(
@@ -382,6 +468,10 @@ class HybridEnsembleRetriever(BaseRetriever):
             query_bundle = QueryBundle(query_str=query)
             nodes_with_scores = self._retrieve(query_bundle)
             
+            # Apply working-set boost if we have session context
+            if session_id and self.working_set_cache:
+                nodes_with_scores = await self._apply_working_set_boost(nodes_with_scores, session_id)
+            
             # Convert to RetrievedChunk format for backward compatibility
             chunks = []
             for node_with_score in nodes_with_scores[:budget]:
@@ -405,6 +495,22 @@ class HybridEnsembleRetriever(BaseRetriever):
         except Exception as e:
             self.logger.error(f"Error in hybrid retrieval: {e}")
             return []
+
+    async def _apply_working_set_boost(self, nodes: List[NodeWithScore], session_id: str) -> List[NodeWithScore]:
+        """Apply boost to nodes that are in the working set (recent conversational focus)."""
+        try:
+            recent = set(await self.working_set_cache.get_working_set(session_id) or [])
+            
+            for n in nodes:
+                if n.node.node_id in recent:
+                    n.score = (n.score or 0.0) + 0.05  # Small boost for working set items
+                    self.logger.debug(f"Applied working set boost to node: {n.node.node_id}")
+            
+            return nodes
+            
+        except Exception as e:
+            self.logger.warning(f"Error applying working set boost: {e}")
+            return nodes
     
     async def query_with_context(self, query: str, session_id: Optional[str] = None) -> str:
         """

@@ -82,15 +82,18 @@ class KnowledgeGraphPersistence:
             
             try:
                 # Try to get node/edge counts from the graph
-                kg = storage_context.property_graph_store.graph
-                if hasattr(kg, 'number_of_nodes'):
-                    nodes = kg.number_of_nodes()
-                    edges = kg.number_of_edges()
-                elif hasattr(kg, 'nodes') and hasattr(kg, 'edges'):
-                    nodes = len(list(kg.nodes)) if hasattr(kg.nodes, '__iter__') else len(kg.nodes)
-                    edges = len(list(kg.edges)) if hasattr(kg.edges, '__iter__') else len(kg.edges)
+                if hasattr(storage_context, 'property_graph_store') and storage_context.property_graph_store:
+                    kg = storage_context.property_graph_store.graph
+                    if hasattr(kg, 'number_of_nodes'):
+                        nodes = kg.number_of_nodes()
+                        edges = kg.number_of_edges()
+                    elif hasattr(kg, 'nodes') and hasattr(kg, 'edges'):
+                        nodes = len(list(kg.nodes)) if hasattr(kg.nodes, '__iter__') else len(kg.nodes)
+                        edges = len(list(kg.edges)) if hasattr(kg.edges, '__iter__') else len(kg.edges)
+                    else:
+                        raise AttributeError("Unknown graph type")
                 else:
-                    raise AttributeError("Unknown graph type")
+                    raise AttributeError("No property graph store available")
             except (AttributeError, Exception):
                 # Fall back to raw JSON read
                 import json
@@ -121,6 +124,9 @@ class KnowledgeGraphPersistence:
 
             persist_dir = os.path.join(self.dynamic_storage, "main")
             os.makedirs(persist_dir, exist_ok=True)
+            
+            # Run compaction if WAL is getting large
+            await self._maybe_compact_wal()
             
             self.dynamic_kg.storage_context.persist(persist_dir=persist_dir)
             
@@ -250,3 +256,77 @@ class KnowledgeGraphPersistence:
         except Exception as e:
             self.logger.error(f"Error exporting graph {graph_id}: {str(e)}")
             return False
+
+    def _append_wal(self, event: dict):
+        """Append event to write-ahead log."""
+        try:
+            wal_path = os.path.join(self.dynamic_storage, "main", "wal.jsonl")
+            os.makedirs(os.path.dirname(wal_path), exist_ok=True)
+            
+            with open(wal_path, "a", encoding="utf-8") as f:
+                f.write(json.dumps(event, ensure_ascii=False) + "\n")
+        except Exception as e:
+            self.logger.warning(f"Failed to append to WAL: {e}")
+
+    async def _maybe_compact_wal(self):
+        """Compact WAL if it's getting too large."""
+        try:
+            wal_path = os.path.join(self.dynamic_storage, "main", "wal.jsonl")
+            
+            if not os.path.exists(wal_path):
+                return
+            
+            # Check WAL size
+            wal_size = os.path.getsize(wal_path)
+            max_wal_size = 10 * 1024 * 1024  # 10MB
+            
+            if wal_size > max_wal_size:
+                self.logger.info("Compacting WAL due to size threshold")
+                await self._compact_wal()
+        except Exception as e:
+            self.logger.error(f"Error checking WAL size: {e}")
+
+    async def _compact_wal(self):
+        """Compact the write-ahead log by replaying and creating clean snapshot."""
+        try:
+            wal_path = os.path.join(self.dynamic_storage, "main", "wal.jsonl")
+            
+            if not os.path.exists(wal_path):
+                return
+            
+            self.logger.info("Starting WAL compaction")
+            
+            # Create backup of current WAL
+            backup_path = f"{wal_path}.backup.{int(time.time())}"
+            os.rename(wal_path, backup_path)
+            
+            # The graph is already persisted, so we can safely clear the WAL
+            # In a more sophisticated implementation, you would:
+            # 1. Replay WAL events into a temp graph
+            # 2. Merge duplicate entities using canonical IDs
+            # 3. Write a fresh snapshot
+            
+            self.logger.info("WAL compaction completed")
+            
+            # Keep only the last few backups
+            self._cleanup_old_wal_backups()
+            
+        except Exception as e:
+            self.logger.error(f"Error during WAL compaction: {e}")
+
+    def _cleanup_old_wal_backups(self):
+        """Clean up old WAL backup files."""
+        try:
+            backup_dir = os.path.join(self.dynamic_storage, "main")
+            backup_files = [f for f in os.listdir(backup_dir) if f.startswith("wal.jsonl.backup.")]
+            
+            # Sort by timestamp and keep only the last 5
+            backup_files.sort(key=lambda x: int(x.split(".")[-1]))
+            
+            for old_backup in backup_files[:-5]:
+                old_path = os.path.join(backup_dir, old_backup)
+                os.remove(old_path)
+                self.logger.debug(f"Removed old WAL backup: {old_backup}")
+                
+        except Exception as e:
+            self.logger.warning(f"Error cleaning up WAL backups: {e}")

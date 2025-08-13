@@ -80,7 +80,10 @@ class OrchestratedModelManager:
         # Backward compatibility attributes
         self.host = config.get("ollama", {}).get("host", "http://localhost:11434")
         self.conversation_model = config.get("models", {}).get("conversation", {}).get("name", "hermes3:3b")
-        self.knowledge_model = config.get("models", {}).get("knowledge", {}).get("name", "tinyllama")
+        self.knowledge_model = config.get("models", {}).get("knowledge", {}).get("name", "phi3:mini")
+        
+        # Set up LlamaIndex LLMs to prevent OpenAI fallback
+        self._setup_llamaindex_llms()
         
         # Metrics for backward compatibility
         self.metrics = {
@@ -90,6 +93,47 @@ class OrchestratedModelManager:
         
         # Initialization state
         self._initialized = False
+    
+    def _setup_llamaindex_llms(self):
+        """Set up LlamaIndex LLMs to prevent OpenAI fallback."""
+        try:
+            from llama_index.core import Settings
+            from llama_index.llms.ollama import Ollama
+            
+            # Create LlamaIndex LLM instances
+            self.chat_llm = Ollama(
+                model=self.conversation_model,
+                base_url=self.host,
+                request_timeout=120.0
+            )
+            
+            self.kg_llm = Ollama(
+                model=self.knowledge_model,
+                base_url=self.host,
+                request_timeout=60.0
+            )
+            
+            # Set global defaults to prevent OpenAI fallback
+            Settings.llm = self.chat_llm
+            
+            # Set up embeddings
+            try:
+                from services.embedding_singleton import get_embedding_model
+                Settings.embed_model = get_embedding_model("BAAI/bge-small-en-v1.5")
+            except ImportError:
+                from llama_index.embeddings.ollama import OllamaEmbedding
+                Settings.embed_model = OllamaEmbedding(
+                    model_name="nomic-embed-text",
+                    base_url=self.host,
+                    request_timeout=60.0
+                )
+            
+            self.logger.info(f"✅ LlamaIndex global LLM set to: {type(Settings.llm).__name__} ({self.conversation_model})")
+            self.logger.info(f"✅ LlamaIndex global embeddings set to: {type(Settings.embed_model).__name__}")
+            
+        except Exception as e:
+            self.logger.error(f"Failed to set up LlamaIndex LLMs: {str(e)}")
+            # Don't raise - let the system continue with MockLLM if needed
     
     async def initialize_models(self, config: ModelConfig) -> bool:
         """

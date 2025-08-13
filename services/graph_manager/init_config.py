@@ -68,6 +68,10 @@ class KnowledgeGraphInitializer:
         self._last_persist_time = time.time()
         self._persist_interval = 300  # 5 minutes
         self._persist_update_threshold = 10  # persist after 10 updates
+        
+        # Entity canonicalization for preventing drift
+        self._entity_catalog_path = os.path.join(self.dynamic_storage, "main", "entity_catalog.json")
+        self._entity_catalog = {}  # {"person::hugo kostelni": {"id": "...", "embed": [..], "name": "Hugo Kostelni"}}
 
         # Advanced GraphRouter
         self._graph_router = None

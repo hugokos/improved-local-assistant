@@ -32,6 +32,72 @@ def check_python_version():
         print(f"   ❌ Python {version.major}.{version.minor}.{version.micro} (requires 3.8+)")
         return False
 
+def check_voice_dependencies():
+    """Check if voice processing dependencies are available."""
+    print("\n🎤 Checking voice dependencies...")
+    
+    voice_deps = {
+        'vosk': 'Speech recognition',
+        'piper': 'Text-to-speech',
+        'sounddevice': 'Audio processing',
+        'webrtcvad': 'Voice activity detection'
+    }
+    
+    missing_deps = []
+    
+    for dep, description in voice_deps.items():
+        try:
+            __import__(dep)
+            print(f"   ✅ {dep}: {description}")
+        except ImportError:
+            print(f"   ⚠️  {dep}: {description} (optional)")
+            missing_deps.append(dep)
+    
+    if missing_deps:
+        print(f"\n   💡 To enable voice features, install: pip install {' '.join(missing_deps)}")
+        return False
+    else:
+        print("   🎉 All voice dependencies available!")
+        return True
+
+def setup_voice_models():
+    """Download voice models if requested."""
+    print("\n🎵 Voice Models Setup")
+    
+    response = input("   Download voice models for offline speech processing? (y/N): ").lower().strip()
+    
+    if response in ['y', 'yes']:
+        print("   📥 Downloading voice models...")
+        
+        try:
+            # Run voice model download script
+            script_path = Path(__file__).parent / "download_voice_models.py"
+            
+            if script_path.exists():
+                result = subprocess.run([
+                    sys.executable, str(script_path), "--all"
+                ], capture_output=True, text=True, timeout=300)
+                
+                if result.returncode == 0:
+                    print("   ✅ Voice models downloaded successfully")
+                    return True
+                else:
+                    print(f"   ❌ Voice model download failed: {result.stderr}")
+                    return False
+            else:
+                print("   ❌ Voice model download script not found")
+                return False
+                
+        except subprocess.TimeoutExpired:
+            print("   ⏰ Voice model download timed out")
+            return False
+        except Exception as e:
+            print(f"   ❌ Error downloading voice models: {str(e)}")
+            return False
+    else:
+        print("   ⏭️  Skipping voice model download")
+        return True
+
 def check_ollama_installation():
     """Check if Ollama is installed and running."""
     print("\n🤖 Checking Ollama installation...")
@@ -201,6 +267,7 @@ def main():
         ("Ollama Installation", check_ollama_installation),
         ("Required Models", check_required_models),
         ("Python Dependencies", check_dependencies),
+        ("Voice Dependencies", check_voice_dependencies),
     ]
     
     all_passed = True
@@ -213,6 +280,9 @@ def main():
     # Offer graph download if basic checks passed
     if all_passed:
         offer_graph_download()
+        
+        # Setup voice models
+        setup_voice_models()
         
         # Run system validation
         print("\n" + "="*50)

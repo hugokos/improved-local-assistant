@@ -10,6 +10,13 @@ class ChatInterface {
         this.maxReconnectAttempts = 5;
         this.reconnectDelay = 1000; // Start with 1 second delay
         
+        // Voice controller
+        this.voiceController = null;
+        
+        // Mic orb elements
+        this.micOrbEl = null;
+        this._bindedUpdateLevel = null;
+        
         // Initialize markdown parser
         this.md = window.markdownit({
             html: false,        // Disable HTML tags in source
@@ -69,6 +76,62 @@ class ChatInterface {
         
         // Load current models
         this.loadCurrentModels();
+        
+        // Initialize voice controller
+        this.initializeVoiceController();
+        
+        // Initialize mic orb reference
+        this.micOrbEl = document.getElementById('micOrb');
+    }
+    
+    initializeVoiceController() {
+        // Add a small delay to ensure DOM is fully ready
+        setTimeout(() => {
+            try {
+                console.log('Initializing voice controller...');
+                console.log('DOM elements available:', {
+                    voiceToggle: !!document.getElementById('voiceToggle'),
+                    micOrb: !!document.getElementById('micOrb'),
+                    liveTranscription: !!document.getElementById('liveTranscription'),
+                    partialText: !!document.getElementById('partialText')
+                });
+                
+                if (typeof VoiceController !== 'undefined') {
+                    this.voiceController = new VoiceController(this);
+                    
+                    // Verify the instance was created properly
+                    if (this.voiceController && typeof this.voiceController.setState === 'function') {
+                        console.log('Voice controller initialized successfully');
+                        
+                        // Hook into voice controller state changes
+                        const origSetState = this.voiceController.setState.bind(this.voiceController);
+                        this.voiceController.setState = (newState, payload = {}) => {
+                            // Update orb immediately on any state change
+                            // payload.level can be 0..1 if your controller exposes RMS
+                            this.setMicState(newState, payload.level);
+                            this.showMicOrb(true);
+                            return origSetState(newState, payload);
+                        };
+                        
+                        // Optional: if your controller exposes an audio meter callback
+                        if (this.voiceController && typeof this.voiceController.onLevel === 'function') {
+                            this._bindedUpdateLevel = (lvl) => this.setMicState('listening', lvl);
+                            this.voiceController.onLevel(this._bindedUpdateLevel);
+                        }
+                    } else {
+                        console.error('Voice controller created but missing methods');
+                        console.log('Voice controller type:', typeof this.voiceController);
+                        console.log('setState method:', typeof this.voiceController?.setState);
+                        this.voiceController = null;
+                    }
+                } else {
+                    console.warn('VoiceController class not available');
+                }
+            } catch (error) {
+                console.error('Failed to initialize voice controller:', error);
+                this.voiceController = null;
+            }
+        }, 100); // 100ms delay
     }
     
     initializeSidePanels() {
@@ -92,6 +155,7 @@ class ChatInterface {
         // Initialize panel data containers
         this.prebuiltCitationsContainer = document.querySelector('#prebuilt-citations-panel .panel-scroll');
         this.dynamicKgContainer = document.querySelector('#dynamic-kg-panel .panel-scroll');
+        this.voiceCommandsContainer = document.querySelector('#voice-commands-panel .panel-scroll');
         
         // Initialize debounced update functions
         this.debouncedUpdatePrebuilt = this.debounce(this.updatePrebuiltCitations.bind(this), 300);
@@ -99,6 +163,9 @@ class ChatInterface {
         
         // Initialize real graph events
         this.initializeRealGraphEvents();
+        
+        // Initialize voice commands panel
+        this.initializeVoiceCommandsPanel();
     }
     
     initializeVintageUI() {
@@ -364,6 +431,21 @@ class ChatInterface {
             const jsonData = JSON.parse(data);
             
             switch (jsonData.type) {
+                case 'heartbeat':
+                    return; // ignore quietly
+                    
+                case 'assistant_text':
+                    this.appendToCurrentMessage(jsonData.text || '');
+                    this.maybeStartTTS();
+                    break;
+                    
+                case 'assistant_done':
+                    if (this.voiceController?.isVoiceMode && !this.ttsStarted) {
+                        this.ttsStarted = true;
+                        this.voiceController.speakText(this.currentMessageText);
+                    }
+                    break;
+                    
                 case 'citations':
                     console.log('📚 Received citations message:', jsonData.data);
                     this.updateCitations(jsonData.data);
@@ -411,8 +493,9 @@ class ChatInterface {
                     console.log('Unknown message type:', jsonData.type);
             }
         } catch (e) {
-            // Not JSON, treat as streaming text
+            // Not JSON (token stream) – append and maybe start TTS
             this.appendToCurrentMessage(data);
+            this.maybeStartTTS();
         }
     }
     
@@ -420,8 +503,16 @@ class ChatInterface {
         try {
             const jsonData = JSON.parse(data);
             
+            // GUARD: Ensure message has type field
+            if (!jsonData.type) {
+                console.warn('⚠️ Message missing type field:', jsonData);
+                return;
+            }
+            
             if (jsonData.type === 'system_status') {
                 this.updateMetrics(jsonData);
+            } else {
+                console.warn('⚠️ Unknown monitoring message type:', jsonData.type);
             }
         } catch (e) {
             console.error('Error handling monitoring message:', e);
@@ -494,6 +585,7 @@ class ChatInterface {
         // Initialize accumulated text for streaming
         this.currentMessageText = '';
         this.isFirstToken = true;
+        this.ttsStarted = false; // Track if TTS has been started for this message
         
         this.scrollToBottom();
     }
@@ -522,7 +614,46 @@ class ChatInterface {
             const formattedContent = this.md.render(cleaned);
             contentDiv.innerHTML = formattedContent;
             
+            // Send to voice controller for TTS if in voice mode
+            if (this.voiceController && this.voiceController.isVoiceMode && !this.ttsStarted) {
+                // SAFETY FALLBACK: Multiple triggers for TTS start
+                let shouldStartTTS = false;
+                let textToSpeak = '';
+                
+                // Primary trigger: waiting_for_bot state with enough text
+                if (this.voiceController.state === 'waiting_for_bot' && 
+                    this.isFirstToken === false && this.currentMessageText.length > 10) {
+                    shouldStartTTS = true;
+                    textToSpeak = this.currentMessageText;
+                }
+                
+                // Fallback 1: First complete sentence
+                if (!shouldStartTTS && this.currentMessageText.length > 20) {
+                    const firstSentence = this.currentMessageText.match(/[^.!?]+[.!?]/)?.[0];
+                    if (firstSentence && firstSentence.length > 15) {
+                        shouldStartTTS = true;
+                        textToSpeak = firstSentence;
+                        console.log('🔄 TTS fallback: first sentence trigger');
+                    }
+                }
+                
+                if (shouldStartTTS) {
+                    this.ttsStarted = true;
+                    this.voiceController.speakText(textToSpeak);
+                }
+            }
+            
             this.scrollToBottom();
+        }
+    }
+    
+    maybeStartTTS() {
+        if (!this.voiceController?.isVoiceMode || this.ttsStarted) return;
+        const text = this.currentMessageText || '';
+        const firstSentence = text.match(/^[\s\S]*?[.!?](?:\s|$)/)?.[0] || '';
+        if (firstSentence.length >= 20) {
+            this.ttsStarted = true;
+            this.voiceController.speakText(firstSentence);
         }
     }
     
@@ -544,6 +675,14 @@ class ChatInterface {
         const existing = document.getElementById('typing');
         if (existing) {
             existing.remove();
+        }
+        
+        // FALLBACK 2: TTS trigger when typing stops
+        if (this.voiceController && this.voiceController.isVoiceMode && !this.ttsStarted && 
+            this.currentMessageText && this.currentMessageText.length > 10) {
+            console.log('🔄 TTS fallback: typing stopped trigger');
+            this.ttsStarted = true;
+            this.voiceController.speakText(this.currentMessageText);
         }
     }
     
@@ -653,6 +792,42 @@ class ChatInterface {
         }
     }
     
+    setMicState(state, level = 0) {
+        const el = this.micOrbEl;
+        if (!el) return;
+        
+        // clamp and set audio level (drives the conic gradient & glow)
+        const clamped = Math.max(0, Math.min(1, level || 0));
+        el.style.setProperty('--level', clamped);
+        
+        // remove any previous state classes
+        el.classList.remove(
+            'listening','speaking','waiting','processing',
+            'utterance-active','finalizing','muted','holdoff'
+        );
+        
+        // map and add new one
+        const s = (state || '').toLowerCase();
+        const map = {
+            'idle': null,
+            'listening': 'listening',
+            'vad_active': 'utterance-active',      // user currently talking
+            'utterance_active': 'utterance-active', // user currently talking
+            'speaking': 'speaking',                // TTS playing
+            'processing': 'finalizing',            // STT finalization/LLM thinking
+            'finalizing': 'finalizing',            // STT finalization/LLM thinking
+            'waiting_for_bot': 'waiting',          // waiting for bot response
+            'hold_off': 'holdoff',                 // brief re-enable delay
+            'muted': 'muted'
+        };
+        const cls = map[s] || null;
+        if (cls) el.classList.add(cls);
+    }
+    
+    showMicOrb(show = true) {
+        if (this.micOrbEl) this.micOrbEl.style.display = show ? 'block' : 'none';
+    }
+
     updateStatus(status) {
         const statusElement = document.getElementById('modelStatus');
         if (statusElement) {
@@ -945,6 +1120,25 @@ class ChatInterface {
         // Listen for citations and dynamic KG updates from WebSocket messages
         this.citationHistory = [];
         this.dynamicTripleHistory = [];
+    }
+    
+    initializeVoiceCommandsPanel() {
+        // Voice commands panel is static content, no dynamic initialization needed
+        // Commands are already defined in HTML
+        
+        // Add click handlers for command examples (optional)
+        const cmdList = document.querySelector('#voice-commands-panel .cmd-list');
+        if (cmdList) {
+            cmdList.addEventListener('click', (e) => {
+                const kbd = e.target.closest('kbd');
+                if (kbd && this.voiceController && this.voiceController.isVoiceMode) {
+                    // Optional: simulate voice command when clicked
+                    const command = kbd.textContent.replace(/"/g, '');
+                    console.log('Voice command clicked:', command);
+                    // Could trigger the command here if desired
+                }
+            });
+        }
     }
     
     updateSystemStatus(status, isOnline) {
