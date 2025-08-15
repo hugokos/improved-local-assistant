@@ -7,7 +7,12 @@ A high-performance, enterprise-grade local AI assistant featuring dynamic knowle
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![Tests](https://img.shields.io/badge/tests-90%25%20coverage-green.svg)](#testing--quality-assurance)
+[![CI](https://github.com/hugokos/improved-local-assistant/workflows/CI/badge.svg)](https://github.com/hugokos/improved-local-assistant/actions)
+[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](https://hugokos.github.io/improved-local-assistant)
+[![Security](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 ---
 

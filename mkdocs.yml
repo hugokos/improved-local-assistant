@@ -1,0 +1,96 @@
+site_name: Improved Local AI Assistant
+site_description: Production-ready local AI assistant with GraphRAG technology and voice interface
+site_url: https://hugokos.github.io/improved-local-assistant
+repo_url: https://github.com/hugokos/improved-local-assistant
+repo_name: hugokos/improved-local-assistant
+
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: blue
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.code.annotate
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            show_root_toc_entry: false
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: installation.md
+    - Quick Start: quickstart.md
+    - Configuration: configuration.md
+  - User Guide:
+    - Web Interface: user-guide/web-interface.md
+    - Voice Commands: user-guide/voice-commands.md
+    - API Usage: user-guide/api-usage.md
+    - CLI Tools: user-guide/cli-tools.md
+  - Developer Guide:
+    - Architecture: developer-guide/architecture.md
+    - GraphRAG System: developer-guide/graphrag.md
+    - Voice Interface: developer-guide/voice-interface.md
+    - Contributing: developer-guide/contributing.md
+  - API Reference:
+    - REST API: api/rest.md
+    - WebSocket API: api/websocket.md
+    - Python API: api/python.md
+  - Deployment:
+    - Production Setup: deployment/production.md
+    - Docker: deployment/docker.md
+    - Security: deployment/security.md
+  - Examples:
+    - Basic Usage: examples/basic.md
+    - Advanced GraphRAG: examples/graphrag.md
+    - Custom Integration: examples/integration.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/hugokos/improved-local-assistant
+    - icon: fontawesome/solid/book
+      link: https://hugokos.github.io/improved-local-assistant

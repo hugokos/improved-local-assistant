@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Debug Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .debug-section {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px;
+            margin: 5px 0;
+            border-radius: 3px;
+        }
+        .status.success { background-color: #d4edda; color: #155724; }
+        .status.error { background-color: #f8d7da; color: #721c24; }
+        .status.warning { background-color: #fff3cd; color: #856404; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .primary { background-color: #007bff; color: white; }
+        .secondary { background-color: #6c757d; color: white; }
+        #log {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Voice Debug Test</h1>
+    
+    <div class="debug-section">
+        <h3>Voice System Status</h3>
+        <div id="voiceStatus" class="status">Checking...</div>
+        <div id="audioStatus" class="status">Checking...</div>
+        <div id="websocketStatus" class="status">Checking...</div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>Test Controls</h3>
+        <button id="testTTS" class="primary">Test TTS</button>
+        <button id="testSTT" class="primary">Test STT</button>
+        <button id="startVoice" class="primary">Start Voice Mode</button>
+        <button id="stopVoice" class="secondary">Stop Voice Mode</button>
+        <button id="clearLog" class="secondary">Clear Log</button>
+    </div>
+    
+    <div class="debug-section">
+        <h3>Debug Log</h3>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        // Debug logging
+        const log = document.getElementById('log');
+        const originalConsole = {
+            log: console.log,
+            error: console.error,
+            warn: console.warn,
+            debug: console.debug
+        };
+        
+        function addToLog(level, ...args) {
+            const timestamp = new Date().toLocaleTimeString();
+            const message = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+            ).join(' ');
+            
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `<span style="color: #666">[${timestamp}]</span> <span style="color: ${getLogColor(level)}">[${level.toUpperCase()}]</span> ${message}`;
+            log.appendChild(logEntry);
+            log.scrollTop = log.scrollHeight;
+            
+            // Call original console method
+            originalConsole[level](...args);
+        }
+        
+        function getLogColor(level) {
+            switch(level) {
+                case 'error': return '#dc3545';
+                case 'warn': return '#ffc107';
+                case 'debug': return '#6c757d';
+                default: return '#000';
+            }
+        }
+        
+        // Override console methods
+        console.log = (...args) => addToLog('log', ...args);
+        console.error = (...args) => addToLog('error', ...args);
+        console.warn = (...args) => addToLog('warn', ...args);
+        console.debug = (...args) => addToLog('debug', ...args);
+        
+        // Status elements
+        const voiceStatus = document.getElementById('voiceStatus');
+        const audioStatus = document.getElementById('audioStatus');
+        const websocketStatus = document.getElementById('websocketStatus');
+        
+        // Test functions
+        async function checkVoiceSupport() {
+            try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    throw new Error('getUserMedia not supported');
+                }
+                
+                const hasAudioContext = !!(window.AudioContext || window.webkitAudioContext);
+                if (!hasAudioContext) {
+                    throw new Error('AudioContext not supported');
+                }
+                
+                voiceStatus.textContent = 'Voice features supported';
+                voiceStatus.className = 'status success';
+                
+                return true;
+            } catch (error) {
+                voiceStatus.textContent = `Voice not supported: ${error.message}`;
+                voiceStatus.className = 'status error';
+                return false;
+            }
+        }
+        
+        async function checkAudioContext() {
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                const audioContext = new AudioContextClass();
+                
+                if (audioContext.state === 'suspended') {
+                    await audioContext.resume();
+                }
+                
+                audioStatus.textContent = `AudioContext ready (${audioContext.state})`;
+                audioStatus.className = 'status success';
+                
+                return audioContext;
+            } catch (error) {
+                audioStatus.textContent = `AudioContext error: ${error.message}`;
+                audioStatus.className = 'status error';
+                return null;
+            }
+        }
+        
+        async function testWebSockets() {
+            try {
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const host = window.location.host;
+                
+                // Test TTS WebSocket
+                const ttsWs = new WebSocket(`${protocol}//${host}/ws/voice/tts`);
+                
+                return new Promise((resolve, reject) => {
+                    const timeout = setTimeout(() => {
+                        reject(new Error('WebSocket connection timeout'));
+                    }, 5000);
+                    
+                    ttsWs.onopen = () => {
+                        clearTimeout(timeout);
+                        websocketStatus.textContent = 'WebSocket connections working';
+                        websocketStatus.className = 'status success';
+                        ttsWs.close();
+                        resolve(true);
+                    };
+                    
+                    ttsWs.onerror = (error) => {
+                        clearTimeout(timeout);
+                        websocketStatus.textContent = 'WebSocket connection failed';
+                        websocketStatus.className = 'status error';
+                        reject(error);
+                    };
+                });
+            } catch (error) {
+                websocketStatus.textContent = `WebSocket error: ${error.message}`;
+                websocketStatus.className = 'status error';
+                return false;
+            }
+        }
+        
+        async function testTTS() {
+            console.log('Testing TTS...');
+            try {
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const host = window.location.host;
+                const ttsWs = new WebSocket(`${protocol}//${host}/ws/voice/tts`);
+                
+                ttsWs.onopen = () => {
+                    console.log('TTS WebSocket connected');
+                    ttsWs.send(JSON.stringify({
+                        type: 'synthesize',
+                        text: 'Hello, this is a test of the text to speech system.'
+                    }));
+                };
+                
+                ttsWs.onmessage = (event) => {
+                    if (event.data instanceof ArrayBuffer) {
+                        console.log(`Received TTS audio: ${event.data.byteLength} bytes`);
+                    } else {
+                        const message = JSON.parse(event.data);
+                        console.log('TTS message:', message);
+                    }
+                };
+                
+                ttsWs.onerror = (error) => {
+                    console.error('TTS WebSocket error:', error);
+                };
+                
+                ttsWs.onclose = () => {
+                    console.log('TTS WebSocket closed');
+                };
+                
+            } catch (error) {
+                console.error('TTS test error:', error);
+            }
+        }
+        
+        // Event listeners
+        document.getElementById('testTTS').addEventListener('click', testTTS);
+        document.getElementById('clearLog').addEventListener('click', () => {
+            log.innerHTML = '';
+        });
+        
+        // Initialize
+        async function initialize() {
+            console.log('Initializing voice debug test...');
+            
+            await checkVoiceSupport();
+            await checkAudioContext();
+            await testWebSockets();
+            
+            console.log('Initialization complete');
+        }
+        
+        initialize().catch(console.error);
+    </script>
+</body>
+</html>

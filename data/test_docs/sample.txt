@@ -1,0 +1,12 @@
+Knowledge Graph Test Document
+
+Hermes 3:3B is a language model trained by Nous Research.
+TinyLlama is a smaller language model designed for efficiency.
+LlamaIndex is a framework for building RAG applications.
+
+Knowledge graphs store information as entities and relationships.
+NetworkX is a Python library for graph analysis.
+PyVis can visualize NetworkX graphs in HTML.
+
+Local AI assistants run entirely on the user's device.
+Ollama is a tool for running language models locally.

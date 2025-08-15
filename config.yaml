@@ -176,6 +176,19 @@ system:
   monitor_interval: 15
   startup_grace_period: 30
   quiet_monitoring: true  # Suppress resource usage warnings in CLI
+
+# Memory fallback configuration
+memory_fallback:
+  enabled: true
+  primary_model: hermes3:3b
+  fallback_model: tinyllama
+  proactive_threshold_percent: 98  # Switch to fallback when memory usage exceeds this
+  error_patterns:
+    - "model requires more system memory"
+    - "500 Internal Server Error"
+    - "out of memory"
+    - "insufficient memory"
+  auto_reset_after_minutes: 10
 working_set_cache:
   eviction_threshold: 0.8
   global_memory_limit_mb: 256

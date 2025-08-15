@@ -1,20 +1,20 @@
 # Contributing to Improved Local Assistant
 
-Thank you for your interest in contributing to the Improved Local Assistant! This document provides guidelines and information for contributors.
+Thank you for your interest in contributing to the Improved Local Assistant! We welcome contributions from developers of all skill levels.
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Python 3.8+ (3.11+ recommended)
-- Git
-- Ollama with required models
-- 8GB+ RAM for development
+- **Python 3.8+** (3.11+ recommended for optimal performance)
+- **Git** for version control
+- **Ollama** with required models (hermes3:3b, phi3:mini)
+- **8GB+ RAM** for development (16GB recommended)
 
 ### Development Setup
 
 1. **Fork and Clone**
    ```bash
-   git clone https://github.com/hugokos/improved-local-assistant.git
+   git clone https://github.com/YOUR_USERNAME/improved-local-assistant.git
    cd improved-local-assistant
    ```
 
@@ -24,29 +24,56 @@ Thank you for your interest in contributing to the Improved Local Assistant! Thi
    source .venv/bin/activate  # Linux/macOS
    # .venv\Scripts\activate   # Windows
    
-   pip install -r requirements.txt
+   # Install in development mode with all dependencies
+   pip install -e ".[dev]"
    ```
 
-3. **Install Development Dependencies**
+3. **Install Pre-commit Hooks**
    ```bash
-   pip install black isort mypy pytest pytest-cov
+   pre-commit install
    ```
 
 4. **Verify Setup**
    ```bash
-   python -m pytest tests/ -v
+   # Run tests
+   pytest tests/ -v
+   
+   # Check code quality
+   ruff check .
+   black --check .
+   mypy src/
+   
+   # Verify system functionality
    python cli/validate_milestone_6.py
    ```
 
 ## 🔧 Development Workflow
 
-### Code Style
-We use professional Python standards:
+### Code Quality Standards
 
+We maintain high code quality standards using automated tools:
+
+**Formatting and Linting:**
 ```bash
-# Format code
-python -m black . --line-length 120
-python -m isort . --profile black
+# Format code (automatically fixes issues)
+ruff format .
+black .
+
+# Lint code (check for issues)
+ruff check .
+
+# Type checking
+mypy src/
+
+# Run all quality checks
+pre-commit run --all-files
+```
+
+**Code Style Guidelines:**
+- **Line Length**: 100 characters maximum
+- **Docstrings**: Google style for all public functions and classes
+- **Type Hints**: Required for all function signatures
+- **Import Organization**: Use isort with black profile
 
 # Type checking
 python -m mypy services/ --ignore-missing-imports

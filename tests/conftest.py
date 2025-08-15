@@ -2,11 +2,11 @@
 Pytest configuration and fixtures for the improved local assistant tests.
 """
 
-import pytest
 import asyncio
 import sys
-import os
 from pathlib import Path
+
+import pytest
 
 # Add project root to Python path for imports
 project_root = Path(__file__).parent.parent
@@ -38,44 +38,40 @@ def mock_config():
             "host": "http://localhost:11434",
             "timeout": 30,
             "max_parallel": 2,
-            "max_loaded_models": 2
+            "max_loaded_models": 2,
         },
         "models": {
             "conversation": {
                 "name": "hermes3:3b",
                 "context_window": 8000,
                 "temperature": 0.7,
-                "max_tokens": 2048
+                "max_tokens": 2048,
             },
             "knowledge": {
                 "name": "tinyllama",
                 "context_window": 2048,
                 "temperature": 0.2,
-                "max_tokens": 1024
-            }
+                "max_tokens": 1024,
+            },
         },
         "knowledge_graphs": {
             "prebuilt_directory": "./data/prebuilt_graphs",
             "dynamic_storage": "./data/dynamic_graph",
             "max_triplets_per_chunk": 4,
-            "enable_visualization": True
+            "enable_visualization": True,
         },
         "conversation": {
             "max_history_length": 50,
             "summarize_threshold": 20,
-            "context_window_tokens": 8000
+            "context_window_tokens": 8000,
         },
         "system": {
             "max_memory_gb": 12,
             "cpu_cores": 4,
             "memory_threshold_percent": 80,
-            "cpu_threshold_percent": 80
+            "cpu_threshold_percent": 80,
         },
-        "api": {
-            "host": "0.0.0.0",
-            "port": 8000,
-            "cors_origins": ["*"]
-        }
+        "api": {"host": "0.0.0.0", "port": 8000, "cors_origins": ["*"]},
     }
 
 
@@ -92,13 +88,13 @@ def temp_data_dir(tmp_path):
     """Create temporary directories for test data."""
     data_dir = tmp_path / "data"
     data_dir.mkdir()
-    
+
     # Create subdirectories
     (data_dir / "prebuilt_graphs").mkdir()
     (data_dir / "dynamic_graph").mkdir()
     (data_dir / "sessions").mkdir()
     (data_dir / "test_docs").mkdir()
-    
+
     return data_dir
 
 
@@ -106,12 +102,14 @@ def temp_data_dir(tmp_path):
 def sample_documents(temp_data_dir):
     """Create sample documents for testing."""
     docs_dir = temp_data_dir / "test_docs"
-    
+
     # Create sample text files
     (docs_dir / "sample1.txt").write_text("This is a sample document about Python programming.")
-    (docs_dir / "sample2.txt").write_text("Knowledge graphs are useful for representing relationships.")
+    (docs_dir / "sample2.txt").write_text(
+        "Knowledge graphs are useful for representing relationships."
+    )
     (docs_dir / "sample3.txt").write_text("Machine learning models can process natural language.")
-    
+
     return docs_dir
 
 
@@ -121,12 +119,8 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers", "slow: marks tests as slow (deselect with '-m \"not slow\"')"
     )
-    config.addinivalue_line(
-        "markers", "integration: marks tests as integration tests"
-    )
-    config.addinivalue_line(
-        "markers", "unit: marks tests as unit tests"
-    )
+    config.addinivalue_line("markers", "integration: marks tests as integration tests")
+    config.addinivalue_line("markers", "unit: marks tests as unit tests")
 
 
 def pytest_collection_modifyitems(config, items):

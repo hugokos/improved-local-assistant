@@ -13,16 +13,17 @@ import os
 import platform
 import shutil
 import sys
-import time
 from pathlib import Path
 
 # Apply UTF-8 runtime patch for Windows compatibility
 from services.utf8_runtime_patch import apply_utf8_patch
+
 apply_utf8_patch()
 
 # 🔧 VERIFICATION: Check if UTF-8 patch is active (early verification)
 import io
-b = io.BytesIO(b'\xc3\xa9')  # 'é' in UTF-8
+
+b = io.BytesIO(b"\xc3\xa9")  # 'é' in UTF-8
 try:
     b.read().decode(sys.getdefaultencoding())
     print(f"[DEBUG] Default encoding is UTF-8: {sys.getdefaultencoding()}")
@@ -47,9 +48,9 @@ def setup_logging(level: str = "INFO") -> None:
         handlers=[
             logging.StreamHandler(sys.stdout),
             logging.FileHandler("logs/app.log", mode="a"),
-        ]
+        ],
     )
-    
+
     # Reduce noise from verbose libraries during startup
     if level.upper() != "DEBUG":
         logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -63,11 +64,11 @@ def create_directories() -> None:
     directories = [
         "logs",
         "data",
-        "data/prebuilt_graphs", 
+        "data/prebuilt_graphs",
         "data/dynamic_graph",
         "data/sessions",
     ]
-    
+
     for directory in directories:
         os.makedirs(directory, exist_ok=True)
 
@@ -76,7 +77,7 @@ def handle_survivalist_graph(args) -> None:
     """Handle survivalist graph enable/disable."""
     survivalist_dir = Path("data/prebuilt_graphs/survivalist")
     survivalist_disabled_dir = Path("data/prebuilt_graphs/survivalist_disabled")
-    
+
     if args.skip_survivalist:
         if survivalist_dir.exists():
             print(f"Disabling survivalist graph: {survivalist_dir} -> {survivalist_disabled_dir}")
@@ -98,19 +99,19 @@ def set_performance_environment(args) -> None:
     os.environ["STARTUP_PRELOAD"] = args.preload
     os.environ["GRAPH_LAZY_LOAD"] = str(args.lazy_load_graphs).lower()
     os.environ["OLLAMA_HEALTHCHECK"] = args.ollama_healthcheck
-    
+
     # Embedding model settings
     os.environ["EMBED_MODEL_DEVICE"] = args.embed_device
     os.environ["EMBED_MODEL_INT8"] = str(args.embed_int8).lower()
     os.environ["EMBED_MODEL_PATH"] = "BAAI/bge-small-en-v1.5"  # Ensure correct model
-    
+
     # Resource monitoring
     os.environ["RESOURCE_MONITOR_INTERVAL"] = str(args.monitor_interval)
     os.environ["RESOURCE_MONITOR_DEBOUNCE"] = str(args.monitor_debounce)
-    
+
     # Memory thresholds
     os.environ["MEM_PRESSURE_THRESHOLD"] = str(args.memory_threshold)
-    
+
     # Platform-specific optimizations
     if platform.system() == "Windows":
         os.environ["SKIP_PROCESS_PRIORITY"] = "1"
@@ -122,64 +123,94 @@ def main():
     """Main application entry point."""
     parser = argparse.ArgumentParser(
         description="Improved Local AI Assistant - Production Ready",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    
+
     # Basic options
     parser.add_argument("--port", type=int, default=8000, help="Port to run the application on")
     parser.add_argument("--host", default="0.0.0.0", help="Host to bind to")
-    parser.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR"])
-    
+    parser.add_argument(
+        "--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR"]
+    )
+
     # Performance options
-    parser.add_argument("--preload", default="models", choices=["none", "models", "graphs", "all"],
-                       help="What to preload during startup")
-    parser.add_argument("--lazy-load-graphs", action="store_true", default=True,
-                       help="Load graphs in background after startup")
-    parser.add_argument("--ollama-healthcheck", default="version", choices=["version", "chat"],
-                       help="Type of Ollama health check to perform")
-    
+    parser.add_argument(
+        "--preload",
+        default="models",
+        choices=["none", "models", "graphs", "all"],
+        help="What to preload during startup",
+    )
+    parser.add_argument(
+        "--lazy-load-graphs",
+        action="store_true",
+        default=True,
+        help="Load graphs in background after startup",
+    )
+    parser.add_argument(
+        "--ollama-healthcheck",
+        default="version",
+        choices=["version", "chat"],
+        help="Type of Ollama health check to perform",
+    )
+
     # Embedding model options
-    parser.add_argument("--embed-device", default="cpu", choices=["cpu", "cuda"],
-                       help="Device for embedding model")
-    parser.add_argument("--embed-int8", action="store_true", default=True,
-                       help="Use int8 quantization for embedding model")
-    
+    parser.add_argument(
+        "--embed-device", default="cpu", choices=["cpu", "cuda"], help="Device for embedding model"
+    )
+    parser.add_argument(
+        "--embed-int8",
+        action="store_true",
+        default=True,
+        help="Use int8 quantization for embedding model",
+    )
+
     # Resource monitoring options
-    parser.add_argument("--monitor-interval", type=int, default=10,
-                       help="Resource monitoring interval in seconds")
-    parser.add_argument("--monitor-debounce", type=int, default=60,
-                       help="Debounce time for resource cleanup actions")
-    parser.add_argument("--memory-threshold", type=float, default=0.95,
-                       help="Memory pressure threshold (0.0-1.0)")
-    
+    parser.add_argument(
+        "--monitor-interval", type=int, default=10, help="Resource monitoring interval in seconds"
+    )
+    parser.add_argument(
+        "--monitor-debounce",
+        type=int,
+        default=60,
+        help="Debounce time for resource cleanup actions",
+    )
+    parser.add_argument(
+        "--memory-threshold", type=float, default=0.95, help="Memory pressure threshold (0.0-1.0)"
+    )
+
     # Graph options
-    parser.add_argument("--skip-survivalist", action="store_true",
-                       help="Skip loading the survivalist graph")
-    parser.add_argument("--rebuild-survivalist", action="store_true",
-                       help="Rebuild the survivalist graph from scratch")
-    
+    parser.add_argument(
+        "--skip-survivalist", action="store_true", help="Skip loading the survivalist graph"
+    )
+    parser.add_argument(
+        "--rebuild-survivalist",
+        action="store_true",
+        help="Rebuild the survivalist graph from scratch",
+    )
+
     # Development options
     parser.add_argument("--reload", action="store_true", help="Enable auto-reload for development")
-    
+
     args = parser.parse_args()
-    
+
     print("🚀 Starting Improved Local AI Assistant (Production Mode)")
     print(f"   Preload mode: {args.preload}")
     print(f"   Lazy load graphs: {args.lazy_load_graphs}")
     print(f"   Ollama health check: {args.ollama_healthcheck}")
     print(f"   Memory threshold: {args.memory_threshold}")
-    
+
     # Setup
     setup_logging(args.log_level)
     create_directories()
     handle_survivalist_graph(args)
     set_performance_environment(args)
-    
+
     # Handle graph rebuilding
     if args.rebuild_survivalist:
         print("Rebuilding survivalist graph...")
         try:
             import subprocess
+
             rebuild_script = Path("scripts/rebuild_survivalist_graph.py")
             if rebuild_script.exists():
                 subprocess.run([sys.executable, str(rebuild_script)], check=True)
@@ -189,15 +220,15 @@ def main():
         except subprocess.CalledProcessError as e:
             print(f"❌ Error rebuilding survivalist graph: {e}")
             print("Continuing without rebuilding...")
-    
+
     # Start the application
     try:
         import uvicorn
-        
+
         print(f"🌐 Starting server on {args.host}:{args.port}")
         print("📊 Performance optimizations enabled")
         print("🔄 Use Ctrl+C to stop")
-        
+
         uvicorn.run(
             "app.main:app",
             host=args.host,
@@ -206,7 +237,7 @@ def main():
             log_level=args.log_level.lower(),
             access_log=args.log_level.upper() == "DEBUG",
         )
-        
+
     except KeyboardInterrupt:
         print("\n🛑 Application stopped by user")
         return 0

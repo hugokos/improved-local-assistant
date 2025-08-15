@@ -1,0 +1,1 @@
+"""Improved Local AI Assistant application package."""
