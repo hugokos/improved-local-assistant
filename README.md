@@ -28,64 +28,57 @@ A high‑level look at how the pieces fit together:
 
 ```mermaid
 flowchart LR
-  %% ===== Client layer =====
-  subgraph CLIENT[Client]
+
+  %% Client Layer
+  subgraph Client
     UI[Web UI / CLI]
     STT[Vosk STT]
     TTS[Piper TTS]
   end
 
-  %% ===== API / Orchestrator =====
-  API[FastAPI (REST/WebSocket)]
-  Router[Semantic Router]
-  Ranker[Ranking & Context Builder]
+  %% API + Routing Layer
+  subgraph API_Layer
+    API[FastAPI (REST/WebSocket)]
+    Router[Semantic Router]
+    Ranker[Context Builder]
+  end
 
-  %% ===== Indexes / Stores =====
-  subgraph INDEXES[Index & Search]
-    KG_PRIME[KG-Prime (Prebuilt Property Graph)]
-    KG_LIVE[KG-Live (Dynamic Property Graph)]
+  %% Index Layer
+  subgraph Indexes
+    KGPrime[KG-Prime]
+    KGLive[KG-Live]
     VDB[Vector Index]
-    BM25[BM25 Keyword Index]
+    BM25[BM25 Index]
   end
 
-  %% ===== Models =====
-  LLM[Local LLM via Ollama]
+  %% Model
+  LLM[Local LLM (Ollama)]
 
-  %% ===== Ingestion / Build =====
-  subgraph INGEST[Ingestion & Graph Build]
-    DOCS[Docs: PDF / MD / TXT]
+  %% Ingestion
+  subgraph Ingestion
+    DOCS[Source Docs]
     CHUNK[Chunker]
-    EXTRACT[Entity & Relation Extraction]
-    TRIPLES[Triple Generation]
+    EXTRACT[Entity/Relation Extraction]
+    TRIPLES[Triple Generator]
   end
 
-  %% ----- Flows: client <-> api -----
-  UI -->|text| API
-  API -->|responses| UI
+  %% Voice flow
+  UI -->|Audio| STT -->|Text| API
+  API -->|Text| TTS -->|Audio| UI
 
-  %% ----- Voice flow (offline) -----
-  UI -->|audio| STT
-  STT -->|transcript| API
-  API -->|text| TTS
-  TTS -->|audio| UI
+  %% Chat flow
+  UI --> API --> Router
+  Router --> KGPrime
+  Router --> KGLive
+  Router --> VDB
+  Router --> BM25
+  Router --> Ranker -->|Cited Context| LLM --> API
 
-  %% ----- Retrieval & reasoning -----
-  API --> Router
-  Router -->|graph| KG_PRIME
-  Router -->|graph| KG_LIVE
-  Router -->|vector| VDB
-  Router -->|keyword| BM25
-  Router --> Ranker
-  Ranker -->|cited context| LLM
-  LLM -->|tokens/stream| API
-
-  %% ----- Ingestion path -----
-  DOCS --> CHUNK
-  CHUNK --> EXTRACT
-  EXTRACT --> TRIPLES
-  TRIPLES --> KG_PRIME
+  %% Ingestion flow
+  DOCS --> CHUNK --> EXTRACT --> TRIPLES --> KGPrime
+  EXTRACT --> KGLive
   TRIPLES --> VDB
-  EXTRACT -->|live updates| KG_LIVE
+  
 ```
 
 ### Key components (what’s innovative and why it matters)
