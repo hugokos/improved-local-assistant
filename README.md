@@ -107,65 +107,88 @@ flowchart LR
 * **Ollama** (running locally)
 * Optional: **CUDA‑capable GPU** for models that can use it
 
-### Install
+### Quick Start
 
 ```bash
-# 1) Clone
+# Clone and setup
 git clone https://github.com/hugokos/improved-local-assistant.git
 cd improved-local-assistant
 
-# 2) Create & activate a virtual environment
-python -m venv .venv
-# Windows
-. .venv/Scripts/activate
-# macOS/Linux
-# source .venv/bin/activate
-
-# 3) Install Python dependencies
+# Install (requires Python 3.10+)
 pip install -r requirements.txt
+pip install -e . -c constraints.txt
 
-# 4) Pull default Ollama models (adjust to taste)
-ollama pull hermes3:3b
-ollama pull phi3:mini
-
-# 5) (Optional) Download a prebuilt graph
-action="survivalist"  # or "all"
-python scripts/download_graphs.py "$action"
-
-# 6) Run the app
-python run_app.py
+# Run
+ila api --reload
 ```
 
-**Open**
+**Windows users**: See [installation guide](docs/installation.md) for detailed setup.
 
-* Web UI: [http://localhost:8000](http://localhost:8000)
-* API docs (OpenAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
-* Health: [http://localhost:8000/api/health](http://localhost:8000/api/health)
+**Migrating**: `python run_app.py` → `ila api`
 
-**CLI** (REPL):
+**Access the Application:**
+
+* **Web UI**: [http://localhost:8000](http://localhost:8000)
+* **API docs**: [http://localhost:8000/docs](http://localhost:8000/docs) (OpenAPI/Swagger)
+* **Health check**: [http://localhost:8000/api/health](http://localhost:8000/api/health)
+
+**CLI Commands:**
 
 ```bash
-python cli/graphrag_repl.py
+# Start the API server
+ila api                    # Production mode
+ila api --reload           # Development mode with auto-reload
+ila api --port 8080        # Custom port
+
+# Interactive GraphRAG REPL
+ila repl
+
+# System utilities
+ila health                 # Check system health
+ila download-graphs all    # Download prebuilt graphs
+ila bench                  # Run benchmarks
+
+# Get help
+ila --help
 ```
 
 ---
 
 ## Configuration
 
-ILA reads configuration from sensible defaults and environment variables. Common knobs:
+ILA uses a flexible configuration system with config files and environment variables:
+
+### Config Files
 
 ```bash
-# Ollama
-export OLLAMA_HOST="http://127.0.0.1:11434"
-export ILA_MODEL_CHAT="hermes3:3b"          # chat/inference
-export ILA_MODEL_EMBED="nomic-embed-text"   # embedding model name if applicable
+# Use default configuration
+ila api
 
-# App & storage
+# Use development config (faster models, debug mode)
+ila api --config configs/dev.yaml
+
+# Use custom configuration
+export ILA_CONFIG="configs/my-config.yaml"
+ila api
+```
+
+### Environment Variables
+
+```bash
+# Ollama settings
+export ILA_OLLAMA_HOST="http://127.0.0.1:11434"
+export ILA_MODEL_CHAT="hermes3:3b"          # chat/inference model
+export ILA_MODEL_EMBED="nomic-embed-text"   # embedding model
+
+# Server settings
+export ILA_HOST="0.0.0.0"
 export ILA_PORT=8000
+
+# Storage paths
 export ILA_DATA_DIR="./data"                 # stores graphs, caches, logs
 export ILA_PREBUILT_DIR="./data/prebuilt_graphs"
 
-# Router / retrieval (example weights; tune to your taste)
+# Retrieval weights (tune to your preference)
 export ILA_USE_GRAPH=true
 export ILA_USE_VECTOR=true
 export ILA_USE_BM25=true
@@ -174,7 +197,7 @@ export ILA_ROUTER_VECTOR_WEIGHT=0.4
 export ILA_ROUTER_BM25_WEIGHT=0.1
 ```
 
-> Tip: put these in a `.env` file and load with your shell, or use your process manager.
+> **Tip**: Create a `.env` file in the project root with your settings, or copy and modify `configs/dev.yaml`.
 
 ---
 
@@ -192,7 +215,7 @@ python scripts/build_graph.py --input ./my_docs --out ./data/prebuilt_graphs/my_
 
 # Point the app at it
 export ILA_PREBUILT_DIR="./data/prebuilt_graphs/my_domain"
-python run_app.py
+ila api
 ```
 
 Chunking and entity extraction are configurable. Start with smaller, semantically coherent chunks for tighter relationships; rely on the retriever to stitch cross‑chunk context.
@@ -262,11 +285,18 @@ asyncio.run(main())
 
 ### Benchmarks (reproducible)
 
-Use the included scripts to measure **TTFT**, **tokens/s**, and **end‑to‑end latency**:
+Use the included tools to measure **TTFT**, **tokens/s**, and **end‑to‑end latency**:
 
 ```bash
+# Quick benchmark via CLI
+ila bench
+
+# Detailed benchmarking scripts
 python scripts/run_benchmarks.py
 python scripts/benchmark_models.py --model hermes3:3b --contexts 1024 2048 4096 --runs 5
+
+# Using Makefile
+make test-smoke    # Quick smoke tests
 ```
 
 Results are stored under `benchmarks/` with CSV/JSON outputs you can plot.
@@ -299,6 +329,7 @@ Results are stored under `benchmarks/` with CSV/JSON outputs you can plot.
 
 ---
 
+
 ## Contributing
 
 We welcome issues and PRs! Please read:
@@ -306,7 +337,7 @@ We welcome issues and PRs! Please read:
 * [CONTRIBUTING.md](CONTRIBUTING.md)
 * [CODE\_OF\_CONDUCT.md](CODE_OF_CONDUCT.md)
 
-Use conventional commits when possible (`feat:`, `fix:`, `docs:` …). Run linters before committing if you use pre‑commit.
+Use conventional commits when possible (`feat:`, `fix:`, `docs:` …). Run `make lint` before committing.
 
 ---
 
