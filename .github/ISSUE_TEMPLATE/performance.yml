@@ -1,0 +1,79 @@
+name: Performance Issue
+description: Report performance problems or optimization opportunities
+title: "perf: "
+labels: ["performance", "needs-investigation"]
+assignees:
+  - hugokos
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a performance issue! Please provide details to help us optimize.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which component is experiencing performance issues?
+      options:
+        - GraphRAG Query Processing
+        - Knowledge Graph Building
+        - Voice Processing (STT/TTS)
+        - Web Interface
+        - API Endpoints
+        - Memory Usage
+        - Startup Time
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: performance-issue
+    attributes:
+      label: Performance Issue Description
+      description: Describe the performance problem you're experiencing
+      placeholder: |
+        - What operation is slow?
+        - How long does it take vs. expected time?
+        - When did you first notice this?
+    validations:
+      required: true
+
+  - type: textarea
+    id: system-specs
+    attributes:
+      label: System Specifications
+      description: Your system specifications
+      placeholder: |
+        - OS: (e.g., Windows 11, Ubuntu 22.04, macOS 14)
+        - CPU: (e.g., Intel i7-12700K, AMD Ryzen 7 5800X, Apple M2)
+        - RAM: (e.g., 16GB, 32GB)
+        - GPU: (e.g., NVIDIA RTX 4070, AMD RX 7800 XT, Integrated)
+        - Storage: (e.g., NVMe SSD, SATA SSD, HDD)
+    validations:
+      required: true
+
+  - type: textarea
+    id: benchmarks
+    attributes:
+      label: Performance Measurements
+      description: Any timing or benchmark data you have
+      placeholder: |
+        - Query response time: X seconds
+        - Memory usage: X GB
+        - CPU usage: X%
+        - Graph build time: X minutes
+        - File size: X MB
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this performance issue?
+      placeholder: |
+        1. Load graph with X documents
+        2. Run query: "..."
+        3. Observe slow response time
+    validations:
+      required: true

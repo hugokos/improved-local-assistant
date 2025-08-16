@@ -33,37 +33,72 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "fastapi>=0.104.1",
-    "uvicorn[standard]>=0.24.0",
+    # Core web framework
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.27.0",
     "websockets>=12.0",
     "pydantic>=2.8.0",
     "pydantic-settings>=2.1.0",
+    "python-multipart>=0.0.6",
+    
+    # AI/ML core
     "ollama>=0.5.1",
-    "llama-index[llms-ollama]>=0.12.50",
-    "llama-index-embeddings-ollama>=0.6.0",
-    "llama-index-llms-ollama>=0.6.2",
+    "llama-index==0.13.0",
+    "llama-index-embeddings-ollama==0.7.0",
+    "llama-index-embeddings-huggingface==0.6.0",
+    "llama-index-llms-ollama==0.7.0",
+    "llama-index-readers-file>=0.5.0",
     "sentence-transformers>=2.5.0",
+    
+    # Knowledge graph
     "networkx>=3.2.1",
     "pyvis>=0.3.2",
-    "neo4j>=5.14.1",
+    
+    # Text processing
+    "tiktoken>=0.7.0",
+    "rapidfuzz>=3.0.0",
+    
+    # Data processing
     "pyyaml>=6.0.1",
     "python-dotenv>=1.0.0",
     "aiofiles>=23.2.1",
+    
+    # System monitoring
     "psutil>=5.9.6",
     "asyncio-throttle>=1.0.2",
+    "nest-asyncio>=1.5.6",
+    
+    # CLI tools
+    "prompt-toolkit>=3.0.0",
+    
+    # Voice processing
+    "vosk>=0.3.45",
+    "sounddevice>=0.4.6",
+    "webrtcvad>=2.0.10",
+    
+    # Platform-specific
+    "pywin32>=306; sys_platform == 'win32'",
 ]
 
 [project.optional-dependencies]
 dev = [
+    # Testing
     "pytest>=7.4.0",
     "pytest-asyncio>=0.21.0",
     "pytest-cov>=4.1.0",
-    "black>=23.0.0",
+    "httpx[http2]>=0.27.0",
+    
+    # Code quality
     "ruff>=0.5.0",
-    "mypy>=1.5.0",
-    "bandit>=1.7.0",
-    "safety>=2.3.0",
+    "black>=23.0.0",
+    "mypy>=1.7.0",
     "pre-commit>=3.4.0",
+    
+    # Security
+    "bandit[toml]>=1.7.0",
+    "safety>=2.3.0",
+    
+    # Documentation
     "mkdocs>=1.5.0",
     "mkdocs-material>=9.2.0",
     "mkdocstrings[python]>=0.23.0",
@@ -203,6 +238,9 @@ markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests (require external services)",
     "unit: marks tests as unit tests (no external dependencies)",
+    "smoke: marks tests as smoke tests (basic functionality verification)",
+    "voice: marks tests that require audio hardware",
+    "gpu: marks tests that require GPU acceleration",
 ]
 
 # Coverage configuration

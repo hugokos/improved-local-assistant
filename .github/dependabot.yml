@@ -4,10 +4,59 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Los_Angeles"
     open-pull-requests-limit: 10
+    reviewers:
+      - "hugokos"
+    labels:
+      - "dependencies"
+      - "automated"
+    groups:
+      ai-ml:
+        patterns:
+          - "llama-index*"
+          - "ollama"
+          - "sentence-transformers"
+          - "tiktoken"
+      web-framework:
+        patterns:
+          - "fastapi"
+          - "uvicorn"
+          - "pydantic*"
+          - "websockets"
+      dev-tools:
+        patterns:
+          - "pytest*"
+          - "ruff"
+          - "black"
+          - "mypy"
+          - "pre-commit"
+      security:
+        patterns:
+          - "bandit"
+          - "safety"
+      docs:
+        patterns:
+          - "mkdocs*"
     
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Los_Angeles"
     open-pull-requests-limit: 5
+    reviewers:
+      - "hugokos"
+    labels:
+      - "dependencies"
+      - "ci"
+    groups:
+      ci-actions:
+        patterns:
+          - "actions/*"
+          - "codecov/*"
+          - "gitleaks/*"
