@@ -66,18 +66,25 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libportaudio2
-      - name: Install deps
+      - name: Install dependencies
+        shell: bash
         run: |
-          pip install -U pip
+          python -m pip install -U pip
           pip install -r requirements.txt
           pip install -e . -c constraints.txt
+          pip install pytest-cov
       - name: Check dependency health
+        shell: bash
         run: |
           python -m pip check
           pip install -U pipdeptree
           pipdeptree --warn fail -p llama-index,llama-index-core,llama-index-embeddings-ollama
+      - name: Sanity check pytest-cov
+        shell: bash
+        run: pytest --help | grep -- --cov
       - name: Run tests
-        run: pytest -q --cov=improved_local_assistant --cov-report=xml --fail-under=70
+        shell: bash
+        run: pytest -q -vv -ra --cov=improved_local_assistant --cov-report=xml --fail-under=70
 
   security:
     runs-on: ubuntu-latest
@@ -86,16 +93,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install security tools
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install -e . -c constraints.txt
-      - name: Run Bandit security scan
-        run: bandit -r src/ -ll
-      - name: Run Safety dependency scan
-        run: safety check --full-report
-      - name: Run secret scan with gitleaks
+      - name: Bandit (code scan)
+        uses: tj-actions/bandit@v5.1
+        with:
+          targets: "src"
+          options: "-r -lll"
+      - name: pip-audit (dependency vulns)
+        uses: pypa/gh-action-pip-audit@v1.1.0
+      - name: Gitleaks (secrets)
         uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

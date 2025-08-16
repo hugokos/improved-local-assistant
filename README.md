@@ -331,7 +331,8 @@ python -m venv .venv && .venv\Scripts\activate  # Windows
 # python -m venv .venv && source .venv/bin/activate  # Linux
 python -m pip install -U pip
 pip install -r requirements.txt
-pip install -e .[dev] -c constraints.txt
+pip install -e . -c constraints.txt
+pip install pytest-cov
 
 # Dependency health check
 python -m pip check
@@ -344,8 +345,9 @@ ruff check .
 black --check .
 mypy src
 
-# Tests
-pytest -q
+# Tests (with coverage)
+pytest --help | grep -- --cov  # sanity check
+pytest -q -vv -ra --cov=improved_local_assistant --cov-report=xml --fail-under=70
 ```
 
 **Run dev server**: `ila api --reload` (on Windows, ensure venv is active; `.\.venv\Scripts\ila.exe` works too).  

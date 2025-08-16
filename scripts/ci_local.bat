@@ -8,7 +8,8 @@ echo.
 echo =^> Install dependencies
 python -m pip install -U pip
 pip install -r requirements.txt
-pip install -e .[dev] -c constraints.txt || pip install -e . -c constraints.txt
+pip install -e . -c constraints.txt
+pip install pytest-cov
 pip install types-requests types-PyYAML types-setuptools
 
 echo =^> Dependency health check
@@ -33,8 +34,11 @@ black --check .
 echo =^> Type check
 mypy src
 
+echo =^> Sanity check pytest-cov
+pytest --help | findstr /C:"--cov"
+
 echo =^> Tests
-pytest -q
+pytest -q -vv -ra --cov=improved_local_assistant --cov-report=xml --fail-under=70
 
 echo ✅ All preflight CI checks passed!
 echo Ready to push to GitHub!
