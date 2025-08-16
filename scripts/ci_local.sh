@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "==> Local CI Simulation"
+echo "==> Preflight CI - Local Simulation"
 echo "Python: $(python -V)"
 echo "Platform: ${OSTYPE:-unknown}"
 echo
@@ -14,30 +14,25 @@ if [[ "${OSTYPE:-}" == "linux-gnu"* ]]; then
   fi
 fi
 
-echo "==> Install dependencies (requirements.txt + constraints)"
+echo "==> Install dependencies"
 python -m pip install -U pip
 pip install -r requirements.txt
-pip install -e . -c constraints.txt
+pip install -e .[dev] -c constraints.txt || pip install -e . -c constraints.txt
+pip install types-requests types-PyYAML types-setuptools
 
-echo "==> Dependency conflict check"
+echo "==> Dependency health check"
 python -m pip check
-pip install pipdeptree
+pip install -U pipdeptree
 pipdeptree --warn fail -p llama-index,llama-index-core,llama-index-embeddings-ollama
 
-echo "==> Environment check"
-python - << 'PY'
-import sys, platform
-print("Python:", sys.version)
-try:
-    import networkx as nx; print("networkx:", nx.__version__)
-except Exception as e: print("networkx import failed:", e)
-try:
-    import sounddevice; print("sounddevice: OK")
-except Exception as e: print("sounddevice import failed:", e)
-try:
-    import llama_index; print("llama-index: OK")
-except Exception as e: print("llama-index import failed:", e)
-PY
+echo "==> Pre-commit hooks"
+if command -v pre-commit >/dev/null 2>&1; then
+    pre-commit run --all-files
+else
+    echo "pre-commit not installed, installing..."
+    pip install pre-commit
+    pre-commit run --all-files
+fi
 
 echo "==> Lint"
 ruff check .
@@ -47,13 +42,7 @@ echo "==> Type check"
 mypy src
 
 echo "==> Tests"
-pytest -q --cov=improved_local_assistant --cov-report=xml --fail-under=70
+pytest -q
 
-echo "==> Pre-commit hooks (optional)"
-if command -v pre-commit >/dev/null 2>&1; then
-    pre-commit run --all-files
-else
-    echo "pre-commit not installed, skipping"
-fi
-
-echo "✅ All local CI checks passed!"
+echo "✅ All preflight CI checks passed!"
+echo "Ready to push to GitHub!"

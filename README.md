@@ -102,13 +102,13 @@ flowchart LR
 
 ### Prerequisites
 
-* **Operating Systems**: Windows 10/11 and Linux (Ubuntu 20.04+ recommended)
-* **Python** ≥ 3.10
+* **Supported OS**: Windows 10/11 and Linux (Ubuntu 20.04+)
+* **Python**: 3.10–3.12 (aligns with NetworkX 3.4.x's support window)
 * **Git**
 * **Ollama** (running locally)
 * Optional: **CUDA‑capable GPU** for models that can use it
 
-> **Note**: macOS is currently unsupported in CI and may not work out of the box.
+> **Note**: macOS is not supported due to voice processing dependencies.
 
 ### Quick Start
 
@@ -319,7 +319,37 @@ We welcome issues and PRs! Please read:
 * [CONTRIBUTING.md](CONTRIBUTING.md)
 * [CODE\_OF\_CONDUCT.md](CODE_OF_CONDUCT.md)
 
-Use conventional commits when possible (`feat:`, `fix:`, `docs:` …). Run `make lint` before committing.
+Use conventional commits when possible (`feat:`, `fix:`, `docs:` …).
+
+### Local "Preflight CI"
+
+Run these checks before pushing to catch issues early:
+
+```bash
+# Setup dev environment
+python -m venv .venv && .venv\Scripts\activate  # Windows
+# python -m venv .venv && source .venv/bin/activate  # Linux
+python -m pip install -U pip
+pip install -r requirements.txt
+pip install -e .[dev] -c constraints.txt
+
+# Dependency health check
+python -m pip check
+pip install -U pipdeptree
+pipdeptree --warn fail -p llama-index,llama-index-core,llama-index-embeddings-ollama
+
+# Lint + type checks
+pre-commit run --all-files
+ruff check .
+black --check .
+mypy src
+
+# Tests
+pytest -q
+```
+
+**Run dev server**: `ila api --reload` (on Windows, ensure venv is active; `.\.venv\Scripts\ila.exe` works too).  
+**Docs preview**: `mkdocs serve`
 
 ---
 

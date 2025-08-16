@@ -59,9 +59,10 @@ clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 
-# CI simulation
-ci-local:
-	bash scripts/ci_local.sh
+# CI simulation / preflight checks
+ci-local: check-deps lint type test
+
+preflight: ci-local
 
 # Dependency conflict check
 check-deps:

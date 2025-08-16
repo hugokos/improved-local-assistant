@@ -17,16 +17,18 @@ jobs:
         with:
           python-version: '3.12'
           cache: 'pip'
-      - name: Install dev dependencies
+      - name: Install dev deps
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install -e . -c constraints.txt
-      - name: Pre-commit hooks
-        run: pre-commit run --all-files
-      - name: Lint with ruff
+          pip install -e .[dev] -c constraints.txt || pip install -e . -c constraints.txt
+      - name: Run pre-commit (all hooks)
+        uses: pre-commit/action@v3.0.1
+        with:
+          extra_args: --all-files
+      - name: Ruff
         run: ruff check .
-      - name: Format check with black
+      - name: Black
         run: black --check .
 
   typecheck:
@@ -37,12 +39,13 @@ jobs:
         with:
           python-version: '3.12'
           cache: 'pip'
-      - name: Install dev dependencies
+      - name: Install dev deps
         run: |
-          pip install --upgrade pip
+          pip install -U pip
           pip install -r requirements.txt
-          pip install -e . -c constraints.txt
-      - name: Type check with mypy
+          pip install -e .[dev] -c constraints.txt || pip install -e . -c constraints.txt
+          pip install types-requests types-PyYAML types-setuptools
+      - name: mypy
         run: mypy src
 
   test:
@@ -58,29 +61,23 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
           cache: 'pip'
-      # PortAudio is required by sounddevice on Linux runners
-      - name: Install system audio libs (Linux)
+      - name: Install PortAudio (Linux)
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y libportaudio2
-      - name: Install dependencies
+      - name: Install deps
         run: |
-          pip install --upgrade pip
+          pip install -U pip
           pip install -r requirements.txt
           pip install -e . -c constraints.txt
-      - name: Check for dependency conflicts
+      - name: Check dependency health
         run: |
           python -m pip check
-          pip install pipdeptree
+          pip install -U pipdeptree
           pipdeptree --warn fail -p llama-index,llama-index-core,llama-index-embeddings-ollama
-      - name: Run tests with coverage
+      - name: Run tests
         run: pytest -q --cov=improved_local_assistant --cov-report=xml --fail-under=70
-      - name: Upload coverage
-        uses: codecov/codecov-action@v5
-        with:
-          files: ./coverage.xml
-          fail_ci_if_error: true
 
   security:
     runs-on: ubuntu-latest

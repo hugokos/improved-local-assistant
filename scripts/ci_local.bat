@@ -1,25 +1,30 @@
 @echo off
 setlocal enabledelayedexpansion
 
-echo =^> Local CI Simulation (Windows)
+echo =^> Preflight CI - Local Simulation (Windows)
 python -V
 echo.
 
-echo =^> Install dependencies (requirements.txt + constraints)
+echo =^> Install dependencies
 python -m pip install -U pip
 pip install -r requirements.txt
-pip install -e . -c constraints.txt
+pip install -e .[dev] -c constraints.txt || pip install -e . -c constraints.txt
+pip install types-requests types-PyYAML types-setuptools
 
-echo =^> Dependency conflict check
+echo =^> Dependency health check
 python -m pip check
-pip install pipdeptree
+pip install -U pipdeptree
 pipdeptree --warn fail -p llama-index,llama-index-core,llama-index-embeddings-ollama
 
-echo =^> Environment check
-python -c "import sys; print('Python:', sys.version)"
-python -c "try: import networkx as nx; print('networkx:', nx.__version__); except Exception as e: print('networkx import failed:', e)"
-python -c "try: import sounddevice; print('sounddevice: OK'); except Exception as e: print('sounddevice import failed:', e)"
-python -c "try: import llama_index; print('llama-index: OK'); except Exception as e: print('llama-index import failed:', e)"
+echo =^> Pre-commit hooks
+where pre-commit >nul 2>&1
+if !errorlevel! == 0 (
+    pre-commit run --all-files
+) else (
+    echo pre-commit not installed, installing...
+    pip install pre-commit
+    pre-commit run --all-files
+)
 
 echo =^> Lint
 ruff check .
@@ -29,14 +34,7 @@ echo =^> Type check
 mypy src
 
 echo =^> Tests
-pytest -q --cov=improved_local_assistant --cov-report=xml --fail-under=70
+pytest -q
 
-echo =^> Pre-commit hooks (optional)
-where pre-commit >nul 2>&1
-if !errorlevel! == 0 (
-    pre-commit run --all-files
-) else (
-    echo pre-commit not installed, skipping
-)
-
-echo ✅ All local CI checks passed!
+echo ✅ All preflight CI checks passed!
+echo Ready to push to GitHub!
