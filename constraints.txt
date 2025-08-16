@@ -1,0 +1,20 @@
+# Dependency constraints for production stability
+# Keep networkx on a Python >=3.10 compatible version
+networkx>=3.4,<3.5
+
+# Keep LlamaIndex packages in lockstep (adjust together when upgrading)
+llama-index>=0.13,<0.14
+llama-index-core>=0.13,<0.14
+llama-index-embeddings-ollama>=0.8,<0.9
+llama-index-llms-ollama>=0.8,<0.9
+llama-index-embeddings-huggingface>=0.6,<0.7
+
+# Voice processing stability
+vosk>=0.3.45,<0.4
+sounddevice>=0.4.6,<0.5
+webrtcvad>=2.0.10,<2.1
+
+# Core framework stability
+fastapi>=0.110.0,<0.115.0
+uvicorn>=0.27.0,<0.30.0
+pydantic>=2.8.0,<3.0.0

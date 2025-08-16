@@ -20,7 +20,7 @@ jobs:
       - name: Install dev dependencies
         run: |
           pip install --upgrade pip
-          pip install -e .[dev]
+          pip install -e .[dev] -c constraints.txt
       - name: Pre-commit hooks
         run: pre-commit run --all-files
       - name: Lint with ruff
@@ -39,7 +39,7 @@ jobs:
       - name: Install dev dependencies
         run: |
           pip install --upgrade pip
-          pip install -e .[dev]
+          pip install -e .[dev] -c constraints.txt
       - name: Type check with mypy
         run: mypy src
 
@@ -56,10 +56,16 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
           cache: 'pip'
+      # PortAudio is required by sounddevice on Linux runners
+      - name: Install system audio libs (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libportaudio2
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -e .[dev]
+          pip install -e .[dev] -c constraints.txt
       - name: Run tests with coverage
         run: pytest -q --cov=improved_local_assistant --cov-report=xml --fail-under=70
       - name: Upload coverage
@@ -78,7 +84,7 @@ jobs:
       - name: Install security tools
         run: |
           pip install --upgrade pip
-          pip install -e .[dev]
+          pip install -e .[dev] -c constraints.txt
       - name: Run Bandit security scan
         run: bandit -r src/ -ll
       - name: Run Safety dependency scan
