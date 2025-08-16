@@ -70,6 +70,7 @@ dependencies = [
     
     # CLI tools
     "prompt-toolkit>=3.0.0",
+    "typer>=0.9.0",
     
     # Voice processing
     "vosk>=0.3.45",
@@ -116,8 +117,7 @@ docs = [
 ]
 
 [project.scripts]
-ila = "improved_local_assistant.run_app:main"
-ila-cli = "improved_local_assistant.cli.graphrag_repl:main"
+ila = "improved_local_assistant.cli:app"
 
 [project.urls]
 Homepage = "https://github.com/hugokos/improved-local-assistant"

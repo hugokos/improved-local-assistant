@@ -1,0 +1,18 @@
+# Development Configuration
+# Extends base.yaml with development-specific settings
+
+# Development overrides
+debug: true
+reload: true
+log_level: "DEBUG"
+
+# Faster models for development
+model_chat: "phi3:mini"
+model_embed: "nomic-embed-text"
+
+# Reduced resource usage
+max_concurrent_sessions: 3
+edge_optimization: false
+
+# Development-friendly settings
+voice_enabled: false  # Disable voice in dev to avoid audio device conflicts

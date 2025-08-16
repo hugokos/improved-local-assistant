@@ -1,0 +1,38 @@
+# Improved Local Assistant - Base Configuration
+
+# Server settings
+host: "0.0.0.0"
+port: 8000
+
+# Ollama settings
+ollama_host: "http://127.0.0.1:11434"
+model_chat: "hermes3:3b"
+model_embed: "nomic-embed-text"
+
+# Storage settings
+data_dir: "./data"
+prebuilt_dir: "./data/prebuilt_graphs"
+
+# Router settings
+use_graph: true
+use_vector: true
+use_bm25: true
+router_graph_weight: 0.5
+router_vector_weight: 0.4
+router_bm25_weight: 0.1
+
+# Performance settings
+edge_optimization: true
+max_concurrent_sessions: 10
+
+# Voice settings
+voice_enabled: true
+stt_model: "vosk-model-en-us-0.22"
+tts_voice: "en_US-lessac-medium"
+
+# Logging
+log_level: "INFO"
+
+# Development settings (override in dev.yaml)
+debug: false
+reload: false
