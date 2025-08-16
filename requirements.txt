@@ -17,7 +17,7 @@ llama-index-readers-file>=0.5.0  # For file reading capabilities
 sentence-transformers>=2.5.0  # For local embeddings
 
 # Knowledge graph dependencies
-networkx==3.2.1
+networkx==3.4.2
 pyvis==0.3.2
 # neo4j==5.14.1  # Not needed for SimplePropertyGraphStore
 
