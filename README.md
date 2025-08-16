@@ -200,13 +200,6 @@ export ILA_ROUTER_BM25_WEIGHT=0.1
 > **Tip**: Create a `.env` file in the project root with your settings, or copy and modify `configs/dev.yaml`.
 
 ---
-
-## Knowledge Graphs
-
-**KG‑Prime (prebuilt):** a property graph you can ship with the app for a domain (e.g., "survivalist").
-
-**KG‑Live (dynamic):** updates during conversation—new entities/edges extracted from user and assistant turns.
-
 ### Add your own documents
 
 ```bash
