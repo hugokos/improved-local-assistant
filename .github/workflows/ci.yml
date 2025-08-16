@@ -36,7 +36,7 @@ jobs:
       - name: Test (with coverage)
         run: pytest -q --cov=improved_local_assistant --cov-report=xml
       - name: Upload coverage
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           files: ./coverage.xml
           verbose: true
