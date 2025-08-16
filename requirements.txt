@@ -8,7 +8,7 @@ python-multipart
 
 # AI/ML dependencies - Updated to latest versions (August 2025)
 ollama>=0.5.1           # satisfies embeddings plug‑in
-llama-index==0.13.0     # Latest core LlamaIndex
+llama-index==0.13.2     # Latest core LlamaIndex
 llama-index-embeddings-ollama==0.7.0  # Ollama embeddings integration
 llama-index-embeddings-huggingface==0.6.0  # Latest HuggingFace embeddings package
 llama-index-llms-ollama==0.7.0  # Ollama LLM integration (REQUIRED for local models)
