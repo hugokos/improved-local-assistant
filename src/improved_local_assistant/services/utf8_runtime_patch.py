@@ -4,6 +4,7 @@ Apply this patch at startup to ensure all file operations default to UTF-8.
 """
 
 import builtins
+import contextlib
 
 
 def apply_utf8_patch():
@@ -56,10 +57,8 @@ def verify_utf8_patch():
     finally:
         import os
 
-        try:
+        with contextlib.suppress(builtins.BaseException):
             os.unlink(temp_path)
-        except:
-            pass
 
 
 if __name__ == "__main__":

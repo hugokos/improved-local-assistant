@@ -2,7 +2,7 @@
 Graph Manager module for handling knowledge graph operations.
 
 This module provides comprehensive knowledge graph management including
-initialization, persistence, construction, querying, maintenance, 
+initialization, persistence, construction, querying, maintenance,
 visualization, and statistics.
 """
 

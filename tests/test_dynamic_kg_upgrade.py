@@ -358,8 +358,8 @@ class TestHybridRetrieverUpgrade:
         }
 
         # Mock retrievers
-        mock_graph_retriever = Mock()
-        mock_vector_retriever = Mock()
+        Mock()
+        Mock()
 
         # This would test the actual initialization, but we need to mock
         # the LlamaIndex components that might not be available

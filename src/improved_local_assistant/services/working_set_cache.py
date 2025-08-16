@@ -13,10 +13,6 @@ import os
 import time
 from collections import OrderedDict
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Set
 
 try:
     from llama_index.core.storage import StorageContext
@@ -36,7 +32,7 @@ class WorkingSetCache:
     1-hop neighbor retrieval.
     """
 
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         """Initialize Working Set Cache with configuration."""
         self.config = config
         self.logger = logging.getLogger(__name__)
@@ -51,7 +47,7 @@ class WorkingSetCache:
         self.persist_dir = cache_config.get("persist_dir", "./storage")
 
         # Session caches: session_id -> OrderedDict[node_id, access_time]
-        self._session_caches: Dict[str, OrderedDict[str, float]] = {}
+        self._session_caches: dict[str, OrderedDict[str, float]] = {}
 
         # Global memory tracking
         self._total_cached_nodes = 0
@@ -94,7 +90,7 @@ class WorkingSetCache:
             self.logger.error(f"Failed to initialize Working Set Cache: {e}")
             raise
 
-    async def get_working_set(self, session_id: str) -> Set[str]:
+    async def get_working_set(self, session_id: str) -> set[str]:
         """
         Get the working set of node IDs for a session.
 
@@ -113,7 +109,7 @@ class WorkingSetCache:
             cache = self._session_caches[session_id]
             return set(cache.keys())
 
-    async def update_working_set(self, session_id: str, node_ids: List[str]) -> None:
+    async def update_working_set(self, session_id: str, node_ids: list[str]) -> None:
         """
         Update the working set with newly accessed node IDs.
 
@@ -146,7 +142,7 @@ class WorkingSetCache:
 
             # Enforce per-session limit
             while len(cache) > self.nodes_per_session:
-                oldest_node = cache.popitem(last=False)[0]
+                cache.popitem(last=False)[0]
                 self._total_cached_nodes -= 1
                 self.metrics["evictions"] += 1
 
@@ -157,8 +153,8 @@ class WorkingSetCache:
             self.metrics["total_nodes_cached"] = self._total_cached_nodes
 
     async def get_neighborhood(
-        self, session_id: str, node_ids: Optional[Set[str]] = None, max_edges: Optional[int] = None
-    ) -> List[Dict[str, Any]]:
+        self, session_id: str, node_ids: set[str] | None = None, max_edges: int | None = None
+    ) -> list[dict[str, Any]]:
         """
         Get 1-hop neighborhood for nodes in the working set.
 
@@ -325,7 +321,7 @@ class WorkingSetCache:
             self._session_caches = {}
             self._total_cached_nodes = 0
 
-    def get_session_stats(self, session_id: str) -> Dict[str, Any]:
+    def get_session_stats(self, session_id: str) -> dict[str, Any]:
         """
         Get statistics for a specific session.
 
@@ -351,7 +347,7 @@ class WorkingSetCache:
             "age_seconds": time.time() - max(access_times),
         }
 
-    def get_global_stats(self) -> Dict[str, Any]:
+    def get_global_stats(self) -> dict[str, Any]:
         """Get global cache statistics."""
         return {
             "total_sessions": len(self._session_caches),

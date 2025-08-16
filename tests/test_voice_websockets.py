@@ -132,7 +132,7 @@ class TestVoiceWebSockets:
         mock_app.state.voice_manager.process_audio_chunk.assert_called_with(session_id, audio_data)
 
         # Verify partial result sent
-        expected_message = {
+        {
             "type": "stt_partial",
             "text": "hello",
             "session_id": session_id,
@@ -337,8 +337,8 @@ class TestVoiceWebSocketIntegration:
             routes = [route.path for route in app.routes]
 
             # Look for voice WebSocket patterns
-            stt_route_exists = any("/ws/stt/" in route for route in routes)
-            tts_route_exists = any("/ws/tts/" in route for route in routes)
+            any("/ws/stt/" in route for route in routes)
+            any("/ws/tts/" in route for route in routes)
 
             # Note: These might not exist if the routes are dynamically added
             # This test mainly checks that main.py can be imported without errors

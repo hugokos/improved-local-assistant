@@ -2,7 +2,7 @@
 """
 Unit-level extraction tests for dynamic KG pipeline.
 
-Tests that every incoming user/assistant turn produces non-empty, 
+Tests that every incoming user/assistant turn produces non-empty,
 reasonably quick triples that cover expected key facts.
 """
 
@@ -11,8 +11,6 @@ import json
 import logging
 import time
 from pathlib import Path
-from typing import Dict
-from typing import List
 
 import pytest
 from services.extraction_pipeline import ExtractionPipeline
@@ -153,7 +151,7 @@ class TestExtractionPipeline:
 
         return len(intersection) / len(union) if union else 0.0
 
-    def contains_key_fact(self, triples: List, expected_facts: List[str]) -> bool:
+    def contains_key_fact(self, triples: list, expected_facts: list[str]) -> bool:
         """Check if extracted triples contain any of the expected key facts."""
         if not triples:
             return False
@@ -321,7 +319,7 @@ class TestExtractionPipeline:
                         pytest.fail(f"Extraction with history failed: {e}")
 
     async def _mock_extract_bounded_with_history(
-        self, extractor, content: str, history: List[Dict]
+        self, extractor, content: str, history: list[dict]
     ) -> ExtractionResult:
         """Mock extraction with conversation history."""
         # Simulate the chunking and context preparation

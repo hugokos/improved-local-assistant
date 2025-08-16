@@ -6,6 +6,7 @@ and import/export functionality.
 """
 
 import builtins
+import contextlib
 import os
 import shutil
 import tempfile
@@ -219,10 +220,8 @@ class KnowledgeGraphPersistence:
 
             # Clean up temp directory in background
             def cleanup_temp():
-                try:
+                with contextlib.suppress(builtins.BaseException):
                     shutil.rmtree(temp_dir)
-                except:
-                    pass
 
             threading.Timer(60, cleanup_temp).start()
 
@@ -308,7 +307,7 @@ class KnowledgeGraphPersistence:
 
             # Create zip archive
             with zipfile.ZipFile(temp_zip.name, "w", zipfile.ZIP_DEFLATED) as zipf:
-                for root, dirs, files in os.walk(persist_dir):
+                for root, _dirs, files in os.walk(persist_dir):
                     for file in files:
                         file_path = os.path.join(root, file)
                         arcname = os.path.relpath(file_path, persist_dir)
@@ -384,7 +383,7 @@ class KnowledgeGraphPersistence:
 
                 # Create zip archive
                 with zipfile.ZipFile(temp_zip.name, "w", zipfile.ZIP_DEFLATED) as zipf:
-                    for root, dirs, files in os.walk(temp_persist_dir):
+                    for root, _dirs, files in os.walk(temp_persist_dir):
                         for file in files:
                             file_path = os.path.join(root, file)
                             arcname = os.path.relpath(file_path, temp_persist_dir)

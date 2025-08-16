@@ -16,9 +16,6 @@ import subprocess
 import sys
 import time
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Tuple
 
 import psutil
 
@@ -26,9 +23,8 @@ import psutil
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 
-from services.model_manager import ModelManager
-
 from app.core.config import load_config
+from services.model_manager import ModelManager
 
 
 class ModelBenchmark:
@@ -40,7 +36,7 @@ class ModelBenchmark:
         self.model_name = model_name
         self.hardware_info = self.collect_hardware_info()
 
-    def collect_hardware_info(self) -> Dict[str, Any]:
+    def collect_hardware_info(self) -> dict[str, Any]:
         """Collect comprehensive hardware information for benchmark context."""
         hardware = {
             "timestamp": time.time(),
@@ -113,7 +109,7 @@ class ModelBenchmark:
 
         return hardware
 
-    def detect_gpu_info(self) -> Dict[str, Any]:
+    def detect_gpu_info(self) -> dict[str, Any]:
         """Detect GPU information using multiple methods."""
         gpu_info = {
             "detected": False,
@@ -288,7 +284,7 @@ class ModelBenchmark:
         prompt = (base_text * repetitions)[: token_count * 4]  # Rough token limit
         return f"Please analyze the following text and provide insights:\n\n{prompt}\n\nProvide a detailed analysis:"
 
-    async def benchmark_single_run(self, prompt: str) -> Tuple[float, float, int]:
+    async def benchmark_single_run(self, prompt: str) -> tuple[float, float, int]:
         """
         Run a single benchmark iteration.
 
@@ -331,7 +327,7 @@ class ModelBenchmark:
 
     async def benchmark_context_size(
         self, context_tokens: int, num_runs: int = 3
-    ) -> Dict[str, float]:
+    ) -> dict[str, float]:
         """
         Benchmark a specific context size multiple times.
 
@@ -393,8 +389,8 @@ class ModelBenchmark:
         }
 
     async def run_full_benchmark(
-        self, context_sizes: List[int] = None, num_runs: int = 3
-    ) -> Dict[str, Any]:
+        self, context_sizes: list[int] = None, num_runs: int = 3
+    ) -> dict[str, Any]:
         """
         Run the complete benchmark suite.
 
@@ -473,7 +469,7 @@ class ModelBenchmark:
 
         return results
 
-    def save_results(self, results: Dict[str, Any], filename: str = None):
+    def save_results(self, results: dict[str, Any], filename: str = None):
         """Save benchmark results to JSON file."""
         if filename is None:
             timestamp = int(time.time())

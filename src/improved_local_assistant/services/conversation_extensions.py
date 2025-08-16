@@ -8,7 +8,7 @@ to support the GraphRAG REPL requirements.
 import json
 import logging
 import os
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 
 class ConversationManagerExtensions:

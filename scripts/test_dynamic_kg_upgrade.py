@@ -386,8 +386,8 @@ def test_hybrid_retriever_config():
         # Verify values
         use_rrf = retriever_config.get("use_rrf", True)
         half_life_secs = retriever_config.get("half_life_secs", 7 * 24 * 3600)
-        rerank_top_n = retriever_config.get("rerank_top_n", 10)
-        max_chunks = budget_config.get("max_chunks", 12)
+        retriever_config.get("rerank_top_n", 10)
+        budget_config.get("max_chunks", 12)
 
         weights = (
             weights_config.get("graph", 0.6),

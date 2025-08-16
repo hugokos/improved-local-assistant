@@ -13,7 +13,6 @@ import platform
 import shutil
 import sys
 from typing import Any
-from typing import Dict
 
 # Configure logging
 logging.basicConfig(
@@ -84,7 +83,7 @@ def detect_platform() -> str:
         return "unknown"
 
 
-def create_platform_config(platform_name: str) -> Dict[str, Any]:
+def create_platform_config(platform_name: str) -> dict[str, Any]:
     """
     Create platform-specific configuration.
 
@@ -315,24 +314,24 @@ class LocalAIAssistant {
     private let baseURL = "http://localhost:3000"
     private var sessionID: String?
     private var cancellables = Set<AnyCancellable>()
-    
+
     func sendMessage(message: String, completion: @escaping (Result<String, Error>) -> Void) {
         guard let url = URL(string: "\\(baseURL)/api/chat") else {
             completion(.failure(NSError(domain: "Invalid URL", code: 0)))
             return
         }
-        
+
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         let body: [String: Any] = [
             "message": message,
             "session_id": sessionID as Any
         ]
-        
+
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-        
+
         URLSession.shared.dataTaskPublisher(for: request)
             .map { $0.data }
             .decode(type: ChatResponse.self, decoder: JSONDecoder())
@@ -651,16 +650,14 @@ def main():
         return 1
 
     # Optimize for platform
-    if args.optimize:
-        if not optimize_for_platform(platform_name):
-            logger.error("Deployment failed: Could not optimize for platform")
-            return 1
+    if args.optimize and not optimize_for_platform(platform_name):
+        logger.error("Deployment failed: Could not optimize for platform")
+        return 1
 
     # Create deployment package
-    if args.package:
-        if not create_deployment_package(platform_name, args.output_dir):
-            logger.error("Deployment failed: Could not create deployment package")
-            return 1
+    if args.package and not create_deployment_package(platform_name, args.output_dir):
+        logger.error("Deployment failed: Could not create deployment package")
+        return 1
 
     logger.info("Deployment completed successfully")
     return 0

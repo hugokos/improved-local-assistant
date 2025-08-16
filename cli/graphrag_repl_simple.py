@@ -17,7 +17,7 @@ import logging
 import os
 import sys
 import time
-from typing import Optional
+from typing import TYPE_CHECKING
 
 # Add parent directory to path to import from services
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -51,7 +51,9 @@ from services.conversation_manager import ConversationManager
 from services.graph_manager import KnowledgeGraphManager
 from services.model_mgr import ModelConfig
 from services.model_mgr import ModelManager
-from services.resource_manager import ResourceManager
+
+if TYPE_CHECKING:
+    from services.resource_manager import ResourceManager
 
 # Import embedding model singleton
 try:
@@ -90,11 +92,11 @@ class SimpleGraphRAGREPL:
         self.prebuilt_dir = prebuilt_dir
 
         # Initialize components
-        self.model_manager: Optional[ModelManager] = None
-        self.kg_manager: Optional[KnowledgeGraphManager] = None
-        self.conversation_manager: Optional[ConversationManager] = None
-        self.resource_manager: Optional[ResourceManager] = None
-        self.session_id: Optional[str] = None
+        self.model_manager: ModelManager | None = None
+        self.kg_manager: KnowledgeGraphManager | None = None
+        self.conversation_manager: ConversationManager | None = None
+        self.resource_manager: ResourceManager | None = None
+        self.session_id: str | None = None
 
         # Embedding model singleton
         self.embedding_model = None
@@ -335,7 +337,7 @@ class SimpleGraphRAGREPL:
             logger.error(f"Failed to initialize components: {str(e)}")
             return False
 
-    def get_user_input(self, prompt: str = "You: ") -> Optional[str]:
+    def get_user_input(self, prompt: str = "You: ") -> str | None:
         """
         Get user input using simple synchronous input().
 
@@ -571,13 +573,13 @@ class SimpleGraphRAGREPL:
                 # Other relevant metadata
                 other_fields = [
                     k
-                    for k in metadata.keys()
+                    for k in metadata
                     if k
                     not in file_fields
                     + location_fields
                     + time_fields
                     + ["text_length", "node_type", "has_content"]
-                    and isinstance(metadata[k], (str, int, float))
+                    and isinstance(metadata[k], str | int | float)
                     and len(str(metadata[k])) < 100
                 ]
 
@@ -594,7 +596,7 @@ class SimpleGraphRAGREPL:
                         pred = rel.get("predicate", "related_to")
                         obj = rel.get("object", "")
                         print(f"  {j+1}. {subj} → {pred} → {obj}")
-                    elif isinstance(rel, (list, tuple)) and len(rel) >= 3:
+                    elif isinstance(rel, list | tuple) and len(rel) >= 3:
                         print(f"  {j+1}. {rel[0]} → {rel[1]} → {rel[2]}")
                     elif isinstance(rel, str):
                         print(f"  {j+1}. {rel}")

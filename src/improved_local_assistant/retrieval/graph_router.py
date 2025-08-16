@@ -16,9 +16,6 @@ import json
 import logging
 import pathlib
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Tuple
 
 import httpx
 import numpy as np
@@ -77,17 +74,17 @@ class SimpleHybridRetriever:
     Simple hybrid retriever that combines results from multiple retrievers with weights.
     """
 
-    def __init__(self, retrievers: List[Any], weights: List[float]):
+    def __init__(self, retrievers: list[Any], weights: list[float]):
         """Initialize with retrievers and weights."""
         self.retrievers = retrievers
         self.weights = weights
         self.logger = logging.getLogger(__name__)
 
-    def retrieve(self, query: str) -> List[Any]:
+    def retrieve(self, query: str) -> list[Any]:
         """Retrieve from all retrievers and combine with weights."""
         all_nodes = []
 
-        for retriever, weight in zip(self.retrievers, self.weights):
+        for retriever, weight in zip(self.retrievers, self.weights, strict=False):
             try:
                 nodes = retriever.retrieve(query)
 
@@ -232,7 +229,7 @@ class GraphRouter:
             self.logger.error(f"Error loading registry: {e}")
             return False
 
-    def route(self, query: str, k: int = 3) -> Tuple[List[str], np.ndarray]:
+    def route(self, query: str, k: int = 3) -> tuple[list[str], np.ndarray]:
         """
         Route query to most relevant graphs using semantic similarity.
 
@@ -260,7 +257,7 @@ class GraphRouter:
             top_names = [self.graph_names[i] for i in top_indices]
             top_scores = sims[top_indices]
 
-            self.logger.debug(f"Routed query to: {list(zip(top_names, top_scores))}")
+            self.logger.debug(f"Routed query to: {list(zip(top_names, top_scores, strict=False))}")
 
             return top_names, top_scores
 
@@ -268,7 +265,7 @@ class GraphRouter:
             self.logger.error(f"Error in routing: {e}")
             return [], np.array([])
 
-    def __init__(self, config: Dict[str, Any], embedder=None):
+    def __init__(self, config: dict[str, Any], embedder=None):
         """Initialize the graph router."""
         self.config = config
         self.logger = logging.getLogger(__name__)
@@ -292,9 +289,9 @@ class GraphRouter:
         self.http_client = None
 
         # Enhanced caching for multiple indices per graph
-        self._vector_indices: Dict[str, Any] = {}
-        self._property_indices: Dict[str, Any] = {}
-        self._retrievers: Dict[str, Any] = {}
+        self._vector_indices: dict[str, Any] = {}
+        self._property_indices: dict[str, Any] = {}
+        self._retrievers: dict[str, Any] = {}
 
         # System prompt for citation-first generation
         self.system_prompt = """You are a concise, citation-driven assistant. Follow the two-step method:
@@ -550,7 +547,7 @@ If <2 sources, say "I don't have enough data."
             self.logger.warning(f"Could not create auto-vector retriever: {e}")
             return index.as_retriever(similarity_top_k=similarity_top_k)
 
-    async def retrieve_and_rerank(self, query: str, top_graphs: List[str]) -> List[Any]:
+    async def retrieve_and_rerank(self, query: str, top_graphs: list[str]) -> list[Any]:
         """
         Retrieve from multiple graphs using hybrid retrievers and rerank results.
 
@@ -613,7 +610,7 @@ If <2 sources, say "I don't have enough data."
             self.logger.error(f"Error in retrieve_and_rerank: {e}")
             return []
 
-    async def generate_response(self, query: str, context_nodes: List[Any]) -> str:
+    async def generate_response(self, query: str, context_nodes: list[Any]) -> str:
         """
         Generate response using citation-first pattern.
 
@@ -713,7 +710,7 @@ Response:"""
             self.logger.error(f"Error calling Ollama: {e}")
             return "Error: Could not generate response"
 
-    async def query(self, query: str, k: int = 3) -> Dict[str, Any]:
+    async def query(self, query: str, k: int = 3) -> dict[str, Any]:
         """
         Main query method combining routing, retrieval, and generation.
 
@@ -746,11 +743,11 @@ Response:"""
             end_time = asyncio.get_event_loop().time()
 
             metadata = {
-                "graphs_searched": list(zip(top_graphs, scores.tolist())),
+                "graphs_searched": list(zip(top_graphs, scores.tolist(), strict=False)),
                 "nodes_retrieved": len(context_nodes),
                 "query_time": end_time - start_time,
                 "sources": list(
-                    set(node.metadata.get("graph_source", "Unknown") for node in context_nodes)
+                    {node.metadata.get("graph_source", "Unknown") for node in context_nodes}
                 ),
             }
 

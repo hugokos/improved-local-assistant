@@ -8,8 +8,6 @@ including a connection manager and safe send functions.
 import logging
 from datetime import datetime
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 from fastapi import WebSocket
 from starlette.websockets import WebSocketState
@@ -17,7 +15,7 @@ from starlette.websockets import WebSocketState
 logger = logging.getLogger(__name__)
 
 
-async def ws_send_json_safe(ws: WebSocket, data: Dict[str, Any]) -> bool:
+async def ws_send_json_safe(ws: WebSocket, data: dict[str, Any]) -> bool:
     """
     Safely send JSON data over a WebSocket connection.
 
@@ -58,7 +56,7 @@ async def ws_send_text_safe(ws: WebSocket, text: str) -> bool:
 
 
 async def ws_error(
-    ws: WebSocket, message: str, code: int = 1011, extra: Optional[Dict[str, Any]] = None
+    ws: WebSocket, message: str, code: int = 1011, extra: dict[str, Any] | None = None
 ):
     """
     Send an error over WebSocket and try to close gracefully.
@@ -93,7 +91,7 @@ class ConnectionManager:
     """Manage WebSocket connections."""
 
     def __init__(self):
-        self.active_connections: Dict[str, WebSocket] = {}
+        self.active_connections: dict[str, WebSocket] = {}
         self.connected_sockets: set = set()  # Track live sockets
 
     async def connect(self, websocket: WebSocket, session_id: str):
@@ -134,7 +132,7 @@ class ConnectionManager:
         if ws:
             await ws.send_text(message)
 
-    async def send_json(self, session_id: str, data: Dict[str, Any]):
+    async def send_json(self, session_id: str, data: dict[str, Any]):
         """
         Send JSON data to a specific WebSocket connection.
 
@@ -155,7 +153,7 @@ class ConnectionManager:
                 logger.exception(f"Failed to send JSON to session {session_id}")
                 self.disconnect(session_id)
 
-    async def broadcast_json(self, data: Dict[str, Any]):
+    async def broadcast_json(self, data: dict[str, Any]):
         """
         Broadcast JSON data to all active WebSocket connections.
 

@@ -11,6 +11,7 @@ This script provides an interactive command-line interface for:
 
 import argparse
 import asyncio
+import contextlib
 import json
 import logging
 import os
@@ -159,7 +160,7 @@ class ValidationCLI:
             # Start the server in a separate process
             import subprocess
 
-            process = subprocess.Popen(
+            subprocess.Popen(
                 [python_exe, "-m", "app.main"],
                 cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
             )
@@ -551,10 +552,8 @@ class ValidationCLI:
                 logger.info("WebSocket connected successfully")
 
                 # Receive initial message
-                try:
+                with contextlib.suppress(asyncio.TimeoutError):
                     await asyncio.wait_for(websocket.recv(), timeout=2.0)
-                except asyncio.TimeoutError:
-                    pass
 
                 # Send a test message
                 logger.info(f"Sending message: '{message}'")
@@ -655,10 +654,8 @@ class ValidationCLI:
             self.is_monitoring = False
             if self.monitoring_task:
                 self.monitoring_task.cancel()
-                try:
+                with contextlib.suppress(asyncio.CancelledError):
                     await self.monitoring_task
-                except asyncio.CancelledError:
-                    pass
                 self.monitoring_task = None
 
             # Close WebSocket connection
@@ -720,10 +717,8 @@ class ValidationCLI:
                 try:
                     async with websockets.connect(f"{self.ws_url}/ws/{session_id}") as websocket:
                         # Receive initial message
-                        try:
+                        with contextlib.suppress(asyncio.TimeoutError):
                             await asyncio.wait_for(websocket.recv(), timeout=2.0)
-                        except asyncio.TimeoutError:
-                            pass
 
                         # Send a message
                         await websocket.send(f"Hello from session {session_id}")

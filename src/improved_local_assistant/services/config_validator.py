@@ -11,8 +11,6 @@ import os
 from dataclasses import dataclass
 from dataclasses import field
 from typing import Any
-from typing import Dict
-from typing import List
 
 import yaml
 
@@ -34,8 +32,8 @@ class ConfigValidationResult:
     """Configuration validation result."""
 
     valid: bool
-    errors: List[ConfigValidationError] = field(default_factory=list)
-    warnings: List[ConfigValidationError] = field(default_factory=list)
+    errors: list[ConfigValidationError] = field(default_factory=list)
+    warnings: list[ConfigValidationError] = field(default_factory=list)
 
 
 class ConfigValidator:
@@ -158,7 +156,7 @@ class ConfigValidator:
 
         logger.info("Configuration validator initialized")
 
-    def validate(self, config: Dict[str, Any]) -> ConfigValidationResult:
+    def validate(self, config: dict[str, Any]) -> ConfigValidationResult:
         """
         Validate configuration against the schema.
 
@@ -198,11 +196,11 @@ class ConfigValidator:
 
     def _validate_dict(
         self,
-        config: Dict[str, Any],
-        schema: Dict[str, Any],
+        config: dict[str, Any],
+        schema: dict[str, Any],
         path: str,
-        errors: List[ConfigValidationError],
-        warnings: List[ConfigValidationError],
+        errors: list[ConfigValidationError],
+        warnings: list[ConfigValidationError],
     ) -> None:
         """
         Validate a dictionary against a schema.
@@ -309,7 +307,7 @@ class ConfigValidator:
                         )
 
                 elif field_type == "number":
-                    if not isinstance(field_value, (int, float)):
+                    if not isinstance(field_value, int | float):
                         errors.append(
                             ConfigValidationError(
                                 path=field_path,
@@ -331,22 +329,21 @@ class ConfigValidator:
                             )
                         )
 
-                elif field_type == "boolean":
-                    if not isinstance(field_value, bool):
-                        errors.append(
-                            ConfigValidationError(
-                                path=field_path,
-                                message=f"Expected boolean, got {type(field_value).__name__}",
-                            )
+                elif field_type == "boolean" and not isinstance(field_value, bool):
+                    errors.append(
+                        ConfigValidationError(
+                            path=field_path,
+                            message=f"Expected boolean, got {type(field_value).__name__}",
                         )
+                    )
 
     def _validate_value(
         self,
         value: Any,
-        schema: Dict[str, Any],
+        schema: dict[str, Any],
         path: str,
-        errors: List[ConfigValidationError],
-        warnings: List[ConfigValidationError],
+        errors: list[ConfigValidationError],
+        warnings: list[ConfigValidationError],
     ) -> None:
         """
         Validate a value against a schema.
@@ -419,7 +416,7 @@ class ConfigValidator:
                 )
 
         elif field_type == "number":
-            if not isinstance(value, (int, float)):
+            if not isinstance(value, int | float):
                 errors.append(
                     ConfigValidationError(
                         path=path, message=f"Expected number, got {type(value).__name__}"
@@ -438,20 +435,19 @@ class ConfigValidator:
                     )
                 )
 
-        elif field_type == "boolean":
-            if not isinstance(value, bool):
-                errors.append(
-                    ConfigValidationError(
-                        path=path, message=f"Expected boolean, got {type(value).__name__}"
-                    )
+        elif field_type == "boolean" and not isinstance(value, bool):
+            errors.append(
+                ConfigValidationError(
+                    path=path, message=f"Expected boolean, got {type(value).__name__}"
                 )
+            )
 
     def _check_unknown_fields(
         self,
-        config: Dict[str, Any],
-        schema: Dict[str, Any],
+        config: dict[str, Any],
+        schema: dict[str, Any],
         path: str,
-        warnings: List[ConfigValidationError],
+        warnings: list[ConfigValidationError],
     ) -> None:
         """
         Check for unknown fields in the configuration.
@@ -479,7 +475,7 @@ class ConfigValidator:
                 # Recursively check nested dictionaries
                 self._check_unknown_fields(config[key], schema[key]["schema"], field_path, warnings)
 
-    def apply_defaults(self, config: Dict[str, Any]) -> Dict[str, Any]:
+    def apply_defaults(self, config: dict[str, Any]) -> dict[str, Any]:
         """
         Apply default values to missing fields.
 
@@ -492,8 +488,8 @@ class ConfigValidator:
         return self._apply_defaults_to_dict(config, self.schema)
 
     def _apply_defaults_to_dict(
-        self, config: Dict[str, Any], schema: Dict[str, Any]
-    ) -> Dict[str, Any]:
+        self, config: dict[str, Any], schema: dict[str, Any]
+    ) -> dict[str, Any]:
         """
         Apply default values to missing fields in a dictionary.
 
@@ -522,7 +518,7 @@ class ConfigValidator:
 
         return result
 
-    def merge_environment_config(self, config: Dict[str, Any]) -> Dict[str, Any]:
+    def merge_environment_config(self, config: dict[str, Any]) -> dict[str, Any]:
         """
         Merge environment-specific configuration.
 
@@ -551,7 +547,7 @@ class ConfigValidator:
 
         return result
 
-    def _deep_merge(self, base: Dict[str, Any], override: Dict[str, Any]) -> Dict[str, Any]:
+    def _deep_merge(self, base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
         """
         Deep merge two dictionaries.
 
@@ -594,7 +590,7 @@ class ConfigManager:
         self.config = {}
         logger.info("Configuration manager initialized")
 
-    def load_config(self, config_file: str = "config.yaml") -> Dict[str, Any]:
+    def load_config(self, config_file: str = "config.yaml") -> dict[str, Any]:
         """
         Load configuration from a file.
 
@@ -627,7 +623,7 @@ class ConfigManager:
             logger.error(f"Error loading configuration: {str(e)}")
             return {}
 
-    def validate_config(self, config: Dict[str, Any]) -> ConfigValidationResult:
+    def validate_config(self, config: dict[str, Any]) -> ConfigValidationResult:
         """
         Validate configuration.
 
@@ -639,7 +635,7 @@ class ConfigManager:
         """
         return self.validator.validate(config)
 
-    def process_config(self, config: Dict[str, Any]) -> Dict[str, Any]:
+    def process_config(self, config: dict[str, Any]) -> dict[str, Any]:
         """
         Process configuration by validating, applying defaults, and merging environment-specific configuration.
 
@@ -671,7 +667,7 @@ class ConfigManager:
 
         return merged_config
 
-    def load_and_process_config(self, config_file: str = "config.yaml") -> Dict[str, Any]:
+    def load_and_process_config(self, config_file: str = "config.yaml") -> dict[str, Any]:
         """
         Load and process configuration from a file.
 
@@ -689,7 +685,7 @@ class ConfigManager:
 
         return processed_config
 
-    def get_config(self) -> Dict[str, Any]:
+    def get_config(self) -> dict[str, Any]:
         """
         Get the current configuration.
 
@@ -732,7 +728,7 @@ class ConfigManager:
         config = self.config
 
         # Navigate to the parent of the target field
-        for i, part in enumerate(parts[:-1]):
+        for _i, part in enumerate(parts[:-1]):
             if part not in config:
                 config[part] = {}
             config = config[part]
@@ -776,7 +772,7 @@ class ConfigManager:
 config_manager = ConfigManager()
 
 
-def load_config(config_file: str = "config.yaml") -> Dict[str, Any]:
+def load_config(config_file: str = "config.yaml") -> dict[str, Any]:
     """
     Load and process configuration using the global configuration manager.
 
@@ -789,7 +785,7 @@ def load_config(config_file: str = "config.yaml") -> Dict[str, Any]:
     return config_manager.load_and_process_config(config_file)
 
 
-def get_config() -> Dict[str, Any]:
+def get_config() -> dict[str, Any]:
     """
     Get the current configuration using the global configuration manager.
 

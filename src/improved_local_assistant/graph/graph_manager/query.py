@@ -7,9 +7,6 @@ and graph traversal operations.
 
 import time
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 import networkx as nx
 
@@ -17,7 +14,7 @@ import networkx as nx
 class KnowledgeGraphQuery:
     """Handles querying operations for knowledge graphs."""
 
-    async def query_graphs(self, query: str, context: Optional[List[str]] = None) -> Dict[str, Any]:
+    async def query_graphs(self, query: str, context: list[str] | None = None) -> dict[str, Any]:
         """
         Query all knowledge graphs using advanced routing and hybrid retrieval.
 
@@ -68,8 +65,8 @@ class KnowledgeGraphQuery:
         return await self._legacy_query_graphs(query, context)
 
     async def _legacy_query_graphs(
-        self, query: str, context: Optional[List[str]] = None
-    ) -> Dict[str, Any]:
+        self, query: str, context: list[str] | None = None
+    ) -> dict[str, Any]:
         """
         Legacy query method for backward compatibility.
         """
@@ -299,7 +296,7 @@ class KnowledgeGraphQuery:
                 },
             }
 
-    def get_subgraph(self, query: str, max_hops: int = 2, max_nodes: int = 100) -> Dict[str, Any]:
+    def get_subgraph(self, query: str, max_hops: int = 2, max_nodes: int = 100) -> dict[str, Any]:
         """
         Extract a relevant subgraph for GraphRAG queries.
 
@@ -364,7 +361,7 @@ class KnowledgeGraphQuery:
                 # Get neighborhood around this node
                 try:
                     neighborhood = nx.single_source_shortest_path_length(G, node, cutoff=max_hops)
-                    for neighbor in neighborhood.keys():
+                    for neighbor in neighborhood:
                         subgraph_nodes.add((neighbor, graph_idx, graph_sources[graph_idx]))
 
                         # Stop if we've reached max nodes
@@ -419,7 +416,7 @@ class KnowledgeGraphQuery:
             self.logger.error(f"Error extracting subgraph: {str(e)}")
             return {"nodes": [], "edges": [], "metadata": {"query": query, "error": str(e)}}
 
-    def get_graph_traversal(self, source: str, target: str, max_hops: int = 3) -> List[List[str]]:
+    def get_graph_traversal(self, source: str, target: str, max_hops: int = 3) -> list[list[str]]:
         """
         Perform multi-hop graph traversal using NetworkX.
 
@@ -494,7 +491,7 @@ class KnowledgeGraphQuery:
             self.logger.error(f"Error synthesizing response: {e}")
             return "Error processing the retrieved information."
 
-    def _try_vector_fallback(self, query: str, graph_sources: List[str]):
+    def _try_vector_fallback(self, query: str, graph_sources: list[str]):
         """
         Try vector store fallback when KG engines return no results.
 

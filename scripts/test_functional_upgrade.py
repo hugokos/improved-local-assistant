@@ -32,7 +32,7 @@ async def test_end_to_end_functionality():
 
         # Set up logging
         logging.basicConfig(level=logging.INFO)
-        logger = logging.getLogger(__name__)
+        logging.getLogger(__name__)
 
         # Create temporary directory for testing
         with tempfile.TemporaryDirectory() as temp_dir:

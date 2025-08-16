@@ -8,8 +8,6 @@ recognition using the Vosk library.
 import json
 import logging
 from pathlib import Path
-from typing import Dict
-from typing import Optional
 
 try:
     import vosk
@@ -25,7 +23,7 @@ class VoskSTTService:
     supporting multiple concurrent sessions.
     """
 
-    def __init__(self, config: Dict = None):
+    def __init__(self, config: dict = None):
         """
         Initialize VoskSTTService with configuration.
 
@@ -40,9 +38,9 @@ class VoskSTTService:
             raise ImportError("Vosk library not installed. Run: pip install vosk")
 
         # Model and recognizer management
-        self.model: Optional[vosk.Model] = None
-        self.recognizers: Dict[str, vosk.KaldiRecognizer] = {}  # Free dictation recognizers
-        self.command_recognizers: Dict[str, vosk.KaldiRecognizer] = {}  # Command recognizers
+        self.model: vosk.Model | None = None
+        self.recognizers: dict[str, vosk.KaldiRecognizer] = {}  # Free dictation recognizers
+        self.command_recognizers: dict[str, vosk.KaldiRecognizer] = {}  # Command recognizers
 
         # Configuration - Vosk works best at 16kHz
         self.sample_rate = self.config.get("sample_rate", 16000)  # Vosk standard rate
@@ -186,7 +184,7 @@ class VoskSTTService:
             self.logger.error(f"Failed to destroy recognizers for session {session_id}: {str(e)}")
             return False
 
-    async def finalize_utterance(self, session_id: str) -> Dict:
+    async def finalize_utterance(self, session_id: str) -> dict:
         """
         Finalize per utterance the Vosk Server way.
 
@@ -315,10 +313,7 @@ class VoskSTTService:
             return text.lower() in valid_single_words
 
         # For multi-word phrases, require at least 2 words and minimum length
-        if word_count >= 2 and len(text) >= 4:
-            return True
-
-        return False
+        return bool(word_count >= 2 and len(text) >= 4)
 
     def _pcm16_stats(self, audio_data: bytes) -> tuple:
         """Calculate PCM16 audio statistics for debugging."""
@@ -335,7 +330,7 @@ class VoskSTTService:
         rms = int(math.sqrt(sum(v * v for v in samples) / n))
         return absmax, rms, n
 
-    async def process_audio(self, session_id: str, audio_data: bytes) -> Dict:
+    async def process_audio(self, session_id: str, audio_data: bytes) -> dict:
         """
         Process audio data for speech recognition with proper VAD coupling.
 
@@ -372,22 +367,21 @@ class VoskSTTService:
             command_recognizer = self.command_recognizers.get(session_id)
 
             # Check command recognizer first (higher priority)
-            if command_recognizer:
-                if command_recognizer.AcceptWaveform(audio_data):
-                    cmd_result = json.loads(command_recognizer.Result())
-                    cmd_text = (cmd_result.get("text") or "").strip()
-                    # Check if the command text contains any of our command phrases
-                    if cmd_text and any(
-                        phrase in cmd_text.lower() for phrase in self.command_phrases
-                    ):
-                        self.logger.info(f"Voice command detected for {session_id}: '{cmd_text}'")
-                        # Reset command recognizer for next command
-                        command_recognizer.Reset()
-                        return {
-                            "command": cmd_text,
-                            "endpoint": True,
-                            "confidence": cmd_result.get("confidence", 0.0),
-                        }
+            if command_recognizer and command_recognizer.AcceptWaveform(audio_data):
+                cmd_result = json.loads(command_recognizer.Result())
+                cmd_text = (cmd_result.get("text") or "").strip()
+                # Check if the command text contains any of our command phrases
+                if cmd_text and any(
+                    phrase in cmd_text.lower() for phrase in self.command_phrases
+                ):
+                    self.logger.info(f"Voice command detected for {session_id}: '{cmd_text}'")
+                    # Reset command recognizer for next command
+                    command_recognizer.Reset()
+                    return {
+                        "command": cmd_text,
+                        "endpoint": True,
+                        "confidence": cmd_result.get("confidence", 0.0),
+                    }
 
             # Process with dictation recognizer
             # KEY FIX: Only call Result() when VAD explicitly signals end-of-utterance
@@ -474,7 +468,7 @@ class VoskSTTService:
             self.logger.error(f"Failed to reset recognizer for session {session_id}: {str(e)}")
             return False
 
-    def get_recognizer_info(self, session_id: str) -> Optional[Dict]:
+    def get_recognizer_info(self, session_id: str) -> dict | None:
         """
         Get information about a recognizer.
 
@@ -494,7 +488,7 @@ class VoskSTTService:
             "active": True,
         }
 
-    def get_service_info(self) -> Dict:
+    def get_service_info(self) -> dict:
         """
         Get service information and status.
 

@@ -8,11 +8,10 @@ failures in external dependencies gracefully and prevent cascading failures.
 import asyncio
 import logging
 import time
+from collections.abc import Awaitable
+from collections.abc import Callable
 from enum import Enum
 from typing import Any
-from typing import Awaitable
-from typing import Callable
-from typing import Dict
 from typing import TypeVar
 
 # Type variables for generic functions
@@ -173,7 +172,7 @@ class CircuitBreaker:
             # Re-raise the exception
             raise
 
-    def get_state(self) -> Dict[str, Any]:
+    def get_state(self) -> dict[str, Any]:
         """
         Get the current state of the circuit breaker.
 
@@ -212,7 +211,7 @@ class CircuitBreakerRegistry:
 
     def __init__(self):
         """Initialize the circuit breaker registry."""
-        self.circuit_breakers: Dict[str, CircuitBreaker] = {}
+        self.circuit_breakers: dict[str, CircuitBreaker] = {}
         self._lock = asyncio.Lock()
         logger.info("Circuit breaker registry initialized")
 
@@ -250,7 +249,7 @@ class CircuitBreakerRegistry:
 
             return self.circuit_breakers[name]
 
-    def get_all_states(self) -> Dict[str, Dict[str, Any]]:
+    def get_all_states(self) -> dict[str, dict[str, Any]]:
         """
         Get the current state of all circuit breakers.
 
@@ -262,7 +261,7 @@ class CircuitBreakerRegistry:
     async def reset_all(self) -> None:
         """Reset all circuit breakers to closed state."""
         async with self._lock:
-            for name, cb in self.circuit_breakers.items():
+            for _name, cb in self.circuit_breakers.items():
                 cb.reset()
             logger.info("All circuit breakers reset to CLOSED state")
 

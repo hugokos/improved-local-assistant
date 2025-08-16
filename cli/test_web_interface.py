@@ -188,11 +188,11 @@ def test_sidebar():
             body { padding: 20px; }
             .test-controls { margin-bottom: 20px; }
             button { margin-right: 10px; padding: 8px 16px; }
-            .mock-graph { 
-                height: 400px; 
-                border: 1px solid #ddd; 
-                display: flex; 
-                align-items: center; 
+            .mock-graph {
+                height: 400px;
+                border: 1px solid #ddd;
+                display: flex;
+                align-items: center;
                 justify-content: center;
                 margin-top: 20px;
             }
@@ -200,12 +200,12 @@ def test_sidebar():
     </head>
     <body>
         <h1>Knowledge Graph Sidebar Test</h1>
-        
+
         <div class="test-controls">
             <button onclick="toggleSidebar()">Toggle Sidebar</button>
             <button onclick="loadMockGraph()">Load Mock Graph</button>
         </div>
-        
+
         <div class="main-content">
             <div class="sidebar" id="kgSidebar">
                 <div class="sidebar-header">
@@ -217,13 +217,13 @@ def test_sidebar():
                 </div>
             </div>
         </div>
-        
+
         <script>
             function toggleSidebar() {
                 const sidebar = document.getElementById('kgSidebar');
                 sidebar.classList.toggle('collapsed');
             }
-            
+
             function loadMockGraph() {
                 const container = document.getElementById('graphContainer');
                 container.innerHTML = '<div class="mock-graph">Mock Knowledge Graph Visualization</div>';
@@ -309,13 +309,13 @@ def test_monitoring():
     </head>
     <body>
         <h1>System Monitoring Test</h1>
-        
+
         <div class="test-controls">
             <button onclick="updateRandomMetrics()">Update Random Metrics</button>
             <button onclick="simulateHighLoad()">Simulate High Load</button>
             <button onclick="simulateLowLoad()">Simulate Low Load</button>
         </div>
-        
+
         <div class="monitoring-panel">
             <div class="metric">
                 <span>CPU Usage:</span>
@@ -334,7 +334,7 @@ def test_monitoring():
                 </div>
             </div>
         </div>
-        
+
         <div class="monitoring-panel">
             <div class="metric">
                 <span>Model Status:</span>
@@ -345,7 +345,7 @@ def test_monitoring():
                 <span id="responseTime">0ms</span>
             </div>
         </div>
-        
+
         <script>
             function updateMetrics(cpu, memory, responseTime) {
                 // Update text values
@@ -354,14 +354,14 @@ def test_monitoring():
                 document.getElementById('responseTime').textContent = responseTime + 'ms';
                 document.getElementById('cpuValue').textContent = cpu + '%';
                 document.getElementById('memoryValue').textContent = memory + '%';
-                
+
                 // Update gauges
                 const cpuDegrees = (cpu / 100) * 180;
                 const memoryDegrees = (memory / 100) * 180;
-                
+
                 document.getElementById('cpuGauge').style.transform = `rotate(${cpuDegrees}deg)`;
                 document.getElementById('memoryGauge').style.transform = `rotate(${memoryDegrees}deg)`;
-                
+
                 // Update status based on load
                 if (cpu > 80 || memory > 80) {
                     document.getElementById('modelStatus').textContent = 'High Load';
@@ -374,25 +374,25 @@ def test_monitoring():
                     document.getElementById('modelStatus').style.color = 'green';
                 }
             }
-            
+
             function updateRandomMetrics() {
                 const cpu = Math.floor(Math.random() * 100);
                 const memory = Math.floor(Math.random() * 100);
                 const responseTime = Math.floor(Math.random() * 2000);
                 updateMetrics(cpu, memory, responseTime);
             }
-            
+
             function simulateHighLoad() {
                 updateMetrics(85, 90, 1500);
             }
-            
+
             function simulateLowLoad() {
                 updateMetrics(15, 30, 200);
             }
-            
+
             // Update metrics every 2 seconds
             setInterval(updateRandomMetrics, 2000);
-            
+
             // Initial update
             updateRandomMetrics();
         </script>
@@ -478,11 +478,11 @@ def test_settings():
     </head>
     <body>
         <h1>Settings Interface Test</h1>
-        
+
         <div class="settings-container">
             <div class="settings-section">
                 <h2>Model Configuration</h2>
-                
+
                 <div class="settings-row">
                     <span>Conversation Model:</span>
                     <div class="settings-controls">
@@ -494,7 +494,7 @@ def test_settings():
                         <button onclick="saveModelSettings('conversation')">Apply</button>
                     </div>
                 </div>
-                
+
                 <div class="settings-row">
                     <span>Background Model:</span>
                     <div class="settings-controls">
@@ -505,7 +505,7 @@ def test_settings():
                         <button onclick="saveModelSettings('background')">Apply</button>
                     </div>
                 </div>
-                
+
                 <div class="settings-row">
                     <span>Temperature:</span>
                     <div class="settings-controls">
@@ -515,10 +515,10 @@ def test_settings():
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h2>Knowledge Graph Management</h2>
-                
+
                 <div class="settings-row">
                     <span>Available Graphs:</span>
                     <div class="settings-controls">
@@ -529,7 +529,7 @@ def test_settings():
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="settings-row">
                     <span>Graph Operations:</span>
                     <div class="settings-controls">
@@ -539,10 +539,10 @@ def test_settings():
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h2>System Performance</h2>
-                
+
                 <div class="settings-row">
                     <span>Max Memory Usage:</span>
                     <div class="settings-controls">
@@ -551,7 +551,7 @@ def test_settings():
                         <button onclick="saveSystemSettings('memory')">Apply</button>
                     </div>
                 </div>
-                
+
                 <div class="settings-row">
                     <span>Concurrent Operations:</span>
                     <div class="settings-controls">
@@ -560,10 +560,10 @@ def test_settings():
                     </div>
                 </div>
             </div>
-            
+
             <div class="settings-section">
                 <h2>Configuration Import/Export</h2>
-                
+
                 <div class="settings-row">
                     <span>Configuration File:</span>
                     <div class="settings-controls">
@@ -572,34 +572,34 @@ def test_settings():
                     </div>
                 </div>
             </div>
-            
+
             <div class="status-message" id="statusMessage"></div>
         </div>
-        
+
         <script>
             // Update temperature value display
             document.getElementById('temperature').addEventListener('input', function() {
                 document.getElementById('temperatureValue').textContent = this.value;
             });
-            
+
             // Update memory limit value display
             document.getElementById('memoryLimit').addEventListener('input', function() {
                 document.getElementById('memoryLimitValue').textContent = this.value + ' GB';
             });
-            
+
             function showStatus(message, isError = false) {
                 const statusElement = document.getElementById('statusMessage');
                 statusElement.textContent = message;
                 statusElement.style.display = 'block';
                 statusElement.style.background = isError ? '#ffebee' : '#e8f5e9';
                 statusElement.style.color = isError ? '#c62828' : '#2e7d32';
-                
+
                 // Hide after 3 seconds
                 setTimeout(() => {
                     statusElement.style.display = 'none';
                 }, 3000);
             }
-            
+
             function saveModelSettings(type) {
                 switch(type) {
                     case 'conversation':
@@ -616,7 +616,7 @@ def test_settings():
                         break;
                 }
             }
-            
+
             function saveSystemSettings(type) {
                 switch(type) {
                     case 'memory':
@@ -629,37 +629,37 @@ def test_settings():
                         break;
                 }
             }
-            
+
             function loadGraph() {
                 const select = document.getElementById('graphSelect');
                 const selected = Array.from(select.selectedOptions).map(option => option.text);
-                
+
                 if (selected.length === 0) {
                     showStatus('No graphs selected', true);
                 } else {
                     showStatus(`Loaded graphs: ${selected.join(', ')}`);
                 }
             }
-            
+
             function unloadGraph() {
                 const select = document.getElementById('graphSelect');
                 const selected = Array.from(select.selectedOptions).map(option => option.text);
-                
+
                 if (selected.length === 0) {
                     showStatus('No graphs selected', true);
                 } else {
                     showStatus(`Unloaded graphs: ${selected.join(', ')}`);
                 }
             }
-            
+
             function importGraph() {
                 showStatus('Graph import functionality would open a file dialog');
             }
-            
+
             function exportConfig() {
                 showStatus('Configuration exported to config.json');
             }
-            
+
             function importConfig() {
                 showStatus('Configuration import functionality would open a file dialog');
             }

@@ -17,7 +17,6 @@ import time
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-from typing import Dict
 
 import yaml
 
@@ -58,7 +57,7 @@ class OllamaGraphRAGBot:
         self.graph_manager = None
         self.conversation_history = []
 
-    def _load_config(self, config_path: str) -> Dict:
+    def _load_config(self, config_path: str) -> dict:
         """
         Load configuration from YAML file.
 

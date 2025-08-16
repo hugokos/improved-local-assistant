@@ -25,7 +25,6 @@ import os
 import sys
 import time
 from datetime import datetime
-from typing import Optional
 
 # Add parent directory to path to import from services
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -98,11 +97,11 @@ class GraphRAGREPL:
         self.max_triple_per_chunk = max_triple_per_chunk
 
         # Initialize components
-        self.model_manager: Optional[ModelManager] = None
-        self.kg_manager: Optional[KnowledgeGraphManager] = None
-        self.conversation_manager: Optional[ConversationManager] = None
-        self.resource_manager: Optional[ResourceManager] = None
-        self.session_id: Optional[str] = None
+        self.model_manager: ModelManager | None = None
+        self.kg_manager: KnowledgeGraphManager | None = None
+        self.conversation_manager: ConversationManager | None = None
+        self.resource_manager: ResourceManager | None = None
+        self.session_id: str | None = None
 
         # Embedding model singleton
         self.embedding_model = None
@@ -296,11 +295,11 @@ class GraphRAGREPL:
             # Create system-context bootstrap document
             bootstrap_text = f"""
             System Context Bootstrap Document
-            
+
             This is a system-generated bootstrap document for the dynamic knowledge graph.
             It ensures that the knowledge graph index (kg_index) is never None and provides
             initial context for the GraphRAG system.
-            
+
             Initialization Details:
             - Timestamp: {datetime.now().isoformat()}
             - System: GraphRAG REPL CLI Tool
@@ -308,11 +307,11 @@ class GraphRAGREPL:
             - Embedding Model: BAAI/bge-small-en-v1.5 int8
             - Max Triples Per Chunk: {self.max_triple_per_chunk}
             - Knowledge Graph Enabled: {self.use_kg}
-            
+
             This document serves as the foundation for dynamic knowledge graph construction
             and ensures that the system can always perform knowledge graph operations
             even when starting with an empty graph store.
-            
+
             Key Concepts:
             - GraphRAG: Graph-based Retrieval Augmented Generation
             - Knowledge Extraction: Process of extracting entities and relationships from text
@@ -474,7 +473,7 @@ class GraphRAGREPL:
             logger.error(f"Failed to initialize components: {str(e)}")
             return False
 
-    async def get_user_input(self, prompt: str = "You: ") -> Optional[str]:
+    async def get_user_input(self, prompt: str = "You: ") -> str | None:
         """
         Get user input using prompt_toolkit if available, otherwise fallback to input().
 

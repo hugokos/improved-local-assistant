@@ -10,7 +10,6 @@ import logging
 import os
 import sys
 import time
-from typing import Optional
 
 import networkx as nx
 from llama_index.core import Settings
@@ -235,7 +234,7 @@ class KnowledgeGraphInitializer:
             self.logger.warning(f"Could not initialize advanced GraphRouter: {e}")
             self._graph_router = None
 
-    def _safe_get_networkx_graph(self, kg_index, graph_id: str = "unknown") -> Optional[nx.Graph]:
+    def _safe_get_networkx_graph(self, kg_index, graph_id: str = "unknown") -> nx.Graph | None:
         """
         Safely get NetworkX graph from a knowledge graph index.
 

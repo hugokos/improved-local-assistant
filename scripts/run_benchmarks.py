@@ -34,7 +34,7 @@ def run_benchmark(model_name: str, contexts: list = None, runs: int = 3):
 
     try:
         # Run with output visible for debugging
-        result = subprocess.run(cmd, check=True, text=True)
+        subprocess.run(cmd, check=True, text=True)
         return True
     except subprocess.CalledProcessError as e:
         print(f"Benchmark failed for {model_name}: {e}")

@@ -102,15 +102,15 @@ async def test_create_graph(graph_manager, docs_path=None):
                 f.write(
                     """
                 Knowledge Graph Test Document
-                
+
                 Hermes 3:3B is a language model trained by Nous Research.
                 TinyLlama is a smaller language model designed for efficiency.
                 LlamaIndex is a framework for building RAG applications.
-                
+
                 Knowledge graphs store information as entities and relationships.
                 NetworkX is a Python library for graph analysis.
                 PyVis can visualize NetworkX graphs in HTML.
-                
+
                 Local AI assistants run entirely on the user's device.
                 Ollama is a tool for running language models locally.
                 """
@@ -166,14 +166,14 @@ async def test_load_prebuilt(graph_manager, prebuilt_path=None):
                 f.write(
                     """
                 Pre-built Knowledge Graph Test Document
-                
+
                 Python is a programming language created by Guido van Rossum.
                 FastAPI is a web framework for building APIs with Python.
                 Uvicorn is an ASGI server that can run FastAPI applications.
-                
+
                 Knowledge graphs represent information as a graph structure.
                 Nodes represent entities and edges represent relationships.
-                
+
                 LlamaIndex provides tools for building knowledge graphs.
                 SimpleGraphStore is an in-memory graph store provided by LlamaIndex.
                 """
@@ -214,11 +214,11 @@ async def test_load_prebuilt(graph_manager, prebuilt_path=None):
             f.write(
                 """
             Hot-loaded Knowledge Graph Test Document
-            
+
             NetworkX is a Python package for complex networks.
             PyVis is a visualization library that can render NetworkX graphs.
             HTML is used to display PyVis visualizations in web browsers.
-            
+
             Knowledge graph visualization helps users understand relationships.
             Interactive visualizations allow exploration of complex data.
             """
@@ -333,15 +333,15 @@ async def test_queries(graph_manager):
                 f.write(
                     """
                 Knowledge Graph Query Test Document
-                
+
                 Albert Einstein was a physicist who developed the theory of relativity.
                 Marie Curie was a physicist and chemist who conducted research on radioactivity.
                 Isaac Newton developed the laws of motion and universal gravitation.
-                
+
                 The theory of relativity was published by Einstein in 1915.
                 Radioactivity was discovered by Henri Becquerel in 1896.
                 Newton's laws of motion were published in Principia Mathematica in 1687.
-                
+
                 Physics is the study of matter, energy, and the interactions between them.
                 Chemistry is the study of substances, their properties, and reactions.
                 Mathematics is the study of numbers, quantities, and shapes.
@@ -410,7 +410,7 @@ async def test_visualize(graph_manager):
                 f.write(
                     """
                 Knowledge Graph Visualization Test Document
-                
+
                 The solar system contains eight planets.
                 Mercury is the closest planet to the Sun.
                 Venus is the second planet from the Sun.
@@ -420,7 +420,7 @@ async def test_visualize(graph_manager):
                 Saturn is the sixth planet from the Sun.
                 Uranus is the seventh planet from the Sun.
                 Neptune is the eighth planet from the Sun.
-                
+
                 The Sun is a star at the center of the solar system.
                 Planets orbit around the Sun.
                 Earth has one natural satellite called the Moon.

@@ -53,7 +53,7 @@ class TestVoiceSystemIntegration:
             from app.core import load_config
             from app.services.init import initialize_services
 
-            config = load_config()
+            load_config()
 
             # Test that initialize_services can handle voice services
             # This is an async function, so we'll test the import and structure
@@ -122,19 +122,19 @@ class TestVoiceSystemIntegration:
                 voice_manager = VoiceManager(config)
 
                 # Test basic functionality
-                assert voice_manager.is_voice_available() == True
+                assert voice_manager.is_voice_available()
 
                 # Test session management
                 session_id = "test_integration_session"
                 success = await voice_manager.create_voice_session(session_id)
-                assert success == True
+                assert success
 
                 session_state = voice_manager.get_voice_session_state(session_id)
                 assert session_state is not None
 
                 # Test cleanup
                 success = await voice_manager.destroy_voice_session(session_id)
-                assert success == True
+                assert success
 
                 print("✅ VoiceManager integration test passed")
 
@@ -340,7 +340,7 @@ class TestVoicePerformance:
 
                 # Create multiple voice managers to test memory usage
                 managers = []
-                for i in range(5):
+                for _i in range(5):
                     manager = VoiceManager(config)
                     managers.append(manager)
 
@@ -375,7 +375,7 @@ class TestVoicePerformance:
             # Load config multiple times to test performance
             for _ in range(10):
                 config = load_config()
-                voice_config = config.get("voice", {})
+                config.get("voice", {})
 
             end_time = time.time()
             total_time = end_time - start_time

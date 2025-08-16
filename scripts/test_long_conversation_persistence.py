@@ -24,8 +24,6 @@ import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any
-from typing import Dict
-from typing import List
 
 # Add the project root to the path
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -51,7 +49,7 @@ if sys.platform == "win32":
 class ConversationPersistenceTester:
     """Tests dynamic graph persistence during long conversations."""
 
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         self.config = config
         self.model_manager = None
         self.kg_manager = None
@@ -106,7 +104,7 @@ class ConversationPersistenceTester:
         self.session_id = self.conversation_manager.create_session()
         logger.info(f"Created test session: {self.session_id}")
 
-    def generate_test_messages(self, count: int = 50) -> List[str]:
+    def generate_test_messages(self, count: int = 50) -> list[str]:
         """Generate diverse test messages for conversation."""
         messages = [
             # Basic introductions and context setting
@@ -187,7 +185,7 @@ class ConversationPersistenceTester:
 
         return messages[:count]
 
-    async def take_storage_snapshot(self, label: str) -> Dict[str, Any]:
+    async def take_storage_snapshot(self, label: str) -> dict[str, Any]:
         """Take a snapshot of current storage state."""
         logger.info(f"Taking storage snapshot: {label}")
 
@@ -230,7 +228,7 @@ class ConversationPersistenceTester:
         self.storage_snapshots.append(snapshot)
         return snapshot
 
-    async def _analyze_graph_storage(self, graph_path: Path) -> Dict[str, Any]:
+    async def _analyze_graph_storage(self, graph_path: Path) -> dict[str, Any]:
         """Analyze storage files in a graph directory."""
         analysis = {
             "path": str(graph_path),

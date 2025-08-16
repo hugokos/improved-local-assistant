@@ -119,15 +119,15 @@ async def interactive_graph_creation(graph_manager):
                 f.write(
                     """
                 Knowledge Graph Test Document
-                
+
                 Hermes 3:3B is a language model trained by Nous Research.
                 TinyLlama is a smaller language model designed for efficiency.
                 LlamaIndex is a framework for building RAG applications.
-                
+
                 Knowledge graphs store information as entities and relationships.
                 NetworkX is a Python library for graph analysis.
                 PyVis can visualize NetworkX graphs in HTML.
-                
+
                 Local AI assistants run entirely on the user's device.
                 Ollama is a tool for running language models locally.
                 """
@@ -222,14 +222,14 @@ async def interactive_prebuilt_loading(graph_manager):
                 f.write(
                     """
                 Pre-built Knowledge Graph Test Document
-                
+
                 Python is a programming language created by Guido van Rossum.
                 FastAPI is a web framework for building APIs with Python.
                 Uvicorn is an ASGI server that can run FastAPI applications.
-                
+
                 Knowledge graphs represent information as a graph structure.
                 Nodes represent entities and edges represent relationships.
-                
+
                 LlamaIndex provides tools for building knowledge graphs.
                 SimpleGraphStore is an in-memory graph store provided by LlamaIndex.
                 """
@@ -278,11 +278,11 @@ async def interactive_prebuilt_loading(graph_manager):
                     f.write(
                         """
                     Hot-loaded Knowledge Graph Test Document
-                    
+
                     NetworkX is a Python package for complex networks.
                     PyVis is a visualization library that can render NetworkX graphs.
                     HTML is used to display PyVis visualizations in web browsers.
-                    
+
                     Knowledge graph visualization helps users understand relationships.
                     Interactive visualizations allow exploration of complex data.
                     """

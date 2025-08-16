@@ -11,8 +11,6 @@ import logging
 import sys
 from pathlib import Path
 from typing import Any
-from typing import Dict
-from typing import List
 
 # Add the project root to Python path
 project_root = Path(__file__).parent.parent
@@ -98,7 +96,7 @@ def load_survivalist_graph():
         return None
 
 
-def query_with_vector_retriever(index, query: str, top_k: int = 10) -> List[Dict[str, Any]]:
+def query_with_vector_retriever(index, query: str, top_k: int = 10) -> list[dict[str, Any]]:
     """Query using vector similarity retrieval."""
     logger.info(f"🔍 Querying with vector retriever: '{query}' (top_k={top_k})")
 
@@ -129,7 +127,7 @@ def query_with_vector_retriever(index, query: str, top_k: int = 10) -> List[Dict
         return []
 
 
-def query_with_keyword_search(index, query: str, top_k: int = 10) -> List[Dict[str, Any]]:
+def query_with_keyword_search(index, query: str, top_k: int = 10) -> list[dict[str, Any]]:
     """Query using keyword-based search through document store."""
     logger.info(f"🔍 Performing keyword search: '{query}' (top_k={top_k})")
 
@@ -175,7 +173,7 @@ def query_with_keyword_search(index, query: str, top_k: int = 10) -> List[Dict[s
         return []
 
 
-def query_graph_relationships(index, query: str) -> List[Dict[str, Any]]:
+def query_graph_relationships(index, query: str) -> list[dict[str, Any]]:
     """Query graph relationships if available."""
     logger.info(f"🔍 Searching graph relationships for: '{query}'")
 
@@ -183,7 +181,6 @@ def query_graph_relationships(index, query: str) -> List[Dict[str, Any]]:
         results = []
 
         if hasattr(index, "storage_context") and hasattr(index.storage_context, "graph_store"):
-            graph_store = index.storage_context.graph_store
 
             # Check if it's a property graph store
             if hasattr(index.storage_context, "property_graph_store"):
@@ -229,7 +226,7 @@ def query_graph_relationships(index, query: str) -> List[Dict[str, Any]]:
         return []
 
 
-def display_results(results: List[Dict[str, Any]], title: str):
+def display_results(results: list[dict[str, Any]], title: str):
     """Display query results in a formatted way."""
     print(f"\n{'='*60}")
     print(f"🔥 {title}")
@@ -250,7 +247,7 @@ def display_results(results: List[Dict[str, Any]], title: str):
         print("-" * 40)
 
 
-def display_graph_results(results: List[Dict[str, Any]], title: str):
+def display_graph_results(results: list[dict[str, Any]], title: str):
     """Display graph relationship results."""
     print(f"\n{'='*60}")
     print(f"🔗 {title}")
@@ -267,7 +264,7 @@ def display_graph_results(results: List[Dict[str, Any]], title: str):
         print("-" * 40)
 
 
-def save_results_to_file(all_results: Dict[str, List], query: str):
+def save_results_to_file(all_results: dict[str, list], query: str):
     """Save all results to a JSON file."""
     output_file = f"fire_query_results_{query.replace(' ', '_')}.json"
 

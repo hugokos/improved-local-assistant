@@ -5,7 +5,6 @@ Handles metrics and graph statistics collection and reporting.
 """
 
 from typing import Any
-from typing import Dict
 
 import networkx as nx
 
@@ -13,7 +12,7 @@ import networkx as nx
 class KnowledgeGraphStats:
     """Handles statistics and metrics for knowledge graphs."""
 
-    def get_graph_statistics(self) -> Dict[str, Any]:
+    def get_graph_statistics(self) -> dict[str, Any]:
         """
         Get statistics for all knowledge graphs.
 

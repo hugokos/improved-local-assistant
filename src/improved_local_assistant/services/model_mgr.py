@@ -14,13 +14,11 @@ import sys
 # Fix for Windows asyncio event loop issue
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+import contextlib
 import time
+from collections.abc import AsyncGenerator
 from dataclasses import dataclass
 from typing import Any
-from typing import AsyncGenerator
-from typing import Dict
-from typing import List
-from typing import Tuple
 
 from ollama import AsyncClient
 
@@ -247,7 +245,7 @@ class ModelManager:
             self.logger.warning("Continuing with default resource allocation")
 
     async def query_conversation_model(
-        self, messages: List[Dict[str, str]], temperature: float = 0.7, max_tokens: int = 2048
+        self, messages: list[dict[str, str]], temperature: float = 0.7, max_tokens: int = 2048
     ) -> AsyncGenerator[str, None]:
         """
         Stream response from conversation model (Hermes 3:3B).
@@ -329,7 +327,7 @@ class ModelManager:
 
     async def query_knowledge_model(
         self, text: str, temperature: float = 0.2, max_tokens: int = 1024
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Query knowledge model (TinyLlama) for entity extraction.
 
@@ -482,7 +480,7 @@ class ModelManager:
             self.logger.error(f"Error swapping model: {str(e)}")
             return False
 
-    async def get_model_status(self) -> Dict[str, Any]:
+    async def get_model_status(self) -> dict[str, Any]:
         """
         Get current status of all models.
 
@@ -523,7 +521,7 @@ class ModelManager:
 
     async def run_concurrent_queries(
         self, user_message: str, priority_mode: bool = True
-    ) -> Tuple[AsyncGenerator[str, None], asyncio.Task]:
+    ) -> tuple[AsyncGenerator[str, None], asyncio.Task]:
         """
         Run conversation and knowledge queries concurrently.
 
@@ -562,7 +560,7 @@ class ModelManager:
 
         return conversation_stream, bg_task
 
-    async def _run_background_task(self, text: str) -> Dict[str, Any]:
+    async def _run_background_task(self, text: str) -> dict[str, Any]:
         """
         Run a background task with resource isolation.
 
@@ -627,8 +625,8 @@ class ModelManager:
             metrics["avg_response_time"] = elapsed
 
     async def run_multiple_background_tasks(
-        self, texts: List[str], max_concurrent: int = 2
-    ) -> List[Dict[str, Any]]:
+        self, texts: list[str], max_concurrent: int = 2
+    ) -> list[dict[str, Any]]:
         """
         Run multiple background tasks with controlled concurrency.
 
@@ -649,7 +647,7 @@ class ModelManager:
         # Create semaphore to limit concurrency
         semaphore = asyncio.Semaphore(max_concurrent)
 
-        async def _bounded_task(text: str) -> Dict[str, Any]:
+        async def _bounded_task(text: str) -> dict[str, Any]:
             """Run a single task with semaphore bounds."""
             async with semaphore:
                 return await self._run_background_task(text)
@@ -692,10 +690,8 @@ class ModelManager:
         """Stop the system load monitoring."""
         if self._load_check_task:
             self._load_check_task.cancel()
-            try:
+            with contextlib.suppress(asyncio.CancelledError):
                 await self._load_check_task
-            except asyncio.CancelledError:
-                pass
             self._load_check_task = None
             self.logger.info("Stopped system load monitoring")
 

@@ -10,17 +10,15 @@ import glob
 import json
 import os
 from typing import Any
-from typing import Dict
-from typing import List
 
 
-def load_benchmark_results(filepath: str) -> Dict[str, Any]:
+def load_benchmark_results(filepath: str) -> dict[str, Any]:
     """Load benchmark results from JSON file."""
     with open(filepath) as f:
         return json.load(f)
 
 
-def compare_models(result_files: List[str]):
+def compare_models(result_files: list[str]):
     """Compare benchmark results from multiple models."""
     results = []
 
@@ -40,7 +38,7 @@ def compare_models(result_files: List[str]):
     print("HARDWARE INFORMATION")
     print("=" * 80)
 
-    for i, result in enumerate(results):
+    for _i, result in enumerate(results):
         model = result.get("model", "Unknown")
         hardware = result.get("hardware", {})
 
@@ -199,7 +197,7 @@ def analyze_scaling(result_file: str):
             print(f"Throughput degradation: {throughput_degradation:.1f}%")
 
 
-def show_hardware_only(result_files: List[str]):
+def show_hardware_only(result_files: list[str]):
     """Show only hardware information from benchmark files."""
     results = []
 

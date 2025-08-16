@@ -5,6 +5,7 @@ Memory optimization script to free up system resources.
 This script helps optimize memory usage before running the assistant.
 """
 
+import contextlib
 import gc
 import logging
 import os
@@ -60,10 +61,8 @@ def suggest_system_optimizations():
     logger.info("🔍 Top memory-consuming processes:")
     processes = []
     for proc in psutil.process_iter(["pid", "name", "memory_percent"]):
-        try:
+        with contextlib.suppress(psutil.NoSuchProcess, psutil.AccessDenied):
             processes.append(proc.info)
-        except (psutil.NoSuchProcess, psutil.AccessDenied):
-            pass
 
     # Sort by memory usage and show top 5
     processes.sort(key=lambda x: x["memory_percent"], reverse=True)

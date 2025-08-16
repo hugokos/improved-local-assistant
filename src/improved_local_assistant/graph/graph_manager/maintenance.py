@@ -7,7 +7,6 @@ NetworkX graph operations and embedding updates.
 
 import os
 from datetime import datetime
-from typing import Dict
 
 from llama_index.core import KnowledgeGraphIndex
 from llama_index.core import StorageContext
@@ -18,7 +17,7 @@ from llama_index.core.graph_stores import SimpleGraphStore
 class KnowledgeGraphMaintenance:
     """Handles maintenance operations for knowledge graphs."""
 
-    async def rebuild_graphs_with_new_embeddings(self) -> Dict[str, bool]:
+    async def rebuild_graphs_with_new_embeddings(self) -> dict[str, bool]:
         """
         Rebuild all knowledge graphs with new embeddings.
 

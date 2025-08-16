@@ -88,7 +88,6 @@ async def build_registry():
 
                 # For property graphs, try to use node embeddings from kg.json
                 kg_file = graph_path / "kg.json"
-                node_embeddings = []
 
                 if graph_type == "property" and kg_file.exists():
                     try:
@@ -98,7 +97,7 @@ async def build_registry():
                         # Extract entity names from nodes for embedding
                         if "nodes" in kg_data:
                             entity_names = []
-                            for node_id, node in kg_data["nodes"].items():
+                            for _node_id, node in kg_data["nodes"].items():
                                 if "properties" in node:
                                     name = node["properties"].get("original_name") or node[
                                         "properties"
@@ -251,7 +250,7 @@ async def test_registry():
 
             if top_graphs:
                 print("  Top matches:")
-                for graph, score in zip(top_graphs, scores):
+                for graph, score in zip(top_graphs, scores, strict=False):
                     print(f"    {graph}: {score:.3f}")
             else:
                 print("  No matches found")

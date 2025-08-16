@@ -5,6 +5,7 @@ This module provides WebSocket endpoints for real-time system monitoring.
 """
 
 import asyncio
+import contextlib
 import logging
 from datetime import datetime
 
@@ -51,7 +52,5 @@ async def monitor_websocket(websocket: WebSocket, app):
             logger.error(f"Error in monitor WebSocket loop: {str(e)}")
     except Exception as e:
         logger.error(f"Error in monitor WebSocket: {str(e)}")
-        try:
+        with contextlib.suppress(Exception):
             await websocket.close(code=1011, reason=str(e))
-        except Exception:
-            pass

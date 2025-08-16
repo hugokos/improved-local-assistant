@@ -5,7 +5,7 @@ Quick GraphRAG Performance Test
 A simple, user-friendly benchmark that tests the complete GraphRAG pipeline
 with realistic queries. Shows the breakdown of where time is spent:
 - Knowledge retrieval
-- Context preparation  
+- Context preparation
 - AI response generation
 
 Perfect for users who want to quickly test their system performance.
@@ -20,12 +20,11 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+from app.core.config import load_config
 from services.conversation_manager import ConversationManager
 from services.graph_manager import KnowledgeGraphManager
 from services.model_manager import ModelConfig
 from services.model_manager import ModelManager
-
-from app.core.config import load_config
 
 
 async def quick_benchmark():

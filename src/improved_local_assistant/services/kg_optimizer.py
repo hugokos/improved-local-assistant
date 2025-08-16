@@ -10,8 +10,6 @@ import logging
 import os
 import time
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -35,7 +33,7 @@ class KnowledgeGraphOptimizer:
         self.kg_manager = kg_manager
 
         # Query cache
-        self.query_cache: Dict[str, Dict[str, Any]] = {}
+        self.query_cache: dict[str, dict[str, Any]] = {}
         self.max_cache_size = 100
         self.cache_ttl = 3600  # 1 hour
 
@@ -50,7 +48,7 @@ class KnowledgeGraphOptimizer:
 
         logger.info("Knowledge graph optimizer initialized")
 
-    def get_cached_query(self, query: str) -> Optional[Dict[str, Any]]:
+    def get_cached_query(self, query: str) -> dict[str, Any] | None:
         """
         Get a cached query result if available and not expired.
 
@@ -78,7 +76,7 @@ class KnowledgeGraphOptimizer:
         self.metrics["cache_misses"] += 1
         return None
 
-    def cache_query_result(self, query: str, result: Dict[str, Any]) -> None:
+    def cache_query_result(self, query: str, result: dict[str, Any]) -> None:
         """
         Cache a query result.
 
@@ -306,7 +304,7 @@ class KnowledgeGraphOptimizer:
             logger.error(f"Error loading query cache: {str(e)}")
             return False
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """
         Get optimizer metrics.
 
@@ -361,7 +359,7 @@ async def optimize_query(query: str) -> str:
     return await optimizer.optimize_query(query)
 
 
-def get_cached_query(query: str) -> Optional[Dict[str, Any]]:
+def get_cached_query(query: str) -> dict[str, Any] | None:
     """
     Get a cached query result using the global optimizer.
 
@@ -379,7 +377,7 @@ def get_cached_query(query: str) -> Optional[Dict[str, Any]]:
     return optimizer.get_cached_query(query)
 
 
-def cache_query_result(query: str, result: Dict[str, Any]) -> None:
+def cache_query_result(query: str, result: dict[str, Any]) -> None:
     """
     Cache a query result using the global optimizer.
 

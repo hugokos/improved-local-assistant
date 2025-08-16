@@ -99,7 +99,7 @@ async def test_voice_services():
 
         try:
             chunk_count = 0
-            async for audio_chunk in voice_manager.synthesize_response(session_id, test_text):
+            async for _audio_chunk in voice_manager.synthesize_response(session_id, test_text):
                 chunk_count += 1
                 if chunk_count >= 5:  # Just test first few chunks
                     break

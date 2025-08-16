@@ -22,11 +22,10 @@ import psutil
 # Fix for Windows asyncio event loop issue
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+from collections.abc import Awaitable
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
-from typing import Awaitable
-from typing import Callable
-from typing import Dict
 
 from dotenv import load_dotenv
 
@@ -67,7 +66,7 @@ class ResourceMonitor:
         self.current = self.baseline.copy()
         self.history = []
 
-    def _get_current_usage(self) -> Dict[str, float]:
+    def _get_current_usage(self) -> dict[str, float]:
         """Get current resource usage."""
         memory_info = self.process.memory_info()
         return {
@@ -130,15 +129,15 @@ class ResourceMonitor:
             return summary
         return None
 
-    def get_current_usage(self) -> Dict[str, float]:
+    def get_current_usage(self) -> dict[str, float]:
         """Get the current resource usage."""
         return self.current
 
-    def get_peak_usage(self) -> Dict[str, float]:
+    def get_peak_usage(self) -> dict[str, float]:
         """Get the peak resource usage."""
         return self.peak
 
-    def get_usage_summary(self) -> Dict[str, Any]:
+    def get_usage_summary(self) -> dict[str, Any]:
         """Get a summary of resource usage."""
         if not self.history:
             return {}
@@ -169,7 +168,7 @@ class ValidationResult:
         self.duration = 0.0
         self.timestamp = time.time()
 
-    def set_passed(self, passed: bool, message: str = "", details: Dict[str, Any] = None):
+    def set_passed(self, passed: bool, message: str = "", details: dict[str, Any] = None):
         """Set the test result.
 
         Args:
@@ -189,7 +188,7 @@ class ValidationResult:
         """
         self.duration = duration
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """Convert to dictionary.
 
         Returns:

@@ -10,11 +10,11 @@ from pathlib import Path
 def test_mkdocs_config():
     """Test that MkDocs configuration is valid."""
     config_path = Path("config/mkdocs.yml")
-    
+
     if not config_path.exists():
         print(f"❌ Config file not found: {config_path}")
         return False
-    
+
     try:
         # Test that the config is valid
         result = subprocess.run(
@@ -23,24 +23,24 @@ def test_mkdocs_config():
             text=True,
             check=False
         )
-        
+
         if result.returncode == 0:
             print("✅ MkDocs configuration is valid")
             print("✅ Documentation builds successfully")
-            
+
             # Clean up test site
             import shutil
             test_site = Path("test_site")
             if test_site.exists():
                 shutil.rmtree(test_site)
                 print("✅ Cleaned up test build")
-            
+
             return True
         else:
             print("❌ MkDocs build failed:")
             print(result.stderr)
             return False
-            
+
     except FileNotFoundError:
         print("❌ MkDocs not installed. Install with: pip install mkdocs mkdocs-material mkdocstrings[python]")
         return False
@@ -52,7 +52,7 @@ def test_mkdocs_config():
 def main():
     """Main test function."""
     print("🔍 Testing MkDocs configuration...")
-    
+
     if test_mkdocs_config():
         print("🎉 All documentation tests passed!")
         return 0

@@ -8,10 +8,8 @@ and text-to-speech operations using Vosk and Piper respectively.
 import asyncio
 import logging
 import time
+from collections.abc import AsyncGenerator
 from datetime import datetime
-from typing import AsyncGenerator
-from typing import Dict
-from typing import Optional
 
 from .piper_tts_service import PiperTTSService
 from .vosk_stt_service import VoskSTTService
@@ -26,7 +24,7 @@ class VoiceManager:
     maintains voice session state, and provides metrics.
     """
 
-    def __init__(self, config: Dict = None):
+    def __init__(self, config: dict = None):
         """
         Initialize VoiceManager with configuration.
 
@@ -37,15 +35,15 @@ class VoiceManager:
         self.logger = logging.getLogger(__name__)
 
         # Voice services
-        self.stt_service: Optional[VoskSTTService] = None
-        self.tts_service: Optional[PiperTTSService] = None
-        self.vad_service: Optional[WebRTCVADService] = None
+        self.stt_service: VoskSTTService | None = None
+        self.tts_service: PiperTTSService | None = None
+        self.vad_service: WebRTCVADService | None = None
 
         # Voice session management
-        self.voice_sessions: Dict[str, Dict] = {}
+        self.voice_sessions: dict[str, dict] = {}
 
         # HALF-DUPLEX CONTROL: Proven pattern from Home Assistant/Wyoming
-        self.half_duplex_sessions: Dict[str, Dict] = {}  # session_id -> half_duplex_state
+        self.half_duplex_sessions: dict[str, dict] = {}  # session_id -> half_duplex_state
 
         # Performance metrics
         self.metrics = {
@@ -175,7 +173,7 @@ class VoiceManager:
             return
 
         hd_state = self.half_duplex_sessions[session_id]
-        old_mode = hd_state["mode"]
+        hd_state["mode"]
         hd_state["mode"] = mode
 
         if mode == "speaking":
@@ -274,7 +272,7 @@ class VoiceManager:
             self.metrics["errors"] += 1
             return False
 
-    async def on_vad_end(self, session_id: str) -> Dict:
+    async def on_vad_end(self, session_id: str) -> dict:
         """
         Called when VAD says the user stopped talking.
 
@@ -359,7 +357,7 @@ class VoiceManager:
 
         return True
 
-    def _update_vad_hysteresis(self, session_id: str, is_speech: bool, frame_data: bytes) -> Dict:
+    def _update_vad_hysteresis(self, session_id: str, is_speech: bool, frame_data: bytes) -> dict:
         """
         Update VAD state with hysteresis and energy gating.
 
@@ -473,7 +471,7 @@ class VoiceManager:
             "energy_gate": energy_gate if "energy_gate" in locals() else False,
         }
 
-    async def process_vad_frame(self, session_id: str, frame_data: bytes) -> Dict:
+    async def process_vad_frame(self, session_id: str, frame_data: bytes) -> dict:
         """
         BULLETPROOF VAD: Process frame with strict validation and hysteresis.
 
@@ -532,7 +530,7 @@ class VoiceManager:
             self.logger.error(f"Failed to process VAD frame for session {session_id}: {str(e)}")
             return {"error": str(e), "vad_type": "error"}
 
-    def _simple_vad(self, frame_data: bytes) -> Dict:
+    def _simple_vad(self, frame_data: bytes) -> dict:
         """Simple RMS-based VAD fallback."""
         import math
         import struct
@@ -553,7 +551,7 @@ class VoiceManager:
             self.logger.error(f"Simple VAD error: {str(e)}")
             return {"is_speech": False, "vad_type": "simple", "error": str(e)}
 
-    async def process_audio_chunk(self, session_id: str, audio_data: bytes) -> Dict:
+    async def process_audio_chunk(self, session_id: str, audio_data: bytes) -> dict:
         """
         Process audio chunk with half-duplex control and frame validation.
 
@@ -721,7 +719,7 @@ class VoiceManager:
             # HALF-DUPLEX: Return to listening on error
             self._set_half_duplex_mode(session_id, "listening")
 
-    def get_voice_session_state(self, session_id: str) -> Optional[Dict]:
+    def get_voice_session_state(self, session_id: str) -> dict | None:
         """
         Get the current state of a voice session.
 
@@ -755,7 +753,7 @@ class VoiceManager:
         if session_id in self.voice_sessions:
             self.voice_sessions[session_id]["audio_level"] = max(0.0, min(1.0, level))
 
-    def get_voice_metrics(self) -> Dict:
+    def get_voice_metrics(self) -> dict:
         """
         Get voice processing metrics.
 
@@ -832,7 +830,7 @@ class VoiceManager:
             self.metrics["errors"] += 1
             return False
 
-    async def process_voice_command(self, session_id: str, command: str) -> Dict:
+    async def process_voice_command(self, session_id: str, command: str) -> dict:
         """
         Process voice command (not sent to LLM).
 
@@ -890,7 +888,7 @@ class VoiceManager:
             self.logger.error(f"Failed to process voice command: {str(e)}")
             return {"action": "error", "error": str(e), "success": False}
 
-    def get_voice_status(self) -> Dict:
+    def get_voice_status(self) -> dict:
         """
         Get overall voice system status.
 

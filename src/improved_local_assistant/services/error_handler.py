@@ -10,8 +10,6 @@ import re
 import traceback
 from enum import Enum
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -172,7 +170,7 @@ class ErrorHandler:
                     return category
 
         # Special case handling for common exception types
-        if isinstance(error, (ConnectionError, TimeoutError)):
+        if isinstance(error, ConnectionError | TimeoutError):
             return ErrorCategory.NETWORK
         elif isinstance(error, MemoryError):
             return ErrorCategory.SYSTEM
@@ -231,18 +229,17 @@ class ErrorHandler:
                 return "Your session has expired. Please refresh the page to start a new session."
 
         # Network errors
-        elif category == ErrorCategory.NETWORK:
-            if "timeout" in error_str:
-                return (
-                    "The request timed out. The server might be under heavy load, try again later."
-                )
+        elif category == ErrorCategory.NETWORK and "timeout" in error_str:
+            return (
+                "The request timed out. The server might be under heavy load, try again later."
+            )
 
         # Default to the first suggestion
         return suggestions[0]
 
     def format_error_response(
-        self, error: Exception, include_details: bool = False, error_code: Optional[str] = None
-    ) -> Dict[str, Any]:
+        self, error: Exception, include_details: bool = False, error_code: str | None = None
+    ) -> dict[str, Any]:
         """
         Format an error response for API endpoints.
 
@@ -256,7 +253,7 @@ class ErrorHandler:
         """
         category = self.categorize_error(error)
 
-        response: Dict[str, Any] = {
+        response: dict[str, Any] = {
             "status": "error",
             "message": self.get_user_message(error),
             "suggestion": self.get_recovery_suggestion(error),
@@ -272,7 +269,7 @@ class ErrorHandler:
         return response
 
     def log_error(
-        self, error: Exception, context: Optional[Dict[str, Any]] = None, level: int = logging.ERROR
+        self, error: Exception, context: dict[str, Any] | None = None, level: int = logging.ERROR
     ) -> None:
         """
         Log an error with context information.
@@ -301,11 +298,11 @@ class ErrorHandler:
     def handle_error(
         self,
         error: Exception,
-        context: Optional[Dict[str, Any]] = None,
+        context: dict[str, Any] | None = None,
         include_details: bool = False,
-        error_code: Optional[str] = None,
+        error_code: str | None = None,
         log_level: int = logging.ERROR,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Comprehensive error handling: log the error and format a response.
 
@@ -332,11 +329,11 @@ error_handler = ErrorHandler()
 
 def handle_error(
     error: Exception,
-    context: Optional[Dict[str, Any]] = None,
+    context: dict[str, Any] | None = None,
     include_details: bool = False,
-    error_code: Optional[str] = None,
+    error_code: str | None = None,
     log_level: int = logging.ERROR,
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """
     Handle an error using the global error handler.
 

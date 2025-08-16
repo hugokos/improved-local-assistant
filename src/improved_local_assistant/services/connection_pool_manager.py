@@ -9,11 +9,8 @@ performance on edge devices.
 import asyncio
 import logging
 import time
+from collections.abc import AsyncGenerator
 from typing import Any
-from typing import AsyncGenerator
-from typing import Dict
-from typing import List
-from typing import Optional
 
 import httpx
 
@@ -26,7 +23,7 @@ class ConnectionPoolManager:
     residency management for edge device performance.
     """
 
-    def __init__(self, config: Dict[str, Any]):
+    def __init__(self, config: dict[str, Any]):
         """Initialize Connection Pool Manager with configuration."""
         self.config = config
         self.logger = logging.getLogger(__name__)
@@ -52,7 +49,7 @@ class ConnectionPoolManager:
         self.ollama_host = ollama_config.get("host", "http://localhost:11434")
 
         # HTTP client (will be initialized in initialize())
-        self._client: Optional[httpx.AsyncClient] = None
+        self._client: httpx.AsyncClient | None = None
 
         # Metrics
         self.metrics = {
@@ -64,7 +61,7 @@ class ConnectionPoolManager:
         }
 
         # Residency check task
-        self._residency_check_task: Optional[asyncio.Task] = None
+        self._residency_check_task: asyncio.Task | None = None
         self._residency_check_interval = 60.0  # Check every minute
 
     async def initialize(self) -> None:
@@ -115,10 +112,10 @@ class ConnectionPoolManager:
     async def chat_request(
         self,
         model: str,
-        messages: List[Dict[str, str]],
-        keep_alive: Optional[Any] = None,
+        messages: list[dict[str, str]],
+        keep_alive: Any | None = None,
         **options,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Make a chat request to Ollama with connection pooling.
 
@@ -134,7 +131,7 @@ class ConnectionPoolManager:
         if not self._client:
             raise RuntimeError("Connection pool not initialized")
 
-        request_start_time = time.time()
+        time.time()
 
         try:
             # Prepare request payload
@@ -178,8 +175,8 @@ class ConnectionPoolManager:
     async def stream_chat(
         self,
         model: str,
-        messages: List[Dict[str, str]],
-        keep_alive: Optional[Any] = None,
+        messages: list[dict[str, str]],
+        keep_alive: Any | None = None,
         **options,
     ) -> AsyncGenerator[str, None]:
         """
@@ -274,7 +271,7 @@ class ConnectionPoolManager:
             self.logger.error(f"Error checking model residency: {e}")
             return False
 
-    async def get_loaded_models(self) -> List[Dict[str, Any]]:
+    async def get_loaded_models(self) -> list[dict[str, Any]]:
         """
         Get list of currently loaded models.
 
@@ -353,7 +350,7 @@ class ConnectionPoolManager:
                 else:
                     break
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get connection pool metrics."""
         metrics = self.metrics.copy()
 

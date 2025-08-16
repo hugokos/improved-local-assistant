@@ -14,10 +14,8 @@ import time
 # Fix for Windows asyncio event loop issue
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+import contextlib
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 import networkx as nx
 
@@ -110,7 +108,7 @@ class KnowledgeGraphManager:
         # Configure LlamaIndex to use Ollama
         self._configure_llama_index()
 
-    def _safe_get_networkx_graph(self, kg_index, graph_id: str = "unknown") -> Optional[nx.Graph]:
+    def _safe_get_networkx_graph(self, kg_index, graph_id: str = "unknown") -> nx.Graph | None:
         """
         Safely get NetworkX graph from a knowledge graph index.
 
@@ -307,10 +305,8 @@ class KnowledgeGraphManager:
 
             # Clean up temp directory in background
             def cleanup_temp():
-                try:
+                with contextlib.suppress(builtins.BaseException):
                     shutil.rmtree(temp_dir)
-                except:
-                    pass
 
             import threading
 
@@ -325,7 +321,7 @@ class KnowledgeGraphManager:
         self.logger.error(f"All loading methods failed for {graph_path}")
         return None
 
-    def load_prebuilt_graphs(self, directory: Optional[str] = None) -> List[str]:
+    def load_prebuilt_graphs(self, directory: str | None = None) -> list[str]:
         """
         Load all pre-built knowledge graphs from directory.
 
@@ -439,8 +435,8 @@ class KnowledgeGraphManager:
             return loaded_graphs
 
     def create_graph_from_documents(
-        self, docs_path: str, graph_id: Optional[str] = None
-    ) -> Optional[str]:
+        self, docs_path: str, graph_id: str | None = None
+    ) -> str | None:
         """
         Create a new knowledge graph from documents.
 
@@ -543,9 +539,8 @@ class KnowledgeGraphManager:
         """
         try:
             # Initialize dynamic graph if it doesn't exist
-            if not self.dynamic_kg:
-                if not self.initialize_dynamic_graph():
-                    return False
+            if not self.dynamic_kg and not self.initialize_dynamic_graph():
+                return False
 
             # Extract entities in background using TinyLlama
             if self.model_manager:
@@ -617,7 +612,7 @@ class KnowledgeGraphManager:
         except Exception as e:
             self.logger.error(f"Error processing entities: {str(e)}")
 
-    def query_graphs(self, query: str, context: Optional[List[str]] = None) -> Dict[str, Any]:
+    def query_graphs(self, query: str, context: list[str] | None = None) -> dict[str, Any]:
         """
         Query all knowledge graphs using ensemble method.
 
@@ -765,7 +760,7 @@ class KnowledgeGraphManager:
 
             return error_result
 
-    def visualize_graph(self, graph_id: Optional[str] = None) -> str:
+    def visualize_graph(self, graph_id: str | None = None) -> str:
         """
         Generate HTML visualization of knowledge graph.
 
@@ -831,10 +826,8 @@ class KnowledgeGraphManager:
             html_content = html_content.replace("<body>", f"<body><h2>{title}</h2>")
 
             # Clean up temporary file
-            try:
+            with contextlib.suppress(OSError, FileNotFoundError):
                 os.remove(html_file)
-            except (OSError, FileNotFoundError):
-                pass
 
             return html_content
 
@@ -842,7 +835,7 @@ class KnowledgeGraphManager:
             self.logger.error(f"Error visualizing graph: {str(e)}")
             return f"<p>Error visualizing graph: {str(e)}</p>"
 
-    def add_new_graph(self, graph_path: str, graph_id: Optional[str] = None) -> Optional[str]:
+    def add_new_graph(self, graph_path: str, graph_id: str | None = None) -> str | None:
         """
         Add a new pre-built graph at runtime.
 
@@ -933,7 +926,7 @@ class KnowledgeGraphManager:
 
             # Create zip archive
             with zipfile.ZipFile(temp_zip.name, "w", zipfile.ZIP_DEFLATED) as zipf:
-                for root, dirs, files in os.walk(persist_dir):
+                for root, _dirs, files in os.walk(persist_dir):
                     for file in files:
                         file_path = os.path.join(root, file)
                         arcname = os.path.relpath(file_path, persist_dir)
@@ -1008,7 +1001,7 @@ class KnowledgeGraphManager:
 
                 # Create zip archive
                 with zipfile.ZipFile(temp_zip.name, "w", zipfile.ZIP_DEFLATED) as zipf:
-                    for root, dirs, files in os.walk(temp_persist_dir):
+                    for root, _dirs, files in os.walk(temp_persist_dir):
                         for file in files:
                             file_path = os.path.join(root, file)
                             arcname = os.path.relpath(file_path, temp_persist_dir)
@@ -1352,7 +1345,7 @@ class KnowledgeGraphManager:
             self.logger.error(f"Error rebuilding dynamic graph: {str(e)}")
             raise
 
-    def get_subgraph(self, query: str, max_hops: int = 2, max_nodes: int = 100) -> Dict[str, Any]:
+    def get_subgraph(self, query: str, max_hops: int = 2, max_nodes: int = 100) -> dict[str, Any]:
         """
         Extract a relevant subgraph for GraphRAG queries.
 
@@ -1419,7 +1412,7 @@ class KnowledgeGraphManager:
                 # Get neighborhood around this node
                 try:
                     neighborhood = nx.single_source_shortest_path_length(G, node, cutoff=max_hops)
-                    for neighbor in neighborhood.keys():
+                    for neighbor in neighborhood:
                         subgraph_nodes.add((neighbor, graph_idx, graph_sources[graph_idx]))
 
                         # Stop if we've reached max nodes
@@ -1474,7 +1467,7 @@ class KnowledgeGraphManager:
             self.logger.error(f"Error extracting subgraph: {str(e)}")
             return {"nodes": [], "edges": [], "metadata": {"query": query, "error": str(e)}}
 
-    def get_graph_traversal(self, source: str, target: str, max_hops: int = 3) -> List[List[str]]:
+    def get_graph_traversal(self, source: str, target: str, max_hops: int = 3) -> list[list[str]]:
         """
         Perform multi-hop graph traversal using NetworkX.
 
@@ -1596,7 +1589,7 @@ class KnowledgeGraphManager:
             self.logger.error(f"Error in graph traversal: {str(e)}")
             return []
 
-    def rebuild_graphs_with_new_embeddings(self) -> Dict[str, bool]:
+    def rebuild_graphs_with_new_embeddings(self) -> dict[str, bool]:
         """
         Rebuild all knowledge graphs with the current embedding model.
 
@@ -1689,7 +1682,7 @@ class KnowledgeGraphManager:
             self.logger.error(f"Error in rebuild_graphs_with_new_embeddings: {str(e)}")
             return results
 
-    def get_graph_statistics(self) -> Dict[str, Any]:
+    def get_graph_statistics(self) -> dict[str, Any]:
         """
         Get statistics for all knowledge graphs.
 

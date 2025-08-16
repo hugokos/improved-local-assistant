@@ -10,11 +10,9 @@ import logging
 import sys
 import time
 import uuid
+from collections.abc import AsyncGenerator
 from datetime import datetime
 from typing import Any
-from typing import AsyncGenerator
-from typing import Dict
-from typing import List
 
 # Fix for Windows asyncio event loop issue
 if sys.platform == "win32":
@@ -364,7 +362,6 @@ class ConversationManager:
             assistant_response = ""
             try:
                 # Set a reasonable timeout for the entire conversation
-                timeout = 30.0  # 30 seconds
 
                 # Define streaming function
                 async def _stream_response():
@@ -463,7 +460,7 @@ class ConversationManager:
             self.logger.error(f"Error in get_response: {str(e)}")
             yield f"Error: {str(e)}"
 
-    def get_conversation_history(self, session_id: str) -> List[Dict[str, Any]]:
+    def get_conversation_history(self, session_id: str) -> list[dict[str, Any]]:
         """
         Get the conversation history for a session.
 
@@ -745,7 +742,7 @@ class ConversationManager:
         await self._maybe_summarize_conversation(session_id)
         return session["summary"] or ""
 
-    def get_relevant_context(self, session_id: str, message: str) -> Dict[str, Any]:
+    def get_relevant_context(self, session_id: str, message: str) -> dict[str, Any]:
         """
         Get relevant context from conversation history and knowledge graphs.
 
@@ -785,7 +782,7 @@ class ConversationManager:
 
         return context
 
-    def get_citations(self, session_id: str) -> Dict[str, Any]:
+    def get_citations(self, session_id: str) -> dict[str, Any]:
         """
         Get enhanced citations data for the last response in a session.
 
@@ -884,7 +881,7 @@ class ConversationManager:
             },
         }
 
-    def get_session_info(self, session_id: str) -> Dict[str, Any]:
+    def get_session_info(self, session_id: str) -> dict[str, Any]:
         """
         Get session information for display.
 
@@ -1002,11 +999,11 @@ class ConversationManager:
         """Update dynamic graph and store extracted triples for WebSocket transmission."""
         try:
             # Call the original update method with speaker information
-            success = await self.kg_manager.update_dynamic_graph(user_message, speaker)
+            await self.kg_manager.update_dynamic_graph(user_message, speaker)
 
             # Enhanced triple extraction from message content
             # This creates more meaningful triples for demonstration
-            if success or True:  # Always create triples for demo purposes
+            if True:  # Always create triples for demo purposes
                 triples_created = []
 
                 # Extract key terms from the message for mock triples
@@ -1101,7 +1098,7 @@ class ConversationManager:
         except Exception as e:
             self.logger.error(f"Error in dynamic graph update callback: {e}")
 
-    def get_dynamic_triples(self, session_id: str) -> List[Dict[str, Any]]:
+    def get_dynamic_triples(self, session_id: str) -> list[dict[str, Any]]:
         """Get the latest dynamic triples for a session."""
         if session_id not in self.sessions:
             return []
@@ -1113,7 +1110,7 @@ class ConversationManager:
 
         return triples
 
-    def get_session_info(self, session_id: str) -> Dict[str, Any]:
+    def get_session_info(self, session_id: str) -> dict[str, Any]:
         """
         Get information about a session.
 
@@ -1141,7 +1138,7 @@ class ConversationManager:
             "metadata": session["metadata"],
         }
 
-    def list_sessions(self) -> List[Dict[str, Any]]:
+    def list_sessions(self) -> list[dict[str, Any]]:
         """
         List all active sessions.
 
@@ -1254,7 +1251,7 @@ class ConversationManager:
         except Exception as e:
             self.logger.error(f"Error in background task: {str(e)}")
 
-    async def _process_background_result(self, result: Dict[str, Any]) -> None:
+    async def _process_background_result(self, result: dict[str, Any]) -> None:
         """
         Process the result from a background task.
 
@@ -1272,7 +1269,7 @@ class ConversationManager:
         except Exception as e:
             self.logger.error(f"Error processing background result: {str(e)}")
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """
         Get performance metrics for the conversation manager.
 

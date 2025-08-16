@@ -9,17 +9,13 @@ This module provides REST API endpoints for:
 """
 
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
+from app.core.dependencies import get_dynamic_model_manager
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import HTTPException
 from pydantic import BaseModel
 from services.dynamic_model_manager import DynamicModelManager
-
-from app.core.dependencies import get_dynamic_model_manager
 
 router = APIRouter(prefix="/api/models", tags=["models"])
 
@@ -35,19 +31,19 @@ class ModelSwitchResponse(BaseModel):
 
     success: bool
     message: str
-    old_model: Optional[str] = None
-    new_model: Optional[str] = None
-    switch_time: Optional[float] = None
-    error: Optional[str] = None
-    config: Optional[Dict[str, Any]] = None
+    old_model: str | None = None
+    new_model: str | None = None
+    switch_time: float | None = None
+    error: str | None = None
+    config: dict[str, Any] | None = None
 
 
 class ModelStatusResponse(BaseModel):
     """Response model for model status."""
 
-    current_models: Dict[str, str]
-    available_models: Dict[str, List[Dict[str, Any]]]
-    metrics: Dict[str, Any]
+    current_models: dict[str, str]
+    available_models: dict[str, list[dict[str, Any]]]
+    metrics: dict[str, Any]
 
 
 @router.post("/conversation/switch", response_model=ModelSwitchResponse)

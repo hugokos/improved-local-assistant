@@ -13,11 +13,12 @@ import sys
 import time
 from datetime import datetime
 from typing import Any
-from typing import Dict
 
 # Fix for Windows asyncio event loop issue
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+import contextlib
 
 import psutil
 from asyncio_throttle import Throttler
@@ -132,10 +133,8 @@ class SystemMonitor:
         self.is_monitoring = False
         if self.monitoring_task:
             self.monitoring_task.cancel()
-            try:
+            with contextlib.suppress(asyncio.CancelledError):
                 await self.monitoring_task
-            except asyncio.CancelledError:
-                pass
             self.monitoring_task = None
 
         self.logger.info("System monitoring stopped")
@@ -339,7 +338,7 @@ class SystemMonitor:
         except Exception as e:
             self.logger.error(f"Error in cleanup: {str(e)}")
 
-    def get_resource_usage(self) -> Dict[str, float]:
+    def get_resource_usage(self) -> dict[str, float]:
         """
         Get current resource usage statistics.
 
@@ -356,7 +355,7 @@ class SystemMonitor:
             "disk_total_gb": self.metrics["system"]["disk_total_gb"],
         }
 
-    def get_performance_metrics(self) -> Dict[str, Any]:
+    def get_performance_metrics(self) -> dict[str, Any]:
         """
         Get current performance metrics.
 
@@ -371,7 +370,7 @@ class SystemMonitor:
             "last_cleanup": self.metrics["performance"]["last_cleanup"],
         }
 
-    def check_health(self) -> Dict[str, str]:
+    def check_health(self) -> dict[str, str]:
         """
         Perform a health check on all system components.
 
@@ -406,7 +405,7 @@ class SystemMonitor:
 
         return health
 
-    def log_event(self, event_type: str, details: Dict[str, Any]) -> None:
+    def log_event(self, event_type: str, details: dict[str, Any]) -> None:
         """
         Log a system event.
 
@@ -419,7 +418,7 @@ class SystemMonitor:
         self.logger.info(f"System event: {event_type}")
         self.logger.debug(json.dumps(event))
 
-    def get_system_info(self) -> Dict[str, Any]:
+    def get_system_info(self) -> dict[str, Any]:
         """
         Get detailed system information.
 
@@ -446,7 +445,7 @@ class SystemMonitor:
             self.logger.error(f"Error getting system info: {str(e)}")
             return {"error": str(e)}
 
-    def get_resource_limits(self) -> Dict[str, Any]:
+    def get_resource_limits(self) -> dict[str, Any]:
         """
         Get resource limits from configuration.
 
@@ -462,7 +461,7 @@ class SystemMonitor:
             "disk_threshold": self.disk_threshold,
         }
 
-    def get_all_metrics(self) -> Dict[str, Any]:
+    def get_all_metrics(self) -> dict[str, Any]:
         """
         Get all metrics and system information.
 

@@ -12,7 +12,6 @@ import logging
 import os
 import sys
 from typing import Any
-from typing import Dict
 
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -88,7 +87,7 @@ async def test_embedding_configuration():
         return False
 
 
-def read_graph_metadata() -> Dict[str, Dict[str, Any]]:
+def read_graph_metadata() -> dict[str, dict[str, Any]]:
     """Read metadata from all prebuilt graphs."""
     metadata = {}
     prebuilt_dir = "./data/prebuilt_graphs"
@@ -112,13 +111,13 @@ def read_graph_metadata() -> Dict[str, Dict[str, Any]]:
     return metadata
 
 
-def test_embedding_model_init(metadata: Dict[str, Dict[str, Any]]) -> str:
+def test_embedding_model_init(metadata: dict[str, dict[str, Any]]) -> str:
     """Test embedding model initialization."""
     try:
         # Get embedding model name from metadata
         embed_model_name = "BAAI/bge-small-en-v1.5"  # default
 
-        for graph_id, meta in metadata.items():
+        for _graph_id, meta in metadata.items():
             if "embed_model" in meta:
                 embed_model_name = meta["embed_model"]
                 break
@@ -128,7 +127,7 @@ def test_embedding_model_init(metadata: Dict[str, Dict[str, Any]]) -> str:
         # Test HuggingFace embedding initialization
         from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
-        embedding_model = HuggingFaceEmbedding(
+        HuggingFaceEmbedding(
             model_name=embed_model_name,
             trust_remote_code=False,
             device="cpu",

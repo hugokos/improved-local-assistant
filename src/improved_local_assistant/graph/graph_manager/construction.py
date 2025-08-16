@@ -10,8 +10,6 @@ import json
 import os
 import time
 from datetime import datetime
-from typing import List
-from typing import Optional
 
 from llama_index.core import KnowledgeGraphIndex
 from llama_index.core import SimpleDirectoryReader
@@ -25,7 +23,7 @@ from llama_index.core.indices.property_graph import PropertyGraphIndex
 class KnowledgeGraphConstruction:
     """Handles construction and dynamic updates of knowledge graphs."""
 
-    def load_prebuilt_graphs(self, directory: Optional[str] = None) -> List[str]:
+    def load_prebuilt_graphs(self, directory: str | None = None) -> list[str]:
         """
         Load all pre-built knowledge graphs from directory.
 
@@ -291,8 +289,8 @@ class KnowledgeGraphConstruction:
             return loaded_graphs
 
     def create_graph_from_documents(
-        self, docs_path: str, graph_id: Optional[str] = None
-    ) -> Optional[str]:
+        self, docs_path: str, graph_id: str | None = None
+    ) -> str | None:
         """
         Create a new knowledge graph from documents.
 
@@ -493,7 +491,6 @@ class KnowledgeGraphConstruction:
                                 self.logger.info("Successfully loaded single dynamic graph index")
                             else:
                                 # Multiple indices - prefer the right type
-                                kg_index = None
                                 for idx in indices:
                                     if graph_type == "property" and isinstance(
                                         idx, PropertyGraphIndex
@@ -667,9 +664,8 @@ class KnowledgeGraphConstruction:
         """
         try:
             # Initialize dynamic graph if it doesn't exist
-            if not self.dynamic_kg:
-                if not self.initialize_dynamic_graph():
-                    return False
+            if not self.dynamic_kg and not self.initialize_dynamic_graph():
+                return False
 
             # Skip if text is too short or doesn't contain useful content
             if len(conversation_text.strip()) < 20:
@@ -735,7 +731,7 @@ class KnowledgeGraphConstruction:
 
         return utt_id
 
-    def _split_text_into_chunks(self, text: str, max_tokens: int = 256) -> List[str]:
+    def _split_text_into_chunks(self, text: str, max_tokens: int = 256) -> list[str]:
         """Split text into smaller chunks for more efficient processing."""
         words = text.split()
         chunks = []
@@ -795,7 +791,7 @@ class KnowledgeGraphConstruction:
         self._save_catalog()
         return ent_id
 
-    async def _process_text_chunks_async(self, chunks: List[str], utt_id: str = None) -> None:
+    async def _process_text_chunks_async(self, chunks: list[str], utt_id: str = None) -> None:
         """Process text chunks asynchronously in background thread."""
         try:
             # Run in thread to avoid blocking the event loop
@@ -803,7 +799,7 @@ class KnowledgeGraphConstruction:
         except Exception as e:
             self.logger.error(f"Error in background chunk processing: {e}")
 
-    def _process_text_chunks(self, chunks: List[str], utt_id: str = None) -> None:
+    def _process_text_chunks(self, chunks: list[str], utt_id: str = None) -> None:
         """Process text chunks synchronously in background thread."""
         all_triples = []
 
@@ -826,7 +822,7 @@ class KnowledgeGraphConstruction:
 
     def _extract_triples_llm(self, chunk: str) -> str:
         """Extract triples using local LLM."""
-        prompt = f"""Extract key entities and relationships from this text. 
+        prompt = f"""Extract key entities and relationships from this text.
 Format as simple triplets: (subject, relation, object)
 Limit to {self.max_triplets_per_chunk} most important triplets.
 
@@ -846,7 +842,7 @@ Triplets:"""
             self.logger.warning(f"LLM extraction failed: {e}")
             return ""
 
-    def _parse_triple_lines(self, raw_text: str) -> List[tuple]:
+    def _parse_triple_lines(self, raw_text: str) -> list[tuple]:
         """Parse triple lines from LLM output."""
         triples = []
         lines = raw_text.strip().split("\n")
@@ -871,7 +867,7 @@ Triplets:"""
 
         return triples
 
-    async def _add_triples_with_provenance(self, triples: List[tuple], utt_id: str = None):
+    async def _add_triples_with_provenance(self, triples: list[tuple], utt_id: str = None):
         """Add triples to graph with utterance provenance."""
         try:
             if not self.dynamic_kg:
@@ -1055,7 +1051,7 @@ Triplets:"""
         except Exception as e:
             self.logger.error(f"Error processing entities: {str(e)}")
 
-    def add_new_graph(self, graph_path: str, graph_id: Optional[str] = None) -> Optional[str]:
+    def add_new_graph(self, graph_path: str, graph_id: str | None = None) -> str | None:
         """
         Add a new pre-built graph at runtime.
 
@@ -1142,7 +1138,7 @@ Triplets:"""
             self.logger.error(f"Error registering graph {graph_id}: {str(e)}")
             raise
 
-    async def add_triples_to_dynamic_graph(self, triples: List[tuple]) -> bool:
+    async def add_triples_to_dynamic_graph(self, triples: list[tuple]) -> bool:
         """
         Add triples directly to the dynamic knowledge graph.
 
@@ -1154,9 +1150,8 @@ Triplets:"""
         """
         try:
             # Initialize dynamic graph if it doesn't exist
-            if not self.dynamic_kg:
-                if not self.initialize_dynamic_graph():
-                    return False
+            if not self.dynamic_kg and not self.initialize_dynamic_graph():
+                return False
 
             self.logger.info(f"🔗 Adding {len(triples)} triples to persistent dynamic graph")
 

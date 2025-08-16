@@ -114,7 +114,7 @@ class TestMilestone2(unittest.TestCase):
             f.write(
                 """
             Small Knowledge Graph Test Document
-            
+
             Python is a programming language created by Guido van Rossum.
             FastAPI is a web framework for building APIs with Python.
             Uvicorn is an ASGI server that can run FastAPI applications.
@@ -129,7 +129,7 @@ class TestMilestone2(unittest.TestCase):
             f.write(
                 """
             Medium Knowledge Graph Test Document
-            
+
             The solar system contains eight planets.
             Mercury is the closest planet to the Sun.
             Venus is the second planet from the Sun.
@@ -139,7 +139,7 @@ class TestMilestone2(unittest.TestCase):
             Saturn is the sixth planet from the Sun.
             Uranus is the seventh planet from the Sun.
             Neptune is the eighth planet from the Sun.
-            
+
             The Sun is a star at the center of the solar system.
             Planets orbit around the Sun.
             Earth has one natural satellite called the Moon.
@@ -156,7 +156,7 @@ class TestMilestone2(unittest.TestCase):
             f.write(
                 """
             Large Knowledge Graph Test Document
-            
+
             Albert Einstein was a physicist who developed the theory of relativity.
             Marie Curie was a physicist and chemist who conducted research on radioactivity.
             Isaac Newton developed the laws of motion and universal gravitation.
@@ -167,7 +167,7 @@ class TestMilestone2(unittest.TestCase):
             Alan Turing was a mathematician and computer scientist who formalized the concepts of algorithm and computation.
             Grace Hopper was a computer scientist who developed the first compiler for a programming language.
             Richard Feynman was a physicist who worked on quantum mechanics and particle physics.
-            
+
             The theory of relativity was published by Einstein in 1915.
             Radioactivity was discovered by Henri Becquerel in 1896.
             Newton's laws of motion were published in Principia Mathematica in 1687.
@@ -178,14 +178,14 @@ class TestMilestone2(unittest.TestCase):
             Turing's paper on computability was published in 1936.
             Hopper's compiler was developed in 1952.
             Feynman's diagrams were introduced in 1948.
-            
+
             Physics is the study of matter, energy, and the interactions between them.
             Chemistry is the study of substances, their properties, and reactions.
             Mathematics is the study of numbers, quantities, and shapes.
             Astronomy is the study of celestial objects and phenomena.
             Computer Science is the study of computation and information processing.
             Engineering is the application of scientific knowledge to design and build systems.
-            
+
             The Nobel Prize in Physics was awarded to Einstein in 1921.
             The Nobel Prize in Physics and Chemistry was awarded to Marie Curie in 1903 and 1911.
             The Fields Medal is considered the highest honor in mathematics.
@@ -263,17 +263,17 @@ class TestMilestone2(unittest.TestCase):
 
         # Test query performance on small graph
         start_time = time.time()
-        result_small = self.graph_manager.query_graphs("What is Python?")
+        self.graph_manager.query_graphs("What is Python?")
         small_query_time = time.time() - start_time
 
         # Test query performance on medium graph
         start_time = time.time()
-        result_medium = self.graph_manager.query_graphs("What is the solar system?")
+        self.graph_manager.query_graphs("What is the solar system?")
         medium_query_time = time.time() - start_time
 
         # Test query performance on large graph
         start_time = time.time()
-        result_large = self.graph_manager.query_graphs("Who was Albert Einstein?")
+        self.graph_manager.query_graphs("Who was Albert Einstein?")
         large_query_time = time.time() - start_time
 
         # Log performance results
@@ -289,15 +289,15 @@ class TestMilestone2(unittest.TestCase):
 
         # Test visualization performance
         start_time = time.time()
-        html_small = self.graph_manager.visualize_graph(small_graph_id)
+        self.graph_manager.visualize_graph(small_graph_id)
         small_vis_time = time.time() - start_time
 
         start_time = time.time()
-        html_medium = self.graph_manager.visualize_graph(medium_graph_id)
+        self.graph_manager.visualize_graph(medium_graph_id)
         medium_vis_time = time.time() - start_time
 
         start_time = time.time()
-        html_large = self.graph_manager.visualize_graph(large_graph_id)
+        self.graph_manager.visualize_graph(large_graph_id)
         large_vis_time = time.time() - start_time
 
         # Log visualization performance results
@@ -317,7 +317,7 @@ class TestMilestone2(unittest.TestCase):
         initial_memory = process.memory_info().rss / (1024 * 1024)  # MB
 
         # Create a large graph
-        large_graph_id = self.graph_manager.create_graph_from_documents(
+        self.graph_manager.create_graph_from_documents(
             str(self.test_graphs_dir / "large_graph"), "memory_large_graph"
         )
 
@@ -392,7 +392,7 @@ class TestMilestone2(unittest.TestCase):
 
         # Immediately perform a query operation
         query_start_time = time.time()
-        query_result = self.graph_manager.query_graphs("What is Python?")
+        self.graph_manager.query_graphs("What is Python?")
         query_time = time.time() - query_start_time
 
         # Log timing

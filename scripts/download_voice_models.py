@@ -180,10 +180,7 @@ def download_piper_voice(voice_name: str, voices_dir: Path):
         return False
 
     # Download config file
-    if not download_file(voice_info["config_url"], config_file, f"Piper {voice_name} config"):
-        return False
-
-    return True
+    return download_file(voice_info["config_url"], config_file, f"Piper {voice_name} config")
 
 
 def setup_voice_directories():

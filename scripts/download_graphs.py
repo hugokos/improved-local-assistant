@@ -11,8 +11,6 @@ import sys
 import tarfile
 import zipfile
 from pathlib import Path
-from typing import Dict
-from typing import List
 
 import requests
 
@@ -155,7 +153,7 @@ def extract_archive(filepath: Path, extract_dir: Path) -> bool:
         return False
 
 
-def build_download_url(graph: Dict) -> str:
+def build_download_url(graph: dict) -> str:
     """Build download URL based on configuration."""
     config = GRAPHS_CONFIG
 
@@ -167,7 +165,7 @@ def build_download_url(graph: Dict) -> str:
         return f"{config['base_url']}/{graph['filename']}"
 
 
-def download_graph(graph: Dict, graphs_dir: Path) -> bool:
+def download_graph(graph: dict, graphs_dir: Path) -> bool:
     """Download and extract a single knowledge graph."""
     print(f"\n🔄 Processing: {graph['name'].title()}")
     print(f"   {graph['description']}")
@@ -204,7 +202,7 @@ def download_graph(graph: Dict, graphs_dir: Path) -> bool:
     return True
 
 
-def download_selected_graphs(graph_names: List[str]):
+def download_selected_graphs(graph_names: list[str]):
     """Download selected knowledge graphs."""
     graphs_dir = Path(GRAPHS_CONFIG["graphs_dir"])
     available_graphs = {g["name"]: g for g in GRAPHS_CONFIG["available_graphs"]}

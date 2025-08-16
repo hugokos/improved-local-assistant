@@ -102,7 +102,7 @@ async def test_improved_graphrag():
             try:
                 # Route the query
                 top_graphs, scores = router.route(query, k=2)
-                logger.info(f"Routed to graphs: {list(zip(top_graphs, scores.tolist()))}")
+                logger.info(f"Routed to graphs: {list(zip(top_graphs, scores.tolist(), strict=False))}")
 
                 # Perform full query
                 result = await router.query(query, k=2)

@@ -12,7 +12,6 @@ import logging
 import os
 import time
 from typing import Any
-from typing import Dict
 
 from fastapi import FastAPI
 from services import ConversationManager
@@ -24,7 +23,7 @@ from services import SystemMonitor
 logger = logging.getLogger(__name__)
 
 
-async def load_graphs_background(kg_manager: KnowledgeGraphManager, config: Dict[str, Any]) -> None:
+async def load_graphs_background(kg_manager: KnowledgeGraphManager, config: dict[str, Any]) -> None:
     """Load knowledge graphs in the background to avoid blocking startup."""
     try:
         if not kg_manager:
@@ -46,7 +45,7 @@ async def load_graphs_background(kg_manager: KnowledgeGraphManager, config: Dict
         logger.error(f"Error in background graph loading: {str(e)}")
 
 
-def create_singleton_embedding_model(config: Dict[str, Any]):
+def create_singleton_embedding_model(config: dict[str, Any]):
     """Create a singleton embedding model to avoid reloading."""
     embedding_config = config.get("embedding", {})
 
@@ -92,7 +91,7 @@ def create_singleton_embedding_model(config: Dict[str, Any]):
 _EMBEDDING_MODEL = None
 
 
-async def initialize_services(config: Dict[str, Any]) -> Dict[str, Any]:
+async def initialize_services(config: dict[str, Any]) -> dict[str, Any]:
     """
     Initialize all services required by the application.
 
@@ -293,7 +292,7 @@ async def initialize_services(config: Dict[str, Any]) -> Dict[str, Any]:
         return services
 
 
-def init_app(app: FastAPI, config: Dict[str, Any]) -> None:
+def init_app(app: FastAPI, config: dict[str, Any]) -> None:
     """
     Register startup and shutdown events for the FastAPI application.
 

@@ -55,7 +55,6 @@ async def test_websocket_stability():
 
                 # Wait for response
                 response_count = 0
-                citations_received = False
 
                 while response_count < 50:  # Limit to prevent infinite loop
                     try:
@@ -64,7 +63,6 @@ async def test_websocket_stability():
                         try:
                             json_msg = json.loads(msg)
                             if json_msg.get("type") == "citations":
-                                citations_received = True
                                 citations = json_msg.get("data", {}).get("citations", [])
                                 print(f"   📚 Received {len(citations)} citations")
                             elif (

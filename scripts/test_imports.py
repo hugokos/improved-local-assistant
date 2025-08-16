@@ -48,21 +48,20 @@ def test_basic_initialization():
     print("\n🔧 Testing Basic Initialization")
 
     try:
+        from app.core.config import load_config
         from services.system_monitor import SystemMonitor
         from services.working_set_cache import WorkingSetCache
-
-        from app.core.config import load_config
 
         # Load config
         config = load_config()
         print("✅ Configuration loaded")
 
         # Create system monitor
-        system_monitor = SystemMonitor(config)
+        SystemMonitor(config)
         print("✅ SystemMonitor created")
 
         # Create working set cache
-        cache = WorkingSetCache(config)
+        WorkingSetCache(config)
         print("✅ WorkingSetCache created")
 
         print("\n🎉 Basic initialization successful!")

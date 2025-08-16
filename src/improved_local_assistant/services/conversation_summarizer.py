@@ -8,8 +8,6 @@ memory usage while preserving context for long conversations.
 import logging
 from datetime import datetime
 from typing import Any
-from typing import Dict
-from typing import List
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -34,7 +32,7 @@ class ConversationSummarizer:
         logger.info("Conversation summarizer initialized")
 
     async def summarize_conversation(
-        self, messages: List[Dict[str, Any]], max_messages: int = 20
+        self, messages: list[dict[str, Any]], max_messages: int = 20
     ) -> str:
         """
         Generate a summary of a conversation.
@@ -86,7 +84,7 @@ class ConversationSummarizer:
             logger.error(f"Error generating conversation summary: {str(e)}")
             return self._generate_basic_summary(messages)
 
-    def _generate_basic_summary(self, messages: List[Dict[str, Any]]) -> str:
+    def _generate_basic_summary(self, messages: list[dict[str, Any]]) -> str:
         """
         Generate a basic summary without using the model.
 
@@ -154,8 +152,8 @@ class ConversationSummarizer:
         return summary
 
     async def compress_conversation(
-        self, messages: List[Dict[str, Any]], max_messages: int = 20, keep_recent: int = 10
-    ) -> List[Dict[str, Any]]:
+        self, messages: list[dict[str, Any]], max_messages: int = 20, keep_recent: int = 10
+    ) -> list[dict[str, Any]]:
         """
         Compress a conversation by summarizing older messages.
 
@@ -191,7 +189,7 @@ class ConversationSummarizer:
         logger.info(f"Compressed conversation to {len(compressed)} messages")
         return compressed
 
-    def estimate_token_count(self, messages: List[Dict[str, Any]]) -> int:
+    def estimate_token_count(self, messages: list[dict[str, Any]]) -> int:
         """
         Estimate the token count for a conversation.
 
@@ -231,7 +229,7 @@ def initialize_summarizer(model_manager=None):
     return summarizer
 
 
-async def summarize_conversation(messages: List[Dict[str, Any]], max_messages: int = 20) -> str:
+async def summarize_conversation(messages: list[dict[str, Any]], max_messages: int = 20) -> str:
     """
     Summarize a conversation using the global summarizer.
 
@@ -251,8 +249,8 @@ async def summarize_conversation(messages: List[Dict[str, Any]], max_messages: i
 
 
 async def compress_conversation(
-    messages: List[Dict[str, Any]], max_messages: int = 20, keep_recent: int = 10
-) -> List[Dict[str, Any]]:
+    messages: list[dict[str, Any]], max_messages: int = 20, keep_recent: int = 10
+) -> list[dict[str, Any]]:
     """
     Compress a conversation using the global summarizer.
 

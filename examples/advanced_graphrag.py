@@ -7,8 +7,6 @@ Demonstrates sophisticated knowledge graph operations and retrieval patterns.
 import sys
 from pathlib import Path
 from typing import Any
-from typing import Dict
-from typing import List
 
 # Add project root to path for imports
 project_root = Path(__file__).parent.parent
@@ -26,7 +24,7 @@ class GraphRAGExample:
         self.query_manager = GraphQueryManager()
         self.retriever = HybridRetriever()
 
-    def demonstrate_entity_extraction(self, text: str) -> Dict[str, Any]:
+    def demonstrate_entity_extraction(self, text: str) -> dict[str, Any]:
         """Extract entities and relationships from text.
 
         Args:
@@ -49,7 +47,7 @@ class GraphRAGExample:
             ],
         }
 
-    def demonstrate_hybrid_retrieval(self, query: str, top_k: int = 5) -> List[Dict[str, Any]]:
+    def demonstrate_hybrid_retrieval(self, query: str, top_k: int = 5) -> list[dict[str, Any]]:
         """Demonstrate hybrid retrieval combining multiple search methods.
 
         Args:
@@ -79,7 +77,7 @@ class GraphRAGExample:
 
         return results[:top_k]
 
-    def demonstrate_conversational_memory(self, session_id: str) -> Dict[str, Any]:
+    def demonstrate_conversational_memory(self, session_id: str) -> dict[str, Any]:
         """Show how conversational memory enhances responses.
 
         Args:
@@ -107,7 +105,7 @@ def main() -> None:
 
     # Entity extraction example
     sample_text = """
-    Machine learning is a powerful subset of artificial intelligence that enables 
+    Machine learning is a powerful subset of artificial intelligence that enables
     computers to learn and improve from experience without being explicitly programmed.
     Neural networks, inspired by the human brain, are a key technology in deep learning.
     """

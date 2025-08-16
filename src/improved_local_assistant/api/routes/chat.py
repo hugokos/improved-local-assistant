@@ -6,11 +6,10 @@ This module provides REST API endpoints for chat functionality.
 
 import logging
 
+from app.schemas import MessageRequest
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Request
-
-from app.schemas import MessageRequest
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

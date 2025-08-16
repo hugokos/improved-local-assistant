@@ -15,12 +15,11 @@ from pathlib import Path
 # Add the parent directory to the path so we can import from services
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
+from app.core.config import load_config
 from services.connection_pool_manager import ConnectionPoolManager
 from services.llm_orchestrator import LLMOrchestrator
 from services.system_monitor import SystemMonitor
 from services.working_set_cache import WorkingSetCache
-
-from app.core.config import load_config
 
 
 async def test_basic_orchestration():
@@ -255,7 +254,7 @@ async def test_connection_pool():
         # Test basic request (if Ollama is available)
         try:
             print("📤 Testing basic request...")
-            response = await pool_manager.chat_request(
+            await pool_manager.chat_request(
                 model="hermes3:3b", messages=[{"role": "user", "content": "test"}], num_predict=1
             )
             print("✅ Basic request successful")

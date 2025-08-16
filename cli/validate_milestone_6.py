@@ -442,7 +442,7 @@ async def run_performance_test():
     # Create tasks
     tasks = [
         process_user_messages(i + 1, sid, msgs)
-        for i, (sid, msgs) in enumerate(zip(session_ids, user_messages))
+        for i, (sid, msgs) in enumerate(zip(session_ids, user_messages, strict=False))
     ]
 
     # Run tasks concurrently and measure time
@@ -831,7 +831,7 @@ async def run_error_handling_test():
             return response
 
         # Create tasks
-        tasks = [process_message(sid, msg) for sid, msg in zip(session_ids, messages)]
+        tasks = [process_message(sid, msg) for sid, msg in zip(session_ids, messages, strict=False)]
 
         # Run tasks concurrently
         responses = await asyncio.gather(*tasks)

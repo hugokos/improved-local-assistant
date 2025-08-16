@@ -4,7 +4,7 @@ GraphRAG Pipeline Benchmark
 
 Measures the complete user experience including:
 1. Knowledge graph retrieval time
-2. Context assembly overhead  
+2. Context assembly overhead
 3. Model TTFT (Time-to-First-Token)
 4. Total end-to-end response time
 
@@ -20,18 +20,16 @@ import statistics
 import sys
 import time
 from typing import Any
-from typing import Dict
 
 # Add project root to path
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 
+from app.core.config import load_config
 from services.conversation_manager import ConversationManager
 from services.graph_manager import KnowledgeGraphManager
 from services.model_manager import ModelConfig
 from services.model_manager import ModelManager
-
-from app.core.config import load_config
 
 
 class GraphRAGBenchmark:
@@ -110,7 +108,7 @@ class GraphRAGBenchmark:
         except Exception as e:
             print(f"Warning: Could not create test graph: {e}")
 
-    async def benchmark_single_query(self, query: str) -> Dict[str, float]:
+    async def benchmark_single_query(self, query: str) -> dict[str, float]:
         """
         Benchmark a single query through the complete GraphRAG pipeline.
 
@@ -150,32 +148,27 @@ class GraphRAGBenchmark:
             prep_start = time.time()
 
             # Prepare the context for the model (if we retrieved any)
-            enhanced_query = query
             if retrieved_context:
                 try:
                     # Handle different types of retrieved context safely
                     if isinstance(retrieved_context, dict):
                         # If it's a dict with response, use that
                         if "response" in retrieved_context:
-                            context_text = str(retrieved_context["response"])[:500]  # Limit length
-                            enhanced_query = f"Context: {context_text}\n\nQuestion: {query}"
+                            str(retrieved_context["response"])[:500]  # Limit length
                             print("    Enhanced query with context from response")
                         elif "source_nodes" in retrieved_context:
                             # Use source nodes if available
                             nodes = retrieved_context["source_nodes"][:3]
-                            context_text = "\n".join([str(node) for node in nodes])[:500]
-                            enhanced_query = f"Context: {context_text}\n\nQuestion: {query}"
+                            "\n".join([str(node) for node in nodes])[:500]
                             print(f"    Enhanced query with {len(nodes)} source nodes")
-                    elif isinstance(retrieved_context, (list, tuple)):
+                    elif isinstance(retrieved_context, list | tuple):
                         # If it's a list, join the first few items
                         context_items = [str(item) for item in retrieved_context[:3]]
-                        context_text = "\n".join(context_items)[:500]
-                        enhanced_query = f"Context: {context_text}\n\nQuestion: {query}"
+                        "\n".join(context_items)[:500]
                         print(f"    Enhanced query with {len(context_items)} context items")
                     else:
                         # Fallback: just convert to string
-                        context_text = str(retrieved_context)[:500]
-                        enhanced_query = f"Context: {context_text}\n\nQuestion: {query}"
+                        str(retrieved_context)[:500]
                         print("    Enhanced query with string context")
                 except Exception as e:
                     print(f"    Warning: Could not process context: {e}")
@@ -225,7 +218,7 @@ class GraphRAGBenchmark:
                 "error": str(e),
             }
 
-    async def benchmark_pipeline(self, num_runs: int = 3) -> Dict[str, Any]:
+    async def benchmark_pipeline(self, num_runs: int = 3) -> dict[str, Any]:
         """
         Benchmark the complete GraphRAG pipeline with multiple queries.
 
@@ -318,7 +311,7 @@ class GraphRAGBenchmark:
             "raw_results": all_results,
         }
 
-    def save_results(self, results: Dict[str, Any], filename: str = None):
+    def save_results(self, results: dict[str, Any], filename: str = None):
         """Save benchmark results to JSON file."""
         if filename is None:
             timestamp = int(time.time())

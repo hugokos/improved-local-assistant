@@ -5,17 +5,17 @@ This module provides WebSocket endpoints for real-time chat functionality.
 """
 
 import asyncio
+import contextlib
 import logging
 import time
 import uuid
 from datetime import datetime
 
+from app.core.websockets import ws_error
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
 from services import get_timeout
 from starlette.websockets import WebSocketState
-
-from app.core.websockets import ws_error
 
 logger = logging.getLogger(__name__)
 
@@ -31,7 +31,7 @@ async def chat_websocket(websocket: WebSocket, session_id: str, app):
 
     try:
         conversation_manager = getattr(app.state, "conversation_manager", None)
-        kg_manager = getattr(app.state, "kg_manager", None)
+        getattr(app.state, "kg_manager", None)
         system_monitor = getattr(app.state, "system_monitor", None)
         connection_manager = getattr(app.state, "connection_manager", None)
         dynamic_model_manager = getattr(app.state, "dynamic_model_manager", None)
@@ -392,7 +392,5 @@ async def chat_websocket(websocket: WebSocket, session_id: str, app):
                 await websocket.close(code=1011, reason=f"Internal error: {str(e)}")
         except Exception as close_error:
             logger.error(f"Error closing WebSocket connection: {str(close_error)}")
-            try:
+            with contextlib.suppress(Exception):
                 await websocket.send_json({"type": "error", "message": str(e)})
-            except Exception:
-                pass

@@ -11,9 +11,6 @@ This module provides the DynamicModelManager class that handles:
 import logging
 import time
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 from services.connection_pool_manager import ConnectionPoolManager
 
@@ -26,7 +23,7 @@ class DynamicModelManager:
     updates, and UI synchronization via WebSocket notifications.
     """
 
-    def __init__(self, config: Dict[str, Any], connection_pool: ConnectionPoolManager):
+    def __init__(self, config: dict[str, Any], connection_pool: ConnectionPoolManager):
         """Initialize Dynamic Model Manager with configuration."""
         self.config = config
         self.connection_pool = connection_pool
@@ -76,7 +73,7 @@ class DynamicModelManager:
         """Unregister a WebSocket connection."""
         self.websocket_connections.discard(websocket)
 
-    async def switch_conversation_model(self, model_name: str) -> Dict[str, Any]:
+    async def switch_conversation_model(self, model_name: str) -> dict[str, Any]:
         """
         Switch the conversation model to the specified model.
 
@@ -160,7 +157,7 @@ class DynamicModelManager:
                 "model": model_name,
             }
 
-    async def switch_knowledge_model(self, model_name: str) -> Dict[str, Any]:
+    async def switch_knowledge_model(self, model_name: str) -> dict[str, Any]:
         """
         Switch the knowledge extraction model to the specified model.
 
@@ -244,7 +241,7 @@ class DynamicModelManager:
                 "model": model_name,
             }
 
-    def _get_model_config(self, model_type: str, model_name: str) -> Optional[Dict[str, Any]]:
+    def _get_model_config(self, model_type: str, model_name: str) -> dict[str, Any] | None:
         """
         Get configuration for a specific model.
 
@@ -360,22 +357,22 @@ class DynamicModelManager:
         else:
             self.metrics[metric_name] = new_value
 
-    def get_current_models(self) -> Dict[str, str]:
+    def get_current_models(self) -> dict[str, str]:
         """Get currently active models."""
         return {
             "conversation": self.current_conversation_model,
             "knowledge": self.current_knowledge_model,
         }
 
-    def get_available_models(self) -> Dict[str, List[Dict[str, Any]]]:
+    def get_available_models(self) -> dict[str, list[dict[str, Any]]]:
         """Get available model options."""
         return {"conversation": self.conversation_options, "knowledge": self.knowledge_options}
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get model manager metrics."""
         return self.metrics.copy()
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """Get model manager status."""
         return {
             "current_models": self.get_current_models(),

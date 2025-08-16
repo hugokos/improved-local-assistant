@@ -7,14 +7,13 @@ This module provides functions to load and validate configuration from YAML file
 import logging
 import os
 from typing import Any
-from typing import Dict
 
 import yaml
 
 logger = logging.getLogger(__name__)
 
 
-def load_config(config_path: str = "config.yaml") -> Dict[str, Any]:
+def load_config(config_path: str = "config.yaml") -> dict[str, Any]:
     """
     Load configuration from a YAML file and override with environment variables.
 

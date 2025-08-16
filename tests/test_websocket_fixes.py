@@ -92,7 +92,7 @@ class WebSocketTester:
         try:
             async with websockets.connect(f"{self.url}/{self.session_id}_disconnect") as websocket:
                 # Wait for connection
-                response = await websocket.recv()
+                await websocket.recv()
                 logger.info("Connected for disconnect test")
 
                 # Send a message
@@ -165,7 +165,7 @@ class WebSocketTester:
             # Test with a session that might trigger the error path
             async with websockets.connect(f"{self.url}/invalid_session_test") as websocket:
                 # Wait for connection
-                response = await websocket.recv()
+                await websocket.recv()
 
                 # Send a message that might trigger knowledge graph query
                 await websocket.send("What do you know about water purification methods?")

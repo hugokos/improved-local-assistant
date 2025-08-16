@@ -11,11 +11,10 @@ import logging
 import time
 from datetime import datetime
 
+from app.core.websockets import ws_error
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
 from starlette.websockets import WebSocketState
-
-from app.core.websockets import ws_error
 
 logger = logging.getLogger(__name__)
 

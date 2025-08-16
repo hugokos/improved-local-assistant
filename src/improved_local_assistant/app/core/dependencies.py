@@ -9,7 +9,6 @@ This module provides dependency injection functions for:
 """
 
 from typing import Any
-from typing import Dict
 
 from services.connection_pool_manager import ConnectionPoolManager
 from services.dynamic_model_manager import DynamicModelManager
@@ -19,11 +18,11 @@ from services.system_monitor import SystemMonitor
 _dynamic_model_manager: DynamicModelManager = None
 _connection_pool_manager: ConnectionPoolManager = None
 _system_monitor: SystemMonitor = None
-_config: Dict[str, Any] = None
+_config: dict[str, Any] = None
 
 
 def initialize_dependencies(
-    config: Dict[str, Any], connection_pool: ConnectionPoolManager, system_monitor: SystemMonitor
+    config: dict[str, Any], connection_pool: ConnectionPoolManager, system_monitor: SystemMonitor
 ) -> None:
     """
     Initialize global dependency instances.
@@ -62,7 +61,7 @@ def get_system_monitor() -> SystemMonitor:
     return _system_monitor
 
 
-def get_config() -> Dict[str, Any]:
+def get_config() -> dict[str, Any]:
     """Get the application configuration."""
     if _config is None:
         raise RuntimeError("Configuration not initialized")

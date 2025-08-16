@@ -9,6 +9,8 @@ This script shows:
 4. Storage file sizes and growth patterns
 """
 
+import builtins
+import contextlib
 import json
 import logging
 import sys
@@ -179,10 +181,8 @@ def inspect_directory(directory: Path, title: str):
                 except Exception as e:
                     print(f"    ❌ {file_path.name}: Error - {e}")
 
-            try:
+            with contextlib.suppress(builtins.BaseException):
                 total_size += file_path.stat().st_size
-            except:
-                pass
 
         print(f"\n   📊 Total size: {format_size(total_size)}")
 

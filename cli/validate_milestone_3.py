@@ -491,7 +491,7 @@ async def main():
     )
     parser.add_argument("--interactive", action="store_true", help="Run in interactive mode")
 
-    args = parser.parse_args()
+    parser.parse_args()
 
     # Always run in interactive mode for now
     cli = ValidationCLI()

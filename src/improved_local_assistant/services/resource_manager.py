@@ -6,14 +6,14 @@ including memory management, conversation summarization, and adaptive resource a
 """
 
 import asyncio
+import contextlib
 import gc
 import logging
 import os
 import sys
 import time
+from collections.abc import Callable
 from typing import Any
-from typing import Callable
-from typing import Dict
 
 import psutil
 
@@ -89,10 +89,8 @@ class ResourceManager:
         self.is_monitoring = False
         if self.monitoring_task:
             self.monitoring_task.cancel()
-            try:
+            with contextlib.suppress(asyncio.CancelledError):
                 await self.monitoring_task
-            except asyncio.CancelledError:
-                pass
             self.monitoring_task = None
 
         logger.info("Resource monitoring stopped")
@@ -217,7 +215,7 @@ class ResourceManager:
         # Update metrics
         self.metrics["memory_cleanup_count"] += 1
 
-    def register_memory_pressure_callback(self, callback: Callable[[Dict[str, Any]], Any]) -> None:
+    def register_memory_pressure_callback(self, callback: Callable[[dict[str, Any]], Any]) -> None:
         """
         Register a callback for memory pressure events.
 
@@ -227,7 +225,7 @@ class ResourceManager:
         self.memory_pressure_callbacks.append(callback)
         logger.info(f"Registered memory pressure callback: {callback.__name__}")
 
-    def get_resource_limits(self) -> Dict[str, Any]:
+    def get_resource_limits(self) -> dict[str, Any]:
         """
         Get resource limits.
 
@@ -244,7 +242,7 @@ class ResourceManager:
             "system_memory_percent": self.system_memory_percent,
         }
 
-    def get_resource_usage(self) -> Dict[str, Any]:
+    def get_resource_usage(self) -> dict[str, Any]:
         """
         Get current resource usage.
 
@@ -261,7 +259,7 @@ class ResourceManager:
             "memory_available_gb": round(memory.available / (1024**3), 2),
         }
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """
         Get resource manager metrics.
 
@@ -270,7 +268,7 @@ class ResourceManager:
         """
         return self.metrics
 
-    def get_all_metrics(self) -> Dict[str, Any]:
+    def get_all_metrics(self) -> dict[str, Any]:
         """
         Get all metrics and resource information.
 

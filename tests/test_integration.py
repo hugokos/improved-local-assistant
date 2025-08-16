@@ -12,9 +12,6 @@ import logging
 import tempfile
 import time
 from pathlib import Path
-from typing import Dict
-from typing import List
-from typing import Optional
 
 import pytest
 
@@ -184,7 +181,7 @@ class MockGraphManager:
         """Alias for flush() to match the interface mentioned in the requirements."""
         await self.flush()
 
-    def get_stats(self) -> Dict[str, int]:
+    def get_stats(self) -> dict[str, int]:
         """Get graph statistics."""
         return {"nodes": len(self.nodes), "edges": len(self.edges)}
 
@@ -197,8 +194,8 @@ class MockRetriever:
         self.metrics = {"queries_processed": 0, "avg_retrieval_time": 0.0}
 
     async def retrieve_chunks(
-        self, query: str, session_id: Optional[str] = None, budget: Optional[int] = None
-    ) -> List:
+        self, query: str, session_id: str | None = None, budget: int | None = None
+    ) -> list:
         """Mock retrieval that searches through the graph nodes with improved matching."""
         start_time = time.time()
 
@@ -282,7 +279,7 @@ class MockRetriever:
         )
         return matching_chunks
 
-    def retrieve(self, query: str) -> List:
+    def retrieve(self, query: str) -> list:
         """Synchronous retrieve method."""
         return asyncio.run(self.retrieve_chunks(query))
 
@@ -336,7 +333,7 @@ class TestIntegration:
         """Create a mock retriever."""
         return MockRetriever(graph_manager)
 
-    def contains_expected_answer(self, chunks: List, expected_answer) -> bool:
+    def contains_expected_answer(self, chunks: list, expected_answer) -> bool:
         """Check if retrieved chunks contain the expected answer."""
         if not chunks:
             return False

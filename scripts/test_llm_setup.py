@@ -24,12 +24,11 @@ def test_llamaindex_settings():
 
     try:
         # Initialize model manager first to set up Settings
+        from app.core.config import load_config
         from services.orchestrated_model_manager import OrchestratedModelManager
 
-        from app.core.config import load_config
-
         config = load_config()
-        mgr = OrchestratedModelManager(config)  # This sets up Settings.llm
+        OrchestratedModelManager(config)  # This sets up Settings.llm
 
         from llama_index.core import Settings
 
@@ -72,9 +71,8 @@ def test_model_manager_setup():
     logger.info("Testing ModelManager LLM setup...")
 
     try:
-        from services.orchestrated_model_manager import OrchestratedModelManager
-
         from app.core.config import load_config
+        from services.orchestrated_model_manager import OrchestratedModelManager
 
         config = load_config()
         mgr = OrchestratedModelManager(config)

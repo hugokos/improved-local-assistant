@@ -4,6 +4,7 @@ Visualization module for KnowledgeGraphManager.
 Handles HTML and PyVis visualization of knowledge graphs.
 """
 
+import contextlib
 import os
 import tempfile
 
@@ -118,10 +119,8 @@ class KnowledgeGraphVisualization:
             html_content = html_content.replace("<body>", f"<body><h2>{title}</h2>")
 
             # Clean up temporary file
-            try:
+            with contextlib.suppress(OSError, FileNotFoundError):
                 os.remove(html_file.name)
-            except (OSError, FileNotFoundError):
-                pass
 
             return html_content
 

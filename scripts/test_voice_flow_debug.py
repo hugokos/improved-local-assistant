@@ -21,9 +21,8 @@ async def test_voice_services():
     try:
         # Test TTS service
         print("🔊 Testing TTS Service...")
-        from services.piper_tts_service import PiperTTSService
-
         from app.core.config import load_config
+        from services.piper_tts_service import PiperTTSService
 
         config = load_config()
         tts_service = PiperTTSService(config)
@@ -43,7 +42,7 @@ async def test_voice_services():
         print("\n🎤 Testing STT Service...")
         from services.vosk_stt_service import VoskSTTService
 
-        stt_service = VoskSTTService(config)
+        VoskSTTService(config)
         # STT service initializes automatically in constructor
         print("✅ STT service initialized")
 

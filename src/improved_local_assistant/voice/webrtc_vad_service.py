@@ -7,8 +7,6 @@ frame timing and aggressive/conservative modes.
 
 import logging
 import struct
-from typing import List
-from typing import Tuple
 
 try:
     import webrtcvad
@@ -85,7 +83,7 @@ class WebRTCVADService:
             f"aggressiveness={self.aggressiveness} (PROVEN SETTINGS: start=3 frames, hangover=300ms)"
         )
 
-    def process_audio(self, audio_data: bytes) -> List[Tuple[bool, bytes]]:
+    def process_audio(self, audio_data: bytes) -> list[tuple[bool, bytes]]:
         """
         Process audio data with strict WebRTC VAD frame validation.
 

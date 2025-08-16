@@ -15,9 +15,8 @@ from pathlib import Path
 # Add the parent directory to the path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from services.orchestrated_model_manager import create_model_manager
-
 from app.core.config import load_config
+from services.orchestrated_model_manager import create_model_manager
 
 
 async def test_orchestrated_model_manager():

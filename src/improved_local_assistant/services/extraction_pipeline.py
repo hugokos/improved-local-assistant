@@ -13,9 +13,6 @@ import sqlite3
 import time
 from dataclasses import dataclass
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
 
 import psutil
 import tiktoken
@@ -32,15 +29,15 @@ class Triple:
     predicate: str
     object: str
     confidence: float
-    source_span: Optional[str] = None
+    source_span: str | None = None
 
 
 @dataclass
 class ExtractionResult:
     """Structured result from knowledge extraction."""
 
-    triples: List[Triple]
-    span_indices: List[tuple[int, int]]
+    triples: list[Triple]
+    span_indices: list[tuple[int, int]]
     extractor_version: str = "v2.0"
 
 
@@ -124,7 +121,7 @@ class ExtractionPipeline:
 
     def __init__(
         self,
-        config: Dict[str, Any],
+        config: dict[str, Any],
         connection_pool: ConnectionPoolManager,
         system_monitor: SystemMonitor,
     ):
@@ -169,7 +166,7 @@ class ExtractionPipeline:
             "avg_triples_per_extraction": 0.0,
         }
 
-    def _split_text_into_chunks(self, text: str, max_tokens: int = 128) -> List[str]:
+    def _split_text_into_chunks(self, text: str, max_tokens: int = 128) -> list[str]:
         """
         Split text into chunks with a maximum token count using tiktoken.
 
@@ -202,9 +199,9 @@ class ExtractionPipeline:
     async def extract_bounded(
         self,
         text: str,
-        conversation_history: Optional[List[Dict[str, str]]] = None,
-        budget: Optional[Dict[str, Any]] = None,
-    ) -> Optional[ExtractionResult]:
+        conversation_history: list[dict[str, str]] | None = None,
+        budget: dict[str, Any] | None = None,
+    ) -> ExtractionResult | None:
         """
         Perform bounded knowledge extraction with time and token limits.
 
@@ -278,7 +275,7 @@ class ExtractionPipeline:
             return None
 
     def _prepare_input_window(
-        self, primary_text: str, conversation_history: Optional[List[Dict[str, str]]] = None
+        self, primary_text: str, conversation_history: list[dict[str, str]] | None = None
     ) -> str:
         """
         Prepare input text with bounded conversation window using token-aware chunking.
@@ -317,8 +314,8 @@ class ExtractionPipeline:
         return input_text
 
     def _apply_budget_constraints(
-        self, custom_budget: Optional[Dict[str, Any]] = None
-    ) -> Dict[str, Any]:
+        self, custom_budget: dict[str, Any] | None = None
+    ) -> dict[str, Any]:
         """
         Apply budget constraints with optional custom overrides.
 
@@ -352,7 +349,7 @@ class ExtractionPipeline:
 
         return budget
 
-    async def _extract_with_model(self, input_text: str, budget: Dict[str, Any]) -> Dict[str, Any]:
+    async def _extract_with_model(self, input_text: str, budget: dict[str, Any]) -> dict[str, Any]:
         """
         Perform extraction using the knowledge model.
 
@@ -433,7 +430,7 @@ Text: {input_text}
 
 Relationships:"""
 
-    def _format_triples(self, raw_result: Dict[str, Any]) -> List[Triple]:
+    def _format_triples(self, raw_result: dict[str, Any]) -> list[Triple]:
         """
         Parse and format raw model output into Triple objects.
 
@@ -486,7 +483,7 @@ Relationships:"""
             self.logger.error(f"Error formatting triples: {e}")
             return []
 
-    def _parse_text_format(self, content: str) -> List[Triple]:
+    def _parse_text_format(self, content: str) -> list[Triple]:
         """Parse text format extraction results using regex for robustness."""
         import re
 
@@ -552,10 +549,7 @@ Relationships:"""
             triple.confidence = max(0.0, min(1.0, triple.confidence))
 
         # Check for reasonable length (avoid very long extractions)
-        if len(triple.subject) > 50 or len(triple.predicate) > 30 or len(triple.object) > 50:
-            return False
-
-        return True
+        return not (len(triple.subject) > 50 or len(triple.predicate) > 30 or len(triple.object) > 50)
 
     async def _unload_model(self) -> None:
         """Unload the knowledge model to free resources."""
@@ -583,10 +577,7 @@ Relationships:"""
         if self.skip_on_memory_pressure and self._is_under_memory_pressure():
             return True
 
-        if self.skip_on_cpu_pressure and self._is_under_cpu_pressure():
-            return True
-
-        return False
+        return bool(self.skip_on_cpu_pressure and self._is_under_cpu_pressure())
 
     def _is_under_memory_pressure(self) -> bool:
         """Check if system is under memory pressure using psutil."""
@@ -609,7 +600,7 @@ Relationships:"""
             return False
 
     async def _persist_triples(
-        self, triples: List[Triple], session_id: Optional[str] = None
+        self, triples: list[Triple], session_id: str | None = None
     ) -> None:
         """
         Persist extracted triples to the knowledge graph.
@@ -663,11 +654,11 @@ Relationships:"""
         else:
             self.metrics[metric_name] = new_value
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get extraction pipeline metrics."""
         return self.metrics.copy()
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """Get extraction pipeline status."""
         return {
             "configuration": {

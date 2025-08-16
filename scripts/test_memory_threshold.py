@@ -19,10 +19,9 @@ async def test_memory_threshold():
     print("=" * 40)
 
     try:
+        from app.core.config import load_config
         from services.llm_orchestrator import LLMOrchestrator
         from services.system_monitor import SystemMonitor
-
-        from app.core.config import load_config
 
         # Load configuration
         config = load_config()

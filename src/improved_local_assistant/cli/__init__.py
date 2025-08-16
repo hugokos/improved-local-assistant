@@ -1,13 +1,14 @@
 """
 Improved Local Assistant CLI
 """
+import os
 import platform
 import sys
-import typer
-import uvicorn
-import os
 from pathlib import Path
 from typing import Optional
+
+import typer
+import uvicorn
 
 # Check for unsupported platforms
 if platform.system() == "Darwin":
@@ -24,12 +25,12 @@ def api(
     host: str = typer.Option("0.0.0.0", help="Host to bind to"),
     port: int = typer.Option(8000, help="Port to bind to"),
     reload: bool = typer.Option(False, help="Enable auto-reload"),
-    config: Optional[str] = typer.Option(None, help="Config file path")
+    config: str | None = typer.Option(None, help="Config file path")
 ):
     """Run FastAPI server."""
     if config:
         os.environ["ILA_CONFIG"] = config
-    
+
     uvicorn.run(
         "improved_local_assistant.api.main:create_app",
         host=host,

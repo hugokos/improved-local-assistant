@@ -10,12 +10,9 @@ import asyncio
 import logging
 import os
 import time
+from collections.abc import AsyncGenerator
 from dataclasses import dataclass
 from typing import Any
-from typing import AsyncGenerator
-from typing import Dict
-from typing import List
-from typing import Tuple
 
 # LlamaIndex imports for global configuration
 from llama_index.core import Settings
@@ -154,7 +151,7 @@ class ModelManager:
             return False
 
     async def query_conversation_model(
-        self, messages: List[Dict[str, str]], temperature: float = 0.7, max_tokens: int = 2048
+        self, messages: list[dict[str, str]], temperature: float = 0.7, max_tokens: int = 2048
     ) -> AsyncGenerator[str, None]:
         """
         Stream response from conversation model (Hermes 3:3B).
@@ -194,7 +191,7 @@ class ModelManager:
 
     async def query_knowledge_model(
         self, text: str, temperature: float = 0.2, max_tokens: int = 1024
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Query knowledge model (TinyLlama) for entity extraction.
 
@@ -209,11 +206,11 @@ class ModelManager:
         start_time = time.time()
 
         try:
-            prompt = f"""Extract entities and relationships from the following text. 
+            prompt = f"""Extract entities and relationships from the following text.
             Format the output as a list of triples (subject, relation, object):
-            
+
             {text}
-            
+
             Triples:"""
 
             response = await self.bg_client.chat(
@@ -264,7 +261,7 @@ class ModelManager:
             self.logger.error(f"Error swapping model: {str(e)}")
             return False
 
-    async def get_model_status(self) -> Dict[str, Any]:
+    async def get_model_status(self) -> dict[str, Any]:
         """
         Get current status of all models.
 
@@ -305,7 +302,7 @@ class ModelManager:
 
     async def run_concurrent_queries(
         self, user_message: str
-    ) -> Tuple[AsyncGenerator[str, None], asyncio.Task]:
+    ) -> tuple[AsyncGenerator[str, None], asyncio.Task]:
         """
         Run conversation and knowledge queries concurrently.
 

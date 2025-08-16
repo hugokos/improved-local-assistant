@@ -3,7 +3,7 @@ Hybrid Ensemble Retriever for multi-modal knowledge retrieval on edge devices.
 
 This module provides the HybridEnsembleRetriever class that combines:
 • Property-graph retrieval (KnowledgeGraphRAGRetriever if present)
-• Optional vector-store retrieval  
+• Optional vector-store retrieval
 • Optional BM25 / keyword retrieval
 into a single RankedNode list.
 
@@ -15,15 +15,11 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
+from typing import TYPE_CHECKING
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Optional
-from typing import Sequence
 
 # REQUIRED symbols – fail loudly if they're missing
 from llama_index.core.retrievers import BaseRetriever  # new path ✔
-from llama_index.core.schema import NodeWithScore
 from llama_index.core.schema import QueryBundle
 
 # OPTIONAL symbols – keep the fallback logic
@@ -42,14 +38,19 @@ if BaseRetriever is None:
     raise ImportError("Cannot find BaseRetriever in LlamaIndex ≥0.12; " "check your installation.")
     QueryBundle = None
 
-from services.working_set_cache import WorkingSetCache
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from llama_index.core.schema import NodeWithScore
+    from services.working_set_cache import WorkingSetCache
 
 # ---------------------------------------------------------------------------
 # graph retriever factory
 # ---------------------------------------------------------------------------
 
 
-def _make_graph_retriever(graph_index, *, depth: int, top_k: int) -> Optional[BaseRetriever]:
+def _make_graph_retriever(graph_index, *, depth: int, top_k: int) -> BaseRetriever | None:
     """
     Create appropriate retriever for PropertyGraphIndex or KnowledgeGraphIndex.
     Prefer KnowledgeGraphRAGRetriever for KnowledgeGraphIndex.
@@ -119,8 +120,8 @@ class HybridEnsembleRetriever(BaseRetriever):
         bm25_top_k: int = 4,
         vector_top_k: int = 4,
         weights=(0.6, 0.25, 0.15),  # graph, vector, bm25
-        working_set_cache: Optional[WorkingSetCache] = None,
-        config: Optional[Dict[str, Any]] = None,
+        working_set_cache: WorkingSetCache | None = None,
+        config: dict[str, Any] | None = None,
     ):
         """Initialize Hybrid Ensemble Retriever with improved graph handling."""
         super().__init__()
@@ -143,7 +144,7 @@ class HybridEnsembleRetriever(BaseRetriever):
         # Normalise weights over RETRIEVERS THAT EXIST
         g_w, v_w, b_w = weights
         live = [self.graph, self.vector, self.bm25]
-        live_weights = [w for w, r in zip((g_w, v_w, b_w), live) if r is not None]
+        live_weights = [w for w, r in zip((g_w, v_w, b_w), live, strict=False) if r is not None]
         norm = sum(live_weights) if live_weights else 1.0
         self.weights = [w / norm for w in live_weights]
         self.live_retrievers: Sequence[BaseRetriever] = [r for r in live if r is not None]
@@ -187,7 +188,7 @@ class HybridEnsembleRetriever(BaseRetriever):
         self.logger.info(f"Retriever weights: {self.weights}")
         self.logger.info(f"Graph retriever type: {type(self.graph).__name__}")
 
-    def _retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
+    def _retrieve(self, query_bundle: QueryBundle) -> list[NodeWithScore]:
         """Override BaseRetriever interface."""
         start_time = time.time()
 
@@ -240,7 +241,7 @@ class HybridEnsembleRetriever(BaseRetriever):
             return []
 
     # Helper so you can call retriever(query_text) directly
-    def __call__(self, query: str) -> List[NodeWithScore]:
+    def __call__(self, query: str) -> list[NodeWithScore]:
         return self.retrieve(query)
 
     def _update_avg_metric(self, metric_name: str, new_value: float) -> None:
@@ -253,11 +254,11 @@ class HybridEnsembleRetriever(BaseRetriever):
         else:
             self.metrics[metric_name] = new_value
 
-    def _weighted_retrieve(self, query_bundle: QueryBundle) -> List[NodeWithScore]:
+    def _weighted_retrieve(self, query_bundle: QueryBundle) -> list[NodeWithScore]:
         """Fallback weighted retrieval when RRF is not available."""
-        all_nodes: List[NodeWithScore] = []
+        all_nodes: list[NodeWithScore] = []
 
-        for i, (retriever, w) in enumerate(zip(self.live_retrievers, self.weights)):
+        for i, (retriever, w) in enumerate(zip(self.live_retrievers, self.weights, strict=False)):
             try:
                 nodes = retriever.retrieve(query_bundle.query_str)
 
@@ -302,7 +303,7 @@ class HybridEnsembleRetriever(BaseRetriever):
             else:
                 self.metrics["vector_retrievals"] += 1
 
-    def _apply_scoring_boosts(self, nodes: List[NodeWithScore]) -> List[NodeWithScore]:
+    def _apply_scoring_boosts(self, nodes: list[NodeWithScore]) -> list[NodeWithScore]:
         """Apply time-decay and confidence boosts to node scores."""
         import math
 
@@ -324,7 +325,7 @@ class HybridEnsembleRetriever(BaseRetriever):
 
         return nodes
 
-    def _apply_colbert_rerank(self, nodes: List[NodeWithScore], query: str) -> List[NodeWithScore]:
+    def _apply_colbert_rerank(self, nodes: list[NodeWithScore], query: str) -> list[NodeWithScore]:
         """Apply ColBERT reranking to final results."""
         try:
             from llama_index.postprocessor.colbert_rerank import ColbertRerank
@@ -347,8 +348,8 @@ class HybridEnsembleRetriever(BaseRetriever):
         cls,
         graph_index,
         document_nodes=None,
-        config: Optional[Dict[str, Any]] = None,
-        working_set_cache: Optional[WorkingSetCache] = None,
+        config: dict[str, Any] | None = None,
+        working_set_cache: WorkingSetCache | None = None,
     ) -> HybridEnsembleRetriever:
         """
         Factory method to create HybridEnsembleRetriever with proper initialization.
@@ -434,8 +435,8 @@ class HybridEnsembleRetriever(BaseRetriever):
             raise
 
     async def retrieve_chunks(
-        self, query: str, session_id: Optional[str] = None, budget: Optional[int] = None
-    ) -> List[RetrievedChunk]:
+        self, query: str, session_id: str | None = None, budget: int | None = None
+    ) -> list[RetrievedChunk]:
         """
         Retrieve relevant chunks using hybrid ensemble approach.
 
@@ -486,8 +487,8 @@ class HybridEnsembleRetriever(BaseRetriever):
             return []
 
     async def _apply_working_set_boost(
-        self, nodes: List[NodeWithScore], session_id: str
-    ) -> List[NodeWithScore]:
+        self, nodes: list[NodeWithScore], session_id: str
+    ) -> list[NodeWithScore]:
         """Apply boost to nodes that are in the working set (recent conversational focus)."""
         try:
             recent = set(await self.working_set_cache.get_working_set(session_id) or [])
@@ -503,7 +504,7 @@ class HybridEnsembleRetriever(BaseRetriever):
             self.logger.warning(f"Error applying working set boost: {e}")
             return nodes
 
-    async def query_with_context(self, query: str, session_id: Optional[str] = None) -> str:
+    async def query_with_context(self, query: str, session_id: str | None = None) -> str:
         """
         Query with context assembly using the retriever.
 
@@ -523,11 +524,11 @@ class HybridEnsembleRetriever(BaseRetriever):
             self.logger.error(f"Error in query with context: {e}")
             return ""
 
-    def get_metrics(self) -> Dict[str, Any]:
+    def get_metrics(self) -> dict[str, Any]:
         """Get retriever metrics."""
         return self.metrics.copy()
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """Get retriever status."""
         return {
             "graph_retriever_available": self.graph is not None,
@@ -551,8 +552,8 @@ class HybridEnsembleRetriever(BaseRetriever):
         cls,
         graph_index=None,
         document_nodes=None,
-        config: Optional[Dict[str, Any]] = None,
-        working_set_cache: Optional[WorkingSetCache] = None,
+        config: dict[str, Any] | None = None,
+        working_set_cache: WorkingSetCache | None = None,
     ):
         """
         Synchronous wrapper that simply awaits .create() if called

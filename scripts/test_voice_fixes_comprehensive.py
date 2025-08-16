@@ -207,7 +207,7 @@ async def test_stt_streaming():
         print("📡 Streaming audio frames to STT...")
 
         partial_count = 0
-        for i in range(10):  # Stream 200ms of audio
+        for _i in range(10):  # Stream 200ms of audio
             result = await stt_service.process_audio(session_id, frame_20ms)
 
             if result.get("partial"):
@@ -247,7 +247,7 @@ async def test_tts_streaming():
         start_time = time.time()
         first_chunk_time = None
 
-        async for chunk in tts_service.synthesize_stream(test_text, session_id):
+        async for _chunk in tts_service.synthesize_stream(test_text, session_id):
             if chunk_count == 0:
                 first_chunk_time = time.time()
                 ttft = (first_chunk_time - start_time) * 1000

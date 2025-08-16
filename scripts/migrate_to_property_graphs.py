@@ -12,16 +12,13 @@ import sys
 import uuid
 from pathlib import Path
 from typing import Any
-from typing import Dict
-from typing import List
-from typing import Tuple
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def convert_triples_to_property_graph(triples: List[Tuple[str, str, str]]) -> Dict[str, Any]:
+def convert_triples_to_property_graph(triples: list[tuple[str, str, str]]) -> dict[str, Any]:
     """
     Convert flat triples to property graph format.
 

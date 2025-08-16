@@ -8,8 +8,10 @@ import asyncio
 import logging
 import os
 from datetime import datetime
-from typing import Optional
 
+from app.schemas import GraphCreateRequest
+from app.schemas import GraphRequest
+from app.schemas import GraphTraversalRequest
 from fastapi import APIRouter
 from fastapi import File
 from fastapi import Form
@@ -21,10 +23,6 @@ from fastapi.responses import HTMLResponse
 from fastapi.responses import StreamingResponse
 from services import HTTP_STATUS
 from starlette.background import BackgroundTask
-
-from app.schemas import GraphCreateRequest
-from app.schemas import GraphRequest
-from app.schemas import GraphTraversalRequest
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -80,7 +78,7 @@ async def query_graph(request: Request, graph_request: GraphRequest):
 
 
 @router.get("/graph/visualize")
-async def visualize_graph(request: Request, graph_id: Optional[str] = None):
+async def visualize_graph(request: Request, graph_id: str | None = None):
     """Generate HTML visualization of knowledge graph."""
     try:
         kg_manager = request.app.state.kg_manager
@@ -235,9 +233,9 @@ async def export_graph_interop(request: Request, graph_id: str, format: str = "n
 async def export_graph_native(
     request: Request,
     graph_id: str,
-    limit: Optional[int] = Query(None, description="Limit number of nodes in export"),
-    hops: Optional[int] = Query(None, description="Maximum hops from seed nodes"),
-    max_nodes: Optional[int] = Query(None, description="Maximum nodes in partial export"),
+    limit: int | None = Query(None, description="Limit number of nodes in export"),
+    hops: int | None = Query(None, description="Maximum hops from seed nodes"),
+    max_nodes: int | None = Query(None, description="Maximum nodes in partial export"),
 ):
     """Export a knowledge graph in native LlamaIndex persistence format."""
     try:
@@ -444,7 +442,7 @@ async def get_subgraph(
 
 
 @router.post("/graph/import")
-async def import_graph(request: Request, file: bytes = File(...), graph_id: Optional[str] = None):
+async def import_graph(request: Request, file: bytes = File(...), graph_id: str | None = None):
     """Import a knowledge graph from a file."""
     try:
         kg_manager = request.app.state.kg_manager

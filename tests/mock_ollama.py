@@ -6,10 +6,8 @@ for use in tests and development environments.
 """
 
 import asyncio
+from collections.abc import AsyncGenerator
 from typing import Any
-from typing import AsyncGenerator
-from typing import Dict
-from typing import List
 
 
 class MockAsyncClient:
@@ -33,7 +31,7 @@ class MockAsyncClient:
 
         if stream:
             # Return async generator for streaming
-            async def mock_stream() -> AsyncGenerator[Dict[str, Any], None]:
+            async def mock_stream() -> AsyncGenerator[dict[str, Any], None]:
                 tokens = base_response.split()
                 for i, token in enumerate(tokens):
                     yield {
@@ -63,7 +61,7 @@ class MockAsyncClient:
             }
 
     async def chat(
-        self, model: str, messages: List[Dict[str, str]], stream: bool = False, **kwargs
+        self, model: str, messages: list[dict[str, str]], stream: bool = False, **kwargs
     ) -> Any:
         """Mock chat method for conversation-style interactions."""
         if model not in self._models:
@@ -82,7 +80,7 @@ class MockAsyncClient:
 
         if stream:
 
-            async def mock_chat_stream() -> AsyncGenerator[Dict[str, Any], None]:
+            async def mock_chat_stream() -> AsyncGenerator[dict[str, Any], None]:
                 tokens = response_content.split()
                 for i, token in enumerate(tokens):
                     yield {
@@ -111,7 +109,7 @@ class MockAsyncClient:
                 "eval_duration": 700000,
             }
 
-    async def list(self) -> Dict[str, List[Dict[str, str]]]:
+    async def list(self) -> dict[str, list[dict[str, str]]]:
         """Mock list method that returns available models."""
         return {
             "models": [
@@ -126,7 +124,7 @@ class MockAsyncClient:
             ]
         }
 
-    async def show(self, model: str) -> Dict[str, Any]:
+    async def show(self, model: str) -> dict[str, Any]:
         """Mock show method that returns model details."""
         if model not in self._models:
             raise Exception(f"Model {model} not found")
@@ -150,7 +148,7 @@ class MockAsyncClient:
         """Mock pull method for downloading models."""
         if stream:
 
-            async def mock_pull_stream() -> AsyncGenerator[Dict[str, Any], None]:
+            async def mock_pull_stream() -> AsyncGenerator[dict[str, Any], None]:
                 statuses = [
                     "pulling manifest",
                     "downloading",
@@ -175,7 +173,7 @@ class MockAsyncClient:
         """Mock push method for uploading models."""
         if stream:
 
-            async def mock_push_stream() -> AsyncGenerator[Dict[str, Any], None]:
+            async def mock_push_stream() -> AsyncGenerator[dict[str, Any], None]:
                 yield {"status": "pushing manifest"}
                 yield {"status": "success"}
 
@@ -183,7 +181,7 @@ class MockAsyncClient:
         else:
             return {"status": "success"}
 
-    async def delete(self, model: str) -> Dict[str, str]:
+    async def delete(self, model: str) -> dict[str, str]:
         """Mock delete method for removing models."""
         if model in self._models:
             self._models.remove(model)

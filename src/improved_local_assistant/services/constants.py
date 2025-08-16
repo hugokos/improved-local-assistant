@@ -6,8 +6,6 @@ to make them easier to configure and maintain.
 """
 
 from typing import Any
-from typing import Dict
-from typing import Optional
 
 # Timeout constants (in seconds)
 DEFAULTS = {
@@ -70,7 +68,7 @@ ERROR_CODES = {
 }
 
 
-def get_timeout(key: str, config: Optional[Dict[str, Any]] = None) -> float:
+def get_timeout(key: str, config: dict[str, Any] | None = None) -> float:
     """
     Get timeout value from config or defaults.
 
@@ -89,7 +87,7 @@ def get_timeout(key: str, config: Optional[Dict[str, Any]] = None) -> float:
     return 30.0
 
 
-def get_threshold(key: str, config: Optional[Dict[str, Any]] = None) -> float:
+def get_threshold(key: str, config: dict[str, Any] | None = None) -> float:
     """
     Get threshold value from config or defaults.
 
@@ -108,7 +106,7 @@ def get_threshold(key: str, config: Optional[Dict[str, Any]] = None) -> float:
     return 80.0
 
 
-def get_limit(key: str, config: Optional[Dict[str, Any]] = None) -> int:
+def get_limit(key: str, config: dict[str, Any] | None = None) -> int:
     """
     Get limit value from config or defaults.
 

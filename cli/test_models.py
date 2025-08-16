@@ -16,7 +16,6 @@ import sys
 import time
 from pathlib import Path
 from typing import Any
-from typing import Dict
 
 import psutil
 from dotenv import load_dotenv
@@ -55,7 +54,7 @@ class ResourceMonitor:
         self.current = self.baseline.copy()
         self.history = []
 
-    def _get_current_usage(self) -> Dict[str, float]:
+    def _get_current_usage(self) -> dict[str, float]:
         """Get current resource usage."""
         memory_info = self.process.memory_info()
         return {
@@ -118,15 +117,15 @@ class ResourceMonitor:
             return summary
         return None
 
-    def get_current_usage(self) -> Dict[str, float]:
+    def get_current_usage(self) -> dict[str, float]:
         """Get the current resource usage."""
         return self.current
 
-    def get_peak_usage(self) -> Dict[str, float]:
+    def get_peak_usage(self) -> dict[str, float]:
         """Get the peak resource usage."""
         return self.peak
 
-    def get_usage_summary(self) -> Dict[str, Any]:
+    def get_usage_summary(self) -> dict[str, Any]:
         """Get a summary of resource usage."""
         if not self.history:
             return {}

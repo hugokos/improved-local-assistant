@@ -9,11 +9,8 @@ the existing interface.
 import asyncio
 import logging
 import sys
+from collections.abc import AsyncGenerator
 from typing import Any
-from typing import AsyncGenerator
-from typing import Dict
-from typing import List
-from typing import Optional
 
 # Fix for Windows asyncio event loop issue
 if sys.platform == "win32":
@@ -36,7 +33,7 @@ class OrchestratedModelManager:
     management, and hybrid retrieval.
     """
 
-    def __init__(self, config: Dict[str, Any], system_monitor: Optional[SystemMonitor] = None):
+    def __init__(self, config: dict[str, Any], system_monitor: SystemMonitor | None = None):
         """Initialize Orchestrated Model Manager with configuration."""
         try:
             self.config = config
@@ -196,10 +193,10 @@ class OrchestratedModelManager:
 
     async def query_conversation_model(
         self,
-        messages: List[Dict[str, str]],
+        messages: list[dict[str, str]],
         temperature: float = 0.7,
         max_tokens: int = 2048,
-        session_id: Optional[str] = None,
+        session_id: str | None = None,
     ) -> AsyncGenerator[str, None]:
         """
         Stream response from conversation model using orchestration.
@@ -242,7 +239,7 @@ class OrchestratedModelManager:
 
     async def query_conversation_model_with_context(
         self,
-        messages: List[Dict[str, str]],
+        messages: list[dict[str, str]],
         session_id: str,
         temperature: float = 0.7,
         max_tokens: int = 2048,
@@ -304,7 +301,7 @@ class OrchestratedModelManager:
 
     async def query_knowledge_model(
         self, text: str, temperature: float = 0.2, max_tokens: int = 1024
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Query knowledge model for entity extraction using extraction pipeline.
 
@@ -358,7 +355,7 @@ class OrchestratedModelManager:
                 "error": str(e),
             }
 
-    async def get_model_status(self) -> Dict[str, Any]:
+    async def get_model_status(self) -> dict[str, Any]:
         """Get current status of all models and orchestration components."""
         if not self._initialized:
             return {"error": "Model manager not initialized"}
@@ -426,7 +423,7 @@ class OrchestratedModelManager:
 
 
 # Factory function for backward compatibility
-def create_model_manager(config: Dict[str, Any], use_orchestration: bool = None) -> Any:
+def create_model_manager(config: dict[str, Any], use_orchestration: bool = None) -> Any:
     """
     Factory function to create appropriate model manager.
 

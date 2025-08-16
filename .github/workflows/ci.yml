@@ -19,9 +19,10 @@ jobs:
           cache: 'pip'
       - name: Install dev deps
         run: |
-          pip install --upgrade pip
+          python -m pip install -U pip
           pip install -r requirements.txt
-          pip install -e .[dev] -c constraints.txt || pip install -e . -c constraints.txt
+          pip install -e . -c constraints.txt
+          pip install pytest pytest-cov ruff black mypy pre-commit
       - name: Run pre-commit (all hooks)
         uses: pre-commit/action@v3.0.1
         with:
@@ -41,10 +42,10 @@ jobs:
           cache: 'pip'
       - name: Install dev deps
         run: |
-          pip install -U pip
+          python -m pip install -U pip
           pip install -r requirements.txt
-          pip install -e .[dev] -c constraints.txt || pip install -e . -c constraints.txt
-          pip install types-requests types-PyYAML types-setuptools
+          pip install -e . -c constraints.txt
+          pip install mypy types-requests types-PyYAML types-setuptools
       - name: mypy
         run: mypy src
 

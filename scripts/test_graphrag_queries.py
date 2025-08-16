@@ -15,7 +15,6 @@ import os
 import sys
 import time
 from typing import Any
-from typing import Dict
 
 # Add parent directory to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -178,7 +177,7 @@ async def initialize_graphrag_system():
         return None
 
 
-async def test_basic_queries(system: Dict[str, Any]) -> bool:
+async def test_basic_queries(system: dict[str, Any]) -> bool:
     """Test basic GraphRAG queries."""
 
     test_queries = [
@@ -223,7 +222,7 @@ async def test_basic_queries(system: Dict[str, Any]) -> bool:
     return True
 
 
-async def test_kg_vs_no_kg(system: Dict[str, Any]) -> bool:
+async def test_kg_vs_no_kg(system: dict[str, Any]) -> bool:
     """Test knowledge graph enabled vs disabled responses."""
 
     test_query = "What are the most important survival skills?"
@@ -294,7 +293,7 @@ async def test_kg_vs_no_kg(system: Dict[str, Any]) -> bool:
         return False
 
 
-async def test_citations(system: Dict[str, Any]) -> bool:
+async def test_citations(system: dict[str, Any]) -> bool:
     """Test the citation system."""
 
     test_query = "How do you purify water in survival situations?"
@@ -348,7 +347,7 @@ async def test_citations(system: Dict[str, Any]) -> bool:
         return False
 
 
-async def test_direct_kg_query(system: Dict[str, Any]) -> bool:
+async def test_direct_kg_query(system: dict[str, Any]) -> bool:
     """Test direct knowledge graph querying."""
 
     kg_manager = system["kg_manager"]

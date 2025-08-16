@@ -8,10 +8,8 @@ synthesis using the Piper TTS library.
 import asyncio
 import logging
 import wave
+from collections.abc import AsyncGenerator
 from pathlib import Path
-from typing import AsyncGenerator
-from typing import Dict
-from typing import Optional
 
 try:
     from piper import PiperVoice
@@ -30,7 +28,7 @@ class PiperTTSService:
     and audio quality settings.
     """
 
-    def __init__(self, config: Dict = None):
+    def __init__(self, config: dict = None):
         """
         Initialize PiperTTSService with configuration.
 
@@ -45,7 +43,7 @@ class PiperTTSService:
             raise ImportError("Piper TTS library not installed. Run: pip install piper-tts")
 
         # Voice management
-        self.voice: Optional[PiperVoice] = None
+        self.voice: PiperVoice | None = None
         self.voice_path = self._get_voice_path()
 
         # Configuration
@@ -54,7 +52,7 @@ class PiperTTSService:
         self.speed = self.config.get("speed", 1.0)  # Speech speed multiplier
 
         # Synthesis cancellation tracking
-        self.active_synthesis: Dict[str, bool] = {}  # session_id -> is_active
+        self.active_synthesis: dict[str, bool] = {}  # session_id -> is_active
 
         # Initialize voice
         self._load_voice()
@@ -275,7 +273,7 @@ class PiperTTSService:
             # Synthesize audio
             self.voice.synthesize(text, wav_file)
 
-    def get_voice_info(self) -> Dict:
+    def get_voice_info(self) -> dict:
         """
         Get information about the loaded voice.
 
@@ -308,7 +306,7 @@ class PiperTTSService:
 
         return info
 
-    def get_service_info(self) -> Dict:
+    def get_service_info(self) -> dict:
         """
         Get service information and status.
 

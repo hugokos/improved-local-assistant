@@ -9,11 +9,8 @@ maintaining optimal performance on edge devices.
 import asyncio
 import logging
 import time
+from collections.abc import AsyncGenerator
 from typing import Any
-from typing import AsyncGenerator
-from typing import Dict
-from typing import List
-from typing import Optional
 
 # Fix nested async issues
 try:
@@ -47,7 +44,7 @@ class LLMOrchestrator:
             cls._llm_semaphore = asyncio.Semaphore(1)
         return cls._llm_semaphore
 
-    def __init__(self, config: Dict[str, Any], system_monitor: SystemMonitor):
+    def __init__(self, config: dict[str, Any], system_monitor: SystemMonitor):
         """Initialize LLM Orchestrator with configuration and system monitor."""
         self.config = config
         self.system_monitor = system_monitor
@@ -80,7 +77,7 @@ class LLMOrchestrator:
         }
 
         # Active extraction task for cancellation
-        self._active_extraction_task: Optional[asyncio.Task] = None
+        self._active_extraction_task: asyncio.Task | None = None
 
         # Pre-warming status
         self._hermes_prewarmed = False
@@ -126,7 +123,7 @@ class LLMOrchestrator:
             return False
 
     async def process_turn(
-        self, session_id: str, user_message: str, conversation_history: List[Dict[str, str]]
+        self, session_id: str, user_message: str, conversation_history: list[dict[str, str]]
     ) -> AsyncGenerator[str, None]:
         """
         Process a complete turn with orchestrated LLM execution.
@@ -187,7 +184,7 @@ class LLMOrchestrator:
             yield f"I'm sorry, there was an error processing your request: {str(e)}"
 
     async def _stream_conversation(
-        self, messages: List[Dict[str, str]]
+        self, messages: list[dict[str, str]]
     ) -> AsyncGenerator[str, None]:
         """
         Stream response from conversation model (Hermes) with memory-aware fallback.
@@ -258,7 +255,7 @@ class LLMOrchestrator:
 
     async def _extract_knowledge_background(
         self, text: str, session_id: str
-    ) -> Optional[Dict[str, Any]]:
+    ) -> dict[str, Any] | None:
         """
         Extract knowledge in background after conversation completes.
 
@@ -318,7 +315,7 @@ class LLMOrchestrator:
             self.metrics["extractions_skipped"] += 1
             return None
 
-    async def _extract_knowledge_bounded(self, text: str) -> Optional[Dict[str, Any]]:
+    async def _extract_knowledge_bounded(self, text: str) -> dict[str, Any] | None:
         """
         Perform bounded knowledge extraction with time and token limits.
 
@@ -333,11 +330,11 @@ class LLMOrchestrator:
             prompt = f"""Extract entities and relationships from the following text.
             Return ONLY a JSON array of triples in this exact format:
             [{{"subject": "entity1", "predicate": "relationship", "object": "entity2", "confidence": 0.9}}]
-            
+
             Maximum 10 triples. Focus on the most important entities and relationships.
-            
+
             Text: {text}
-            
+
             JSON:"""
 
             # Prepare request options
@@ -464,7 +461,7 @@ class LLMOrchestrator:
         else:
             self.metrics[metric_name] = new_value
 
-    async def get_status(self) -> Dict[str, Any]:
+    async def get_status(self) -> dict[str, Any]:
         """Get orchestrator status and metrics."""
         # Check model residency
         hermes_resident = await self.connection_pool.verify_model_residency(self.conversation_model)
@@ -546,7 +543,7 @@ class LLMOrchestrator:
         return status in [ComponentStatus.DEGRADED, ComponentStatus.FAILED]
 
     async def _stream_with_fallback(
-        self, messages: List[Dict[str, str]], reason: str = "memory constraints"
+        self, messages: list[dict[str, str]], reason: str = "memory constraints"
     ) -> AsyncGenerator[str, None]:
         """
         Stream response using the fallback model.

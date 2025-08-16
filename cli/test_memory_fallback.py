@@ -14,12 +14,11 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+from app.core.config import load_config
 from services.graceful_degradation import ComponentStatus
 from services.graceful_degradation import degradation_manager
 from services.llm_orchestrator import LLMOrchestrator
 from services.system_monitor import SystemMonitor
-
-from app.core.config import load_config
 
 
 async def test_memory_fallback():

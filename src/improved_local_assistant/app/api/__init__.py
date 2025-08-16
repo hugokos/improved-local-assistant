@@ -1,10 +1,9 @@
 """API routers for the Improved Local AI Assistant."""
 
-from fastapi import APIRouter
-
 from app.api.chat import router as chat_router
 from app.api.graph import router as graph_router
 from app.api.system import router as system_router
+from fastapi import APIRouter
 
 # Create a combined router
 api_router = APIRouter()

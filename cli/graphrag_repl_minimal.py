@@ -64,10 +64,10 @@ class MinimalGraphRAGREPL:
         self.max_triple_per_chunk = max_triple_per_chunk
 
         # Initialize components
-        self.model_manager: Optional[ModelManager] = None
+        self.model_manager: ModelManager | None = None
         self.kg_manager: Optional = None  # Will be None if --no-kg
-        self.conversation_manager: Optional[ConversationManager] = None
-        self.session_id: Optional[str] = None
+        self.conversation_manager: ConversationManager | None = None
+        self.session_id: str | None = None
 
         # Simple metrics
         self.queries_processed = 0
@@ -211,7 +211,7 @@ class MinimalGraphRAGREPL:
             print(f"❌ Failed to initialize components: {str(e)}")
             return False
 
-    def get_user_input(self) -> Optional[str]:
+    def get_user_input(self) -> str | None:
         """Get user input using simple synchronous input."""
         try:
             return input("You: ")

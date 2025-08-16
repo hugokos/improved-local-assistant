@@ -15,10 +15,9 @@ sys.path.insert(0, str(project_root))
 async def check_memory_status():
     """Check current memory status and model availability."""
     try:
+        from app.core.config import load_config
         from services.llm_orchestrator import LLMOrchestrator
         from services.system_monitor import SystemMonitor
-
-        from app.core.config import load_config
 
         # Load configuration
         config = load_config()
@@ -96,10 +95,9 @@ async def check_memory_status():
 async def reset_status():
     """Reset model status to retry primary model."""
     try:
+        from app.core.config import load_config
         from services.llm_orchestrator import LLMOrchestrator
         from services.system_monitor import SystemMonitor
-
-        from app.core.config import load_config
 
         config = load_config()
         system_monitor = SystemMonitor(config)

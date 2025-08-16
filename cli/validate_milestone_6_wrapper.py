@@ -222,7 +222,7 @@ def generate_report():
 """
                 )
 
-                for test_type, test_data in system_test.get("tests", {}).items():
+                for _test_type, test_data in system_test.get("tests", {}).items():
                     for test in test_data.get("tests", []):
                         status_class = "passed" if test.get("result", "") == "passed" else "failed"
                         f.write(

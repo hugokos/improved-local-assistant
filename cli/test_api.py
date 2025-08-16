@@ -66,7 +66,7 @@ class APITester:
             python_exe = sys.executable
 
             # Start the server
-            process = subprocess.Popen(
+            subprocess.Popen(
                 [python_exe, "-m", "app.main"],
                 cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
             )
@@ -377,9 +377,8 @@ async def main():
     api_tester = APITester(api_url=args.api_url)
 
     # Start server if requested
-    if args.start_server:
-        if not api_tester.start_server():
-            return
+    if args.start_server and not api_tester.start_server():
+        return
 
     # Test health check
     if args.test_health:

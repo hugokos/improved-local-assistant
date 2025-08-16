@@ -8,14 +8,11 @@ allowing the system to continue operating with reduced functionality.
 import asyncio
 import logging
 import time
+from collections.abc import Awaitable
+from collections.abc import Callable
 from enum import Enum
 from typing import Any
-from typing import Awaitable
-from typing import Callable
-from typing import Dict
-from typing import List
 from typing import TypeVar
-from typing import Union
 
 # Type variables for generic functions
 T = TypeVar("T")
@@ -42,8 +39,8 @@ class DegradationManager:
 
     def __init__(self):
         """Initialize the degradation manager."""
-        self.component_status: Dict[str, ComponentStatus] = {}
-        self.fallback_handlers: Dict[str, List[Callable[..., Any]]] = {}
+        self.component_status: dict[str, ComponentStatus] = {}
+        self.fallback_handlers: dict[str, list[Callable[..., Any]]] = {}
         self._lock = asyncio.Lock()
         logger.info("Degradation manager initialized")
 
@@ -98,7 +95,7 @@ class DegradationManager:
 
     async def execute_with_fallback(
         self, component: str, primary_func: Callable[..., Awaitable[T]], *args, **kwargs
-    ) -> Union[T, Any]:
+    ) -> T | Any:
         """
         Execute a function with fallback if it fails.
 
@@ -182,7 +179,7 @@ class DegradationManager:
         else:
             raise RuntimeError(f"All fallbacks for component '{component}' failed")
 
-    def get_all_statuses(self) -> Dict[str, str]:
+    def get_all_statuses(self) -> dict[str, str]:
         """
         Get the status of all components.
 
@@ -198,7 +195,7 @@ degradation_manager = DegradationManager()
 
 async def with_degradation(
     component: str, primary_func: Callable[..., Awaitable[T]], *args, **kwargs
-) -> Union[T, Any]:
+) -> T | Any:
     """
     Execute a function with graceful degradation using the global manager.
 
@@ -231,7 +228,7 @@ def register_fallback(component: str, handler: Callable[..., Any]) -> None:
 # Common fallback handlers
 
 
-def empty_response_fallback(*args, **kwargs) -> Dict[str, Any]:
+def empty_response_fallback(*args, **kwargs) -> dict[str, Any]:
     """
     Fallback handler that returns an empty response.
 
@@ -245,7 +242,7 @@ def empty_response_fallback(*args, **kwargs) -> Dict[str, Any]:
     }
 
 
-def cached_response_fallback(cache_key: str, cache: Dict[str, Any]) -> Callable[..., Any]:
+def cached_response_fallback(cache_key: str, cache: dict[str, Any]) -> Callable[..., Any]:
     """
     Create a fallback handler that returns a cached response.
 

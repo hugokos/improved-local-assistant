@@ -9,12 +9,11 @@ import logging
 import os
 from logging.handlers import TimedRotatingFileHandler
 from typing import Any
-from typing import Dict
 
 from services import DEFAULTS
 
 
-def setup_logging(config: Dict[str, Any] = None) -> logging.Logger:
+def setup_logging(config: dict[str, Any] = None) -> logging.Logger:
     """
     Configure logging with rotation and formatting.
 

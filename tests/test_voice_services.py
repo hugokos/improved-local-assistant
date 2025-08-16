@@ -86,7 +86,7 @@ class TestVoiceManager:
         assert voice_manager.stt_service is not None
         assert voice_manager.tts_service is not None
         assert voice_manager.voice_sessions == {}
-        assert voice_manager.is_voice_available() == True
+        assert voice_manager.is_voice_available()
 
     @patch("services.voice_manager.VoskSTTService")
     @patch("services.voice_manager.PiperTTSService")
@@ -105,19 +105,19 @@ class TestVoiceManager:
 
         # Test session creation
         success = await voice_manager.create_voice_session(session_id)
-        assert success == True
+        assert success
         assert session_id in voice_manager.voice_sessions
         assert voice_manager.metrics["active_voice_sessions"] == 1
 
         # Test session state
         session_state = voice_manager.get_voice_session_state(session_id)
         assert session_state is not None
-        assert session_state["is_listening"] == False
-        assert session_state["is_speaking"] == False
+        assert not session_state["is_listening"]
+        assert not session_state["is_speaking"]
 
         # Test session destruction
         success = await voice_manager.destroy_voice_session(session_id)
-        assert success == True
+        assert success
         assert session_id not in voice_manager.voice_sessions
         assert voice_manager.metrics["active_voice_sessions"] == 0
 
@@ -197,8 +197,8 @@ class TestVoiceManager:
         assert "active_voice_sessions" in metrics
         assert "stt_available" in metrics
         assert "tts_available" in metrics
-        assert metrics["stt_available"] == True
-        assert metrics["tts_available"] == True
+        assert metrics["stt_available"]
+        assert metrics["tts_available"]
 
 
 @pytest.mark.skipif(
@@ -239,7 +239,7 @@ class TestVoskSTTService:
 
         assert stt_service.model == mock_model
         assert stt_service.sample_rate == 16000
-        assert stt_service.is_available() == True
+        assert stt_service.is_available()
 
     @patch("services.vosk_stt_service.vosk")
     @patch("services.vosk_stt_service.Path")
@@ -262,12 +262,12 @@ class TestVoskSTTService:
 
         # Test recognizer creation
         success = await stt_service.create_recognizer(session_id)
-        assert success == True
+        assert success
         assert session_id in stt_service.recognizers
 
         # Test recognizer destruction
         success = await stt_service.destroy_recognizer(session_id)
-        assert success == True
+        assert success
         assert session_id not in stt_service.recognizers
 
 
@@ -305,7 +305,7 @@ class TestPiperTTSService:
 
         assert tts_service.voice == mock_voice
         assert tts_service.sample_rate == 22050
-        assert tts_service.is_available() == True
+        assert tts_service.is_available()
 
     @patch("services.piper_tts_service.PiperVoice")
     @patch("services.piper_tts_service.Path")
