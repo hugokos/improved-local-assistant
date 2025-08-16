@@ -26,6 +26,10 @@ install-dev:
 	pip install -e ".[dev]"
 	pre-commit install
 
+setup: install-dev
+	@echo "Development environment setup complete!"
+	@echo "Run 'make test' to verify everything works."
+
 # Testing
 test:
 	pytest tests/ -v --cov=src/improved_local_assistant --cov-report=term-missing --cov-report=html

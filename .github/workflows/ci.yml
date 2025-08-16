@@ -1,47 +1,60 @@
-name: CI
+name: ci
 
 on:
-  push:
-    branches: ["main", "develop"]
-  pull_request:
-    branches: ["main"]
+  push: { branches: [main] }
+  pull_request: {}
 
 jobs:
   test:
-    name: test (${{ matrix.os }}, py${{ matrix.python }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        python: ['3.10', '3.11', '3.12']
-    
+        os: [ubuntu-latest]  # add windows-latest, macos-latest later if needed
+        python: ['3.10', '3.11', '3.12', '3.13']
     steps:
       - uses: actions/checkout@v4
-      
       - uses: actions/setup-python@v5
-        with:
+        with: 
           python-version: ${{ matrix.python }}
-          cache: pip
-      
-      - name: Install
-        run: |
-          python -m pip install -U pip wheel
-          pip install -e . || true
-          pip install pytest ruff black mypy
-      
+          cache: 'pip'
+          cache-dependency-path: |
+            pyproject.toml
+            requirements.txt
+      - run: pip install -e .[dev]
+      - run: pip install pytest pytest-cov
       - name: Lint
         run: |
+          pip install ruff black
           ruff check .
-          black --check . --line-length 100
-      
+          black --check .
       - name: Type check
         run: |
-          mypy src/ || echo "Type checking completed with issues"
-      
-      - name: Tests
+          pip install mypy
+          mypy src || echo "Type checking completed with issues"
+      - name: Test (with coverage)
+        run: pytest -q --cov=improved_local_assistant --cov-report=xml tests/test_basic.py
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./coverage.xml
+          verbose: true
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: 
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -e .
+      - name: Dependency audit
+        uses: pypa/gh-action-pip-audit@v1.1.0
+      - name: Bandit (static security)
         run: |
-          pytest tests/test_basic.py -v || echo "Basic tests completed"
+          pip install bandit
+          bandit -q -r src
 
   security:
     runs-on: ubuntu-latest

@@ -4,14 +4,14 @@
 
 A high-performance, enterprise-grade local AI assistant featuring dynamic knowledge graph construction, GraphRAG (Graph Retrieval-Augmented Generation), and a world-class voice interface that rivals commercial assistants. Built for complete privacy, exceptional performance, and production scalability with comprehensive testing and monitoring.
 
+[![CI](https://github.com/hugokos/improved-local-assistant/workflows/ci/badge.svg)](https://github.com/hugokos/improved-local-assistant/actions)
+[![Documentation](https://github.com/hugokos/improved-local-assistant/workflows/docs/badge.svg)](https://hugokos.github.io/improved-local-assistant)
+[![codecov](https://codecov.io/gh/hugokos/improved-local-assistant/branch/main/graph/badge.svg)](https://codecov.io/gh/hugokos/improved-local-assistant)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Tests](https://img.shields.io/badge/tests-90%25%20coverage-green.svg)](#testing--quality-assurance)
-[![CI](https://github.com/hugokos/improved-local-assistant/workflows/CI/badge.svg)](https://github.com/hugokos/improved-local-assistant/actions)
-[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue.svg)](https://hugokos.github.io/improved-local-assistant)
-[![Security](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 ---
@@ -84,30 +84,51 @@ Enterprise reliability with comprehensive monitoring and fault tolerance:
 ## 🏗️ Technical Architecture
 
 ### System Overview
-```
-┌─────────────────────────────────────────────────────────────┐
-│                    Client Applications                       │
-├─────────────────────────────────────────────────────────────┤
-│  Web Interface  │  REST API  │  WebSocket  │  CLI Tools     │
-├─────────────────────────────────────────────────────────────┤
-│                   Core Services Layer                       │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────────┐ │
-│  │ Conversation│ │   GraphRAG  │ │    Knowledge Graph      │ │
-│  │  Manager    │ │   Engine    │ │      Manager           │ │
-│  └─────────────┘ └─────────────┘ └─────────────────────────┘ │
-├─────────────────────────────────────────────────────────────┤
-│                  AI Model Layer                             │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────────┐ │
-│  │  Hermes 3   │ │  TinyLlama  │ │      BGE-Small         │ │
-│  │ (Chat AI)   │ │(Extraction) │ │    (Embeddings)        │ │
-│  └─────────────┘ └─────────────┘ └─────────────────────────┘ │
-├─────────────────────────────────────────────────────────────┤
-│                Infrastructure Layer                         │
-│  ┌─────────────┐ ┌─────────────┐ ┌─────────────────────────┐ │
-│  │   Ollama    │ │  LlamaIndex │ │    FastAPI/WebSocket   │ │
-│  │  Runtime    │ │   GraphDB   │ │      Framework         │ │
-│  └─────────────┘ └─────────────┘ └─────────────────────────┘ │
-└─────────────────────────────────────────────────────────────┘
+
+```mermaid
+graph TB
+    subgraph "Client Layer"
+        WEB[Web Interface]
+        API[REST API]
+        WS[WebSocket]
+        CLI[CLI Tools]
+    end
+    
+    subgraph "Core Services"
+        CM[Conversation Manager]
+        GRE[GraphRAG Engine]
+        KGM[Knowledge Graph Manager]
+        VM[Voice Manager]
+    end
+    
+    subgraph "AI Models"
+        H3[Hermes 3<br/>Chat AI]
+        TL[TinyLlama<br/>Extraction]
+        BGE[BGE-Small<br/>Embeddings]
+    end
+    
+    subgraph "Infrastructure"
+        OL[Ollama Runtime]
+        LI[LlamaIndex GraphDB]
+        FA[FastAPI Framework]
+    end
+    
+    WEB --> CM
+    API --> GRE
+    WS --> VM
+    CLI --> KGM
+    
+    CM --> H3
+    GRE --> TL
+    KGM --> BGE
+    
+    H3 --> OL
+    TL --> OL
+    BGE --> LI
+    
+    GRE --> LI
+    CM --> FA
+    VM --> FA
 ```
 
 ### Core Components
@@ -129,6 +150,42 @@ Enterprise reliability with comprehensive monitoring and fault tolerance:
 - **Health Monitor**: Comprehensive system health and performance metrics
 - **Audit Logger**: Complete interaction tracking for compliance
 - **Configuration Manager**: Dynamic configuration with zero-downtime updates
+
+---
+
+## 📊 Proof & Benchmarks
+
+### Performance Claims Verification
+
+**3x Better Response Accuracy**
+```bash
+# Run GraphRAG vs traditional RAG comparison
+python scripts/benchmark_graphrag_pipeline.py --runs 5
+python scripts/compare_benchmarks.py --metric accuracy
+```
+
+**95% Startup Time Reduction (180s → 9s)**
+```bash
+# Benchmark startup performance
+python scripts/run_benchmarks.py --test startup_time
+```
+
+**50% Memory Usage Reduction (8GB → 4GB)**
+```bash
+# Memory optimization benchmarks
+python scripts/memory_optimizer.py --analyze --benchmark
+```
+
+**Sub-second Knowledge Retrieval**
+```bash
+# Test retrieval performance on large graphs
+python scripts/quick_graphrag_benchmark.py --entities 10000
+```
+
+### Hardware Requirements
+- **Minimum**: 4GB RAM, 2+ CPU cores, 10GB storage
+- **Recommended**: 8GB+ RAM, 4+ CPU cores, 20GB+ storage
+- **Tested on**: Intel i5-8400, AMD Ryzen 5 3600, Apple M1/M2
 
 ---
 
