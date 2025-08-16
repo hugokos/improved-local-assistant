@@ -1,8 +1,12 @@
-site_name: Improved Local AI Assistant
+site_name: Improved Local Assistant
 site_description: Production-ready local AI assistant with GraphRAG technology and voice interface
 site_url: https://hugokos.github.io/improved-local-assistant
 repo_url: https://github.com/hugokos/improved-local-assistant
 repo_name: hugokos/improved-local-assistant
+
+# Point to the top-level docs directory relative to this config file
+docs_dir: ../docs
+site_dir: ../site
 
 theme:
   name: material
@@ -64,29 +68,27 @@ nav:
   - Getting Started:
     - Installation: installation.md
     - Quick Start: quickstart.md
-    - Configuration: configuration.md
-  - User Guide:
-    - Web Interface: user-guide/web-interface.md
-    - Voice Commands: user-guide/voice-commands.md
-    - API Usage: user-guide/api-usage.md
-    - CLI Tools: user-guide/cli-tools.md
-  - Developer Guide:
-    - Architecture: developer-guide/architecture.md
-    - GraphRAG System: developer-guide/graphrag.md
-    - Voice Interface: developer-guide/voice-interface.md
-    - Contributing: developer-guide/contributing.md
+  - User Guides:
+    - Prebuilt Graphs: PREBUILT_GRAPHS_GUIDE.md
+    - Graph Download System: GRAPH_DOWNLOAD_SYSTEM.md
+    - Property Graph Migration: PROPERTY_GRAPH_MIGRATION.md
+    - Memory Fallback System: MEMORY_FALLBACK_SYSTEM.md
+    - Storage & Persistence: STORAGE_AND_PERSISTENCE_TESTING.md
+  - Voice Interface:
+    - Voice Chat Implementation: VOICE_CHAT_IMPLEMENTATION.md
+    - Voice Control Fixes: VOICE_CONTROL_FIXES.md
+    - Voice Phase 1: VOICE_PHASE1_IMPLEMENTATION.md
+    - Voice Phase 2: VOICE_PHASE2_IMPLEMENTATION.md
+  - Technical Guides:
+    - Edge Chrome Audio Fixes: EDGE_CHROME_AUDIO_FIXES.md
+    - Edge Optimization: EDGE_OPTIMIZATION.md
   - API Reference:
-    - REST API: api/rest.md
-    - WebSocket API: api/websocket.md
-    - Python API: api/python.md
-  - Deployment:
-    - Production Setup: deployment/production.md
-    - Docker: deployment/docker.md
-    - Security: deployment/security.md
-  - Examples:
-    - Basic Usage: examples/basic.md
-    - Advanced GraphRAG: examples/graphrag.md
-    - Custom Integration: examples/integration.md
+    - API Documentation: API.md
+  - Architecture:
+    - Project Structure: adr/001-project-structure.md
+  - Project Info:
+    - Development History: DEVELOPMENT_HISTORY.md
+    - Changelog: CHANGELOG.md
 
 extra:
   social:

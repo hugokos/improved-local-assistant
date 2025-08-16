@@ -75,10 +75,16 @@ tox:
 
 # Documentation
 docs-serve:
-	mkdocs serve -f config/mkdocs.yml
+	mkdocs serve --config-file config/mkdocs.yml
 
 docs-build:
-	mkdocs build -f config/mkdocs.yml
+	mkdocs build --config-file config/mkdocs.yml
+
+docs-deploy:
+	mkdocs gh-deploy --force --config-file config/mkdocs.yml
+
+docs-test:
+	python scripts/test_docs.py
 
 # Health check
 health:

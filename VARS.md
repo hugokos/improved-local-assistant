@@ -89,3 +89,23 @@ export ILA_PORT="80"
 export ILA_EDGE_OPTIMIZATION="true"
 ila api
 ```
+
+## Documentation
+
+The project uses MkDocs with Material theme for documentation:
+
+```bash
+# Serve docs locally
+make docs-serve
+
+# Build docs
+make docs-build
+
+# Test docs configuration
+make docs-test
+
+# Deploy to GitHub Pages (CI does this automatically)
+make docs-deploy
+```
+
+Documentation is automatically deployed to GitHub Pages when changes are pushed to the main branch.
