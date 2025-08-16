@@ -28,22 +28,79 @@ A high‑level look at how the pieces fit together:
 
 ```mermaid
 flowchart LR
-  UI[Web UI / CLI] --> API[FastAPI / WebSocket]
-  API --> Router[Graph Router]
-  Router -->|graph| KG[(Property Graph)]
-  Router -->|vector| VDB[(Vector Store)]
-  Router -->|keyword| BM25[(BM25)]
-  Router --> LLM[Local LLM (Ollama)]
-  LLM --> TTS[TTS (Piper)]
-  UI <-->|voice| STT[Vosk]
+  %% ===== Client layer =====
+  subgraph CLIENT[Client]
+    UI[Web UI / CLI]
+    STT[Vosk STT]
+    TTS[Piper TTS]
+  end
+
+  %% ===== API / Orchestrator =====
+  API[FastAPI (REST/WebSocket)]
+  Router[Semantic Router]
+  Ranker[Ranking & Context Builder]
+
+  %% ===== Indexes / Stores =====
+  subgraph INDEXES[Index & Search]
+    KG_PRIME[KG-Prime (Prebuilt Property Graph)]
+    KG_LIVE[KG-Live (Dynamic Property Graph)]
+    VDB[Vector Index]
+    BM25[BM25 Keyword Index]
+  end
+
+  %% ===== Models =====
+  LLM[Local LLM via Ollama]
+
+  %% ===== Ingestion / Build =====
+  subgraph INGEST[Ingestion & Graph Build]
+    DOCS[Docs: PDF / MD / TXT]
+    CHUNK[Chunker]
+    EXTRACT[Entity & Relation Extraction]
+    TRIPLES[Triple Generation]
+  end
+
+  %% ----- Flows: client <-> api -----
+  UI -->|text| API
+  API -->|responses| UI
+
+  %% ----- Voice flow (offline) -----
+  UI -->|audio| STT
+  STT -->|transcript| API
+  API -->|text| TTS
+  TTS -->|audio| UI
+
+  %% ----- Retrieval & reasoning -----
+  API --> Router
+  Router -->|graph| KG_PRIME
+  Router -->|graph| KG_LIVE
+  Router -->|vector| VDB
+  Router -->|keyword| BM25
+  Router --> Ranker
+  Ranker -->|cited context| LLM
+  LLM -->|tokens/stream| API
+
+  %% ----- Ingestion path -----
+  DOCS --> CHUNK
+  CHUNK --> EXTRACT
+  EXTRACT --> TRIPLES
+  TRIPLES --> KG_PRIME
+  TRIPLES --> VDB
+  EXTRACT -->|live updates| KG_LIVE
 ```
 
-**Key components**
+### Key components (what’s innovative and why it matters)
 
-* **Property Graph (KG):** stores entities/relations; ships with optional prebuilt graphs and grows via KG‑Live during conversation.
-* **Hybrid Retriever:** fuses graph, vector, and BM25 signals; router selects the smallest useful context window with citations.
-* **Local LLM:** model‑agnostic via **Ollama**; pick a small, fast model for TTFT or a heavier model for depth.
-* **Voice layer:** streaming STT (Vosk) and TTS (Piper) for low‑latency, fully offline voice chat.
+- **Dual graph design (KG-Prime + KG-Live):** Ship a prebuilt, domain-specific property graph (KG-Prime) and grow a live conversational graph (KG-Live) on the fly. This preserves long-term memory without ballooning the LLM context window, and it lets you learn from user interactions safely and locally.
+
+- **Semantic Router (graph + vector + keyword):** Every query is routed across three complementary signals: graph traversal to follow relationships and constraints; vector search to capture semantic similarity; and BM25 to guarantee exact-term recall (IDs, commands, names). The router selects only the minimal subgraph/passages needed, which cuts prompt size and improves relevance.
+
+- **Ranking & Context Builder (cited snippets):** Retrieved candidates are re-ranked and assembled into a small, cited context. This keeps the LLM focused, improves faithfulness, and makes responses auditable.
+
+- **All-offline voice loop (Vosk + Piper):** Speech-to-text (Vosk) streams partial and final transcripts; Piper TTS streams audio output as tokens arrive from the LLM—so you get near-instant feedback without any cloud calls.
+
+- **Model-agnostic via Ollama:** Swap models per task (e.g., faster small model for chat, larger one for synthesis) without changing the rest of the stack. Local execution preserves privacy and reduces latency.
+
+- **Ingestion pipeline built for graphs:** Chunking → entity/relation extraction → triple generation feeds both the property graph and the vector index. This ensures structure (for reasoning) and semantics (for recall) stay in sync.
 
 ---
 
