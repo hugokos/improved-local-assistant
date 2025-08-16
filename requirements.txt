@@ -45,7 +45,7 @@ prompt-toolkit>=3.0.0  # For enhanced REPL experience
 
 # Voice processing dependencies
 vosk                    # Offline speech recognition
-sounddevice==0.4                # Audio capture and playback
+sounddevice==0.5.2                # Audio capture and playback
 webrtcvad==2.0.10              # Voice activity detection (Phase 2)
 piper-tts              # Local text-to-speech
 
