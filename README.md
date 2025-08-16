@@ -1,882 +1,272 @@
-# Improved Local AI Assistant
+# Improved Local Assistant
 
-**Production-Ready Local AI with Advanced Knowledge Graph Technology & Complete Voice Interface**
+Local‑first GraphRAG assistant with an offline voice interface. Runs entirely on your machine for privacy, speed, and reliability.
 
-A high-performance, enterprise-grade local AI assistant featuring dynamic knowledge graph construction, GraphRAG (Graph Retrieval-Augmented Generation), and a world-class voice interface that rivals commercial assistants. Built for complete privacy, exceptional performance, and production scalability with comprehensive testing and monitoring.
-
-[![CI](https://github.com/hugokos/improved-local-assistant/workflows/ci/badge.svg)](https://github.com/hugokos/improved-local-assistant/actions)
-[![Documentation](https://github.com/hugokos/improved-local-assistant/workflows/docs/badge.svg)](https://hugokos.github.io/improved-local-assistant)
-[![codecov](https://codecov.io/gh/hugokos/improved-local-assistant/branch/main/graph/badge.svg)](https://codecov.io/gh/hugokos/improved-local-assistant)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
-[![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![CI](https://github.com/hugokos/improved-local-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/hugokos/improved-local-assistant/actions/workflows/ci.yml)
+[![Docs](https://img.shields.io/badge/docs-mkdocs--material-blue)](https://hugokos.github.io/improved-local-assistant/)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](pyproject.toml)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ---
 
-## 🎯 Technical Overview
+## Overview
 
-### Core Innovation
-The Improved Local AI Assistant implements breakthrough GraphRAG technology that combines:
+**Improved Local Assistant (ILA)** is a production‑oriented, local AI stack that combines a property‑graph knowledge base with hybrid retrieval (graph + vector + BM25) and a voice‑first interface (offline STT/TTS). It’s designed for edge hardware and developer workstations where privacy and low latency matter.
 
-- **100% Local Processing**: Complete data sovereignty with no external dependencies
-- **Dynamic Knowledge Graphs**: Real-time entity extraction and relationship mapping from conversations
-- **GraphRAG Engine**: Advanced retrieval-augmented generation with full source attribution
-- **Edge Optimization**: High-performance architecture optimized for resource-constrained environments
-- **Production Architecture**: Enterprise-grade reliability with comprehensive monitoring and fault tolerance
+**Highlights**
 
-### Key Technical Achievements
-- **3x better response accuracy** compared to traditional RAG systems
-- **95% startup time reduction** (180s → 9s) through optimization
-- **50% memory usage reduction** (8GB → 4GB typical) via intelligent resource management
-- **Sub-second knowledge retrieval** from graphs with 10,000+ entities
-- **99.9% uptime** achieved in production testing environments
-- **< 150ms voice barge-in response** matching commercial assistant performance
-- **90% VAD accuracy** with WebRTC integration and professional speech detection
-- **100% offline voice processing** with no external dependencies or data transmission
-- **Chat-memory persistence** with Write-Ahead Log (WAL) durability guarantees
-- **Entity canonicalization** preventing drift in long conversations (e.g., "Hugo" vs "Hugo K.")
-- **RRF hybrid retrieval** with time-decay scoring for conversational relevance
+* **Local‑first privacy:** all inference, retrieval, and voice processing run on your device.
+* **Deeper answers:** GraphRAG routing over a property graph preserves semantics and relationships.
+* **Voice‑native:** Vosk (STT) + Piper (TTS) for hands‑free chat with streaming responses.
+* **Flexible:** Web UI, REST & WebSocket APIs, and CLI tools; configurable models via Ollama.
 
 ---
 
-## 🚀 Technical Architecture & Innovations
+## Architecture
 
-### 1. **GraphRAG Engine with Chat-Memory Architecture**
-Advanced retrieval-augmented generation with dynamic knowledge graphs and conversational memory:
-- **Real-time knowledge extraction** from conversations using specialized NLP models
-- **Dynamic graph construction** with entity recognition and relationship mapping
-- **Chat-memory aware storage** with utterance provenance and entity canonicalization
-- **Hybrid retrieval system** combining graph traversal, vector similarity, and keyword search with RRF fusion
-- **Automatic source citation** with complete provenance tracking back to specific conversation turns
-- **Sub-second retrieval** from graphs containing 50,000+ entities and 100,000+ relationships
-- **Entity drift prevention** through canonical entity IDs and embedding-based similarity matching
-- **Episodic memory structure** ready for GraphRAG-style hierarchical summarization
-
-### 2. **Dual-Model Architecture**
-Specialized AI models optimized for specific computational tasks:
-- **Hermes 3:3B**: Primary conversational model (8K context, optimized for dialogue)
-- **TinyLlama**: Knowledge extraction model (2K context, optimized for entity recognition)
-- **BGE-Small**: Embedding model for semantic similarity (384-dimensional vectors)
-- **Model orchestration** preventing resource contention through turn-by-turn execution
-- **Singleton pattern** for embedding models reducing memory footprint by 60%
-
-### 3. **Edge Optimization Framework**
-High-performance architecture for resource-constrained environments:
-- **LLM Orchestrator**: Process-wide coordination preventing model conflicts
-- **Connection pooling**: HTTP/2 persistent connections with intelligent keep-alive
-- **Working set cache**: Intelligent graph node caching for frequently accessed entities
-- **Adaptive resource management**: Dynamic scaling based on system load and memory pressure
-- **UTF-8 filesystem optimization**: Consistent encoding handling across all platforms
-
-### 4. **Production-Grade Infrastructure**
-Enterprise reliability with comprehensive monitoring and fault tolerance:
-- **Circuit breaker patterns**: Automatic failure detection and recovery
-- **Health monitoring**: Real-time system metrics with configurable thresholds
-- **Graceful degradation**: Intelligent fallback when components are under stress
-- **WebSocket stability**: Robust connection management with automatic reconnection
-- **Comprehensive logging**: Structured logging with audit trails for compliance
-
----
-
-## 🏗️ Technical Architecture
-
-### System Overview
+A high‑level look at how the pieces fit together:
 
 ```mermaid
-graph TB
-    subgraph "Client Layer"
-        WEB[Web Interface]
-        API[REST API]
-        WS[WebSocket]
-        CLI[CLI Tools]
-    end
-    
-    subgraph "Core Services"
-        CM[Conversation Manager]
-        GRE[GraphRAG Engine]
-        KGM[Knowledge Graph Manager]
-        VM[Voice Manager]
-    end
-    
-    subgraph "AI Models"
-        H3[Hermes 3<br/>Chat AI]
-        TL[TinyLlama<br/>Extraction]
-        BGE[BGE-Small<br/>Embeddings]
-    end
-    
-    subgraph "Infrastructure"
-        OL[Ollama Runtime]
-        LI[LlamaIndex GraphDB]
-        FA[FastAPI Framework]
-    end
-    
-    WEB --> CM
-    API --> GRE
-    WS --> VM
-    CLI --> KGM
-    
-    CM --> H3
-    GRE --> TL
-    KGM --> BGE
-    
-    H3 --> OL
-    TL --> OL
-    BGE --> LI
-    
-    GRE --> LI
-    CM --> FA
-    VM --> FA
+flowchart LR
+  UI[Web UI / CLI] --> API[FastAPI / WebSocket]
+  API --> Router[Graph Router]
+  Router -->|graph| KG[(Property Graph)]
+  Router -->|vector| VDB[(Vector Store)]
+  Router -->|keyword| BM25[(BM25)]
+  Router --> LLM[Local LLM (Ollama)]
+  LLM --> TTS[TTS (Piper)]
+  UI <-->|voice| STT[Vosk]
 ```
 
-### Core Components
+**Key components**
 
-**AI Model Orchestration**
-- **LLM Orchestrator**: Process-wide coordination preventing resource contention
-- **Model Manager**: Intelligent loading, caching, and lifecycle management
-- **Connection Pool**: HTTP/2 optimization with persistent connections
-- **Resource Monitor**: Real-time performance tracking and adaptive scaling
-
-**Knowledge Management**
-- **Dynamic Graph Builder**: Real-time entity and relationship extraction
-- **Hybrid Retriever**: Multi-modal search combining graph, vector, and keyword
-- **Working Set Cache**: Intelligent node caching for sub-second retrieval
-- **Persistence Engine**: Optimized storage with UTF-8 encoding and compression
-
-**Enterprise Services**
-- **Circuit Breaker**: Fault tolerance with automatic recovery
-- **Health Monitor**: Comprehensive system health and performance metrics
-- **Audit Logger**: Complete interaction tracking for compliance
-- **Configuration Manager**: Dynamic configuration with zero-downtime updates
+* **Property Graph (KG):** stores entities/relations; ships with optional prebuilt graphs and grows via KG‑Live during conversation.
+* **Hybrid Retriever:** fuses graph, vector, and BM25 signals; router selects the smallest useful context window with citations.
+* **Local LLM:** model‑agnostic via **Ollama**; pick a small, fast model for TTFT or a heavier model for depth.
+* **Voice layer:** streaming STT (Vosk) and TTS (Piper) for low‑latency, fully offline voice chat.
 
 ---
 
-## 📊 Proof & Benchmarks
-
-### Performance Claims Verification
-
-**3x Better Response Accuracy**
-```bash
-# Run GraphRAG vs traditional RAG comparison
-python scripts/benchmark_graphrag_pipeline.py --runs 5
-python scripts/compare_benchmarks.py --metric accuracy
-```
-
-**95% Startup Time Reduction (180s → 9s)**
-```bash
-# Benchmark startup performance
-python scripts/run_benchmarks.py --test startup_time
-```
-
-**50% Memory Usage Reduction (8GB → 4GB)**
-```bash
-# Memory optimization benchmarks
-python scripts/memory_optimizer.py --analyze --benchmark
-```
-
-**Sub-second Knowledge Retrieval**
-```bash
-# Test retrieval performance on large graphs
-python scripts/quick_graphrag_benchmark.py --entities 10000
-```
-
-### Hardware Requirements
-- **Minimum**: 4GB RAM, 2+ CPU cores, 10GB storage
-- **Recommended**: 8GB+ RAM, 4+ CPU cores, 20GB+ storage
-- **Tested on**: Intel i5-8400, AMD Ryzen 5 3600, Apple M1/M2
-
----
-
-## �️ Hafrdware Usage & Performance
-
-### Current Hardware Utilization
-
-The Improved Local AI Assistant is designed to run efficiently on standard consumer hardware with **CPU-only processing** as the default configuration. This ensures broad compatibility and reliable performance across different systems.
-
-#### **CPU-Only Architecture (Default)**
-```
-User Request → FastAPI → ModelManager → Ollama (CPU) → Response
-                                    ↓
-                            Utilizes all CPU cores
-                            (Multi-threaded inference)
-```
-
-**How Your Hardware is Used:**
-- **CPU**: Primary processing unit for all AI inference
-  - Multi-threaded model execution across all available cores
-  - Automatic load balancing between conversation and knowledge extraction models
-  - Optimized for modern multi-core processors (4+ cores recommended)
-
-- **RAM**: Intelligent memory management
-  - Model caching to avoid repeated loading (2-4GB typical usage)
-  - Dynamic knowledge graph storage with compression
-  - Automatic memory cleanup and garbage collection
-
-- **Storage**: Efficient data management
-  - Local model storage (3-5GB for default models)
-  - Knowledge graph persistence with optimized indexing
-  - Session data with configurable retention policies
-
-#### **System Requirements**
-
-- **Minimum**: 4GB RAM, 2+ CPU cores, 10GB storage
-- **Recommended**: 8GB+ RAM, 4+ CPU cores, 20GB+ storage
-- **Operating Systems**: Windows 10+, macOS 10.15+, Linux (Ubuntu 18.04+)
-
-#### **Performance Optimization Features**
-
-**Automatic Hardware Detection:**
-- CPU core count and frequency detection
-- Available memory monitoring with adaptive scaling
-- Storage space management with cleanup policies
-- Real-time performance metrics and bottleneck identification
-
-**Resource Management:**
-- **Connection Pooling**: Reduces overhead by reusing HTTP connections
-- **Model Caching**: Keeps frequently used models in memory
-- **Working Set Cache**: Intelligent caching of knowledge graph nodes
-- **Memory Pressure Handling**: Automatic cleanup when memory is low
-
-**Multi-Model Orchestration:**
-- **Turn-by-Turn Execution**: Prevents resource contention between models
-- **Singleton Patterns**: Shared embedding models reduce memory usage by 60%
-- **Adaptive Scheduling**: Prioritizes user-facing responses over background tasks
-
-
-
-#### **Hardware Benchmarking**
-
-The system includes comprehensive benchmarking tools to measure performance on your specific hardware:
-
-```bash
-# Run complete hardware benchmark
-python scripts/run_benchmarks.py
-
-# Test specific model performance
-python scripts/benchmark_models.py --model hermes3:3b --contexts 512 1024 2048 --runs 5
-
-# Compare different hardware configurations
-python scripts/compare_benchmarks.py --dir benchmarks/
-
-# View hardware specifications only
-python scripts/compare_benchmarks.py --dir benchmarks/ --hardware
-```
-
-**Benchmark Metrics:**
-- **Time-to-First-Token (TTFT)**: How quickly responses begin
-- **Throughput**: Tokens generated per second
-- **Memory Usage**: RAM consumption during inference
-- **CPU Utilization**: Processor load during operations
-- **Hardware Detection**: Complete system specification capture
-
-**GraphRAG Pipeline Benchmarks:**
-```bash
-# Quick user experience test
-python scripts/quick_graphrag_benchmark.py
-
-# Comprehensive pipeline analysis
-python scripts/benchmark_graphrag_pipeline.py --runs 5
-```
-
-These benchmarks measure the complete user experience including:
-- **Knowledge Graph Retrieval**: Time to find relevant context
-- **Context Assembly**: Preparation and prompt building overhead
-- **AI Response Generation**: Model inference with retrieved context
-- **End-to-End Performance**: Total time from question to complete answer
-
-#### **Optimization Recommendations**
-
-**For CPU-Only Systems:**
-1. **Use faster RAM**: DDR4-3200+ or DDR5 for better memory bandwidth
-2. **Ensure adequate cooling**: Sustained performance requires thermal management
-3. **Close unnecessary applications**: Free up RAM and CPU resources
-4. **Use SSD storage**: Faster model loading and knowledge graph access
-5. **Consider smaller models**: TinyLlama for resource-constrained environments
-
-
-
-#### **Troubleshooting Performance Issues**
-
-**Common Issues and Solutions:**
-
-| Issue | Symptoms | Solution |
-|-------|----------|----------|
-| **High Memory Usage** | System slowdown, swapping | Reduce concurrent operations, use smaller models |
-| **Slow Response Times** | TTFT > 2 seconds | Check CPU usage, close background apps |
-| **Model Loading Errors** | Startup failures | Verify Ollama installation, check model availability |
-
-
-**Performance Monitoring:**
-```bash
-# Real-time system monitoring
-python scripts/system_health_check.py
-
-# Memory usage analysis
-python scripts/memory_optimizer.py --analyze
-
-# Check for performance bottlenecks
-python cli/test_system.py --performance
-```
-
-### Hardware Compatibility Matrix
-
-| Component | Minimum | Recommended | Optimal | Notes |
-|-----------|---------|-------------|---------|-------|
-| **CPU** | 2 cores, 2.0GHz | 6 cores, 3.0GHz | 8+ cores, 3.5GHz+ | Modern x86_64 or ARM64 |
-| **RAM** | 4GB | 16GB | 32GB+ | DDR4-2400+ recommended |
-| **Storage** | 10GB free | 50GB free | 100GB+ free | SSD strongly recommended |
-| **GPU** | None (CPU-only) | None (CPU-only) | None (CPU-only) | Not required |
-| **Network** | None | 100Mbps | 1Gbps+ | For model downloads only |
-
-**Operating System Support:**
-- ✅ **Windows 10/11** (x64, ARM64)
-- ✅ **macOS 10.15+** (Intel, Apple Silicon)
-- ✅ **Linux** (Ubuntu 18.04+, CentOS 7+, Debian 10+)
-- ✅ **Docker** (All platforms with container support)
-
----
-
-## � Key oFeatures
-
-### GraphRAG Technology with Chat-Memory Architecture
-- **Dynamic Knowledge Graphs**: Real-time entity extraction and relationship mapping from conversations
-- **Chat-Memory Persistence**: Utterance-level provenance tracking with speaker attribution and timestamps
-- **Entity Canonicalization**: Prevents entity drift through embedding-based similarity matching and canonical IDs
-- **Hybrid Retrieval with RRF**: Combines graph traversal, semantic search, and keyword matching using Reciprocal Rank Fusion
-- **Time-Decay Scoring**: Recent facts stay prominent while preserving long-term knowledge (configurable half-life)
-- **Working Set Cache**: Maintains conversational focus through recently-accessed node boosting
-- **Write-Ahead Log (WAL)**: Durability guarantees with automatic compaction and backup rotation
-- **Source Attribution**: Complete citation tracking with confidence scores back to specific conversation turns
-- **Property Graphs**: Rich metadata and relationship properties with schema-guided extraction
-- **Episodic Memory Ready**: Foundation for GraphRAG-style hierarchical memory and community summaries
-
-### Voice Interface & Interaction
-- **Production-Ready Voice System**: Complete voice interface rivaling commercial assistants with 100% offline processing
-- **< 150ms Barge-In Response**: Natural conversation interruption with immediate TTS cancellation
-- **19 Voice Commands**: Complete hands-free control (stop, repeat, faster/slower, new chat, summarize, cite sources, etc.)
-- **WebRTC VAD Integration**: Professional-grade speech detection with 90% accuracy and proper frame timing
-- **Visual-Only Interface**: Clean orb-based state system with level-reactive animations and no text clutter
-- **Dual Recognition System**: Commands and dictation processed in parallel with local command processing
-- **Real-Time Audio Processing**: Offline STT using Vosk with streaming TTS using Piper
-- **Advanced Audio Pipeline**: Proper binary frame handling, RMS computation, and format validation
-
-### Production Architecture
-- **Edge Optimization**: Efficient performance on resource-constrained devices
-- **Circuit Breakers**: Fault tolerance with automatic recovery
-- **WebSocket Streaming**: Real-time response delivery
-- **Comprehensive Testing**: 90%+ code coverage with automated validation
-
----
-
-## 🛠️ Quick Start
+## Getting Started
 
 ### Prerequisites
-- **Python 3.8+** (3.11+ recommended)
-- **8GB RAM minimum** (4GB+ with edge optimization)
-- **Ollama** for local model inference
-- **5GB storage** for models and knowledge graphs
 
-### Quick Start
+* **Python** ≥ 3.10
+* **Git**
+* **Ollama** (running locally)
+* Optional: **CUDA‑capable GPU** for models that can use it
 
-1. **Automated Setup (Recommended)**
-   ```bash
-   git clone https://github.com/hugokos/improved-local-assistant.git
-   cd improved-local-assistant
-   
-   # Create and activate virtual environment
-   python -m venv .venv
-   .venv\Scripts\activate  # Windows
-   # source .venv/bin/activate  # Linux/macOS
-   
-   # Install dependencies
-   pip install -r requirements.txt
-   
-   # Run automated setup (checks requirements, downloads graphs)
-   python scripts/setup.py
-   ```
-
-2. **Manual Installation**
-   ```bash
-   # Install Ollama (visit https://ollama.ai for platform-specific instructions)
-   ollama pull hermes3:3b
-   ollama pull phi3:mini
-   
-   # Download prebuilt knowledge graphs (optional)
-   python scripts/download_graphs.py all
-   
-   # Launch the application
-   python run_app.py
-   ```
-
-3. **Access the Interface**
-   - **Web Interface**: http://localhost:8000
-   - **API Documentation**: http://localhost:8000/docs
-   - **Health Check**: http://localhost:8000/api/health
-   - **GraphRAG REPL**: `python cli/graphrag_repl.py`
-
----
-
-## 💬 Interactive Demo
-
-### Web Interface
-Experience the full capabilities through the intuitive web interface:
-- Real-time conversation with AI assistant
-- Live knowledge extraction and graph visualization
-- Source citations for all responses
-- Session management and conversation history
-
-### Prebuilt Knowledge Graphs
-Get started quickly with ready-to-use knowledge bases:
+### Install
 
 ```bash
-# See available graphs
-python scripts/download_graphs.py --list
-
-# Download survivalist knowledge base
-python scripts/download_graphs.py survivalist
-```
-
-**Available Knowledge Graphs:**
-- **Survivalist** (45MB): 2,847 entities, 8,234 relationships - Outdoor survival, bushcraft, emergency preparedness
-
-*Additional knowledge domains (medical, technical, etc.) will be added in future releases.*
-
-### Voice Interface
-
-Experience hands-free interaction with advanced voice commands:
-
-#### **Getting Started with Voice**
-1. **Enable Voice Mode**: Click the microphone button or press `Shift+M`
-2. **Start Speaking**: The system will automatically detect when you start and stop talking
-3. **Use Voice Commands**: Control the assistant with natural voice commands
-4. **Barge-in Support**: Interrupt the AI while it's speaking to ask follow-up questions
-
-#### **Available Voice Commands**
-
-**Chat Control Commands**
-- `"new chat"` / `"clear chat"` / `"start over"` - Start a fresh conversation
-- `"delete last"` / `"undo"` - Remove the last message from the conversation
-
-**Playback Control Commands**
-- `"stop"` / `"cancel"` / `"mute"` - Stop the AI from speaking
-- `"repeat"` - Repeat the last AI response
-
-**Speed Control Commands**
-- `"faster"` / `"speed up"` - Increase speech speed to 1.2x
-- `"slower"` / `"slow down"` - Decrease speech speed to 0.8x
-- `"normal speed"` / `"reset speed"` - Return to normal speech speed
-
-**Content Commands**
-- `"summarize"` / `"summary"` - Request a summary of the current conversation
-- `"cite sources"` / `"show sources"` - Display sources for the last response
-
-#### **Voice Command Examples**
-```
-👤 "How do I build a fire?"
-🤖 [AI responds with fire-building instructions]
-👤 "slower" (while AI is speaking)
-🤖 [Speech speed reduces to 0.8x]
-👤 "cite sources"
-🤖 [Shows knowledge graph sources used]
-👤 "start over faster"
-🤖 [Clears chat and increases speech speed]
-```
-
-#### **Advanced Voice Features**
-- **Compound Commands**: Combine commands like `"start over faster"` or `"repeat slower"`
-- **Natural Language**: Commands work with natural variations (e.g., `"speed up"` = `"faster"`)
-- **Barge-in Interruption**: Start speaking while the AI is talking to interrupt and ask follow-ups
-- **Real-time Transcription**: See your speech converted to text in real-time
-- **Command Hints**: Visual feedback when voice commands are detected
-
-#### **Voice System Requirements**
-- **Microphone**: Any standard microphone or headset
-- **Browser**: Chrome/Edge (recommended) or Firefox with microphone permissions
-- **Models**: Vosk (speech-to-text) and Piper (text-to-speech) - automatically downloaded
-- **Audio**: Speakers or headphones for AI voice responses
-
-#### **Troubleshooting Voice Issues**
-```bash
-# Test voice system components
-python scripts/test_voice_fixes_comprehensive.py
-
-# Download voice models if missing
-python scripts/download_voice_models.py
-
-# Debug voice processing
-python scripts/debug_voice_flow.py
-```
-
-### Command Line Interface
-Test GraphRAG capabilities directly:
-
-```bash
-# Interactive GraphRAG REPL
-python cli/graphrag_repl.py
-
-# Example conversation with knowledge graph integration
-> Tell me about artificial intelligence
-[AI responds with contextual information and citations]
-
-# Compare performance with and without knowledge graphs
-python cli/graphrag_repl.py --no-kg  # Pure conversation mode
-```
-
----
-
-## ⚙️ Configuration & Optimization
-
-### Edge Optimization (Enabled by Default)
-The system automatically optimizes for your hardware:
-
-```bash
-# Check optimization status
-python cli/toggle_edge_optimization.py --status
-
-# Configure for specific devices
-python cli/toggle_edge_optimization.py --mode raspberry_pi
-python cli/toggle_edge_optimization.py --mode production
-```
-
-### Performance Tuning
-Key configuration options in `config.yaml`:
-
-```yaml
-# Edge optimization settings
-edge_optimization:
-  enabled: true
-  mode: production
-
-# Resource management
-system:
-  memory_threshold_percent: 80
-  cpu_threshold_percent: 80
-
-# Knowledge graph settings with chat-memory features
-hybrid_retriever:
-  use_rrf: true              # Enable Reciprocal Rank Fusion
-  half_life_secs: 604800     # Time-decay half-life (1 week)
-  rerank_top_n: 10          # ColBERT reranking for final precision
-  budget:
-    max_chunks: 12
-    graph_depth: 2           # Graph traversal depth
-    bm25_top_k: 4           # BM25 keyword search results
-    vector_top_k: 4         # Vector similarity results
-  weights:
-    graph: 0.6              # Prefer knowledge graph results
-    vector: 0.25            # Semantic similarity search
-    bm25: 0.15              # Keyword search
-
-# Dynamic KG chat-memory settings
-dynamic_kg:
-  episode_every_turns: 8     # Create episode summaries every N turns
-  persist_every_updates: 20  # Persist after N entity updates
-  persist_interval_secs: 300 # Persist every 5 minutes
-
-# Graph type configuration
-graph:
-  type: property            # Use PropertyGraphIndex for rich metadata
-```
-
----
-
-## 🔧 API Integration
-
-### RESTful API
-```python
-import requests
-
-# Send chat message with knowledge graph integration
-response = requests.post("http://localhost:8000/api/chat", json={
-    "message": "What are the applications of machine learning?",
-    "session_id": "user-session-123",
-    "use_kg": True
-})
-
-# Get knowledge graph statistics
-stats = requests.get("http://localhost:8000/api/graph/stats")
-```
-
-### WebSocket Streaming
-```javascript
-const ws = new WebSocket('ws://localhost:8000/ws/chat');
-ws.send(JSON.stringify({
-    message: "Explain neural networks",
-    session_id: "demo-session"
-}));
-```
-
----
-
-## 🧪 Testing & Quality Assurance
-
-### Comprehensive Test Suite
-**Unit Testing**: 90%+ code coverage across all core services
-- Mock framework for external dependencies (Ollama, file system)
-- Isolated testing of GraphRAG components and Dynamic KG chat-memory features
-- Entity canonicalization and utterance provenance testing
-- WAL persistence and durability validation
-- RRF hybrid retrieval and time-decay scoring verification
-- Performance regression testing with automated benchmarks
-- Memory leak detection and resource usage validation
-
-**Dynamic KG Testing**: Specialized test suite for chat-memory features
-```bash
-# Test Dynamic KG chat-memory upgrade
-python scripts/test_dynamic_kg_upgrade.py
-
-# Functional end-to-end testing
-python scripts/test_functional_upgrade.py
-
-# Unit tests for specific components
-python -m pytest tests/test_dynamic_kg_upgrade.py -v
-```
-
-**Integration Testing**: End-to-end workflow validation
-- Complete GraphRAG pipeline testing (extraction → graph → retrieval → response)
-- WebSocket connection stability under load
-- Multi-model orchestration and resource management
-- Cross-platform compatibility (Windows, Linux, macOS)
-
-**Performance Testing**: Automated benchmarking and optimization validation
-- Response time measurement under various loads
-- Memory usage profiling and optimization verification
-- Concurrent user simulation (10+ simultaneous sessions)
-- Edge device testing (Raspberry Pi, low-memory environments)
-
-### Code Quality Standards
-**Static Analysis**: Zero lint violations with professional formatting
-- Black code formatting (120 character line length)
-- isort import organization with consistent style
-- mypy type checking with comprehensive annotations
-- Professional docstring coverage for all public APIs
-
-**Security Testing**: Comprehensive security validation
-- Input sanitization and validation testing
-- SQL injection and XSS prevention verification
-- Rate limiting and abuse prevention testing
-- Audit logging and compliance validation
-
-### Continuous Integration
-**Automated Testing Pipeline**:
-- Pre-commit hooks for code quality enforcement
-- Automated test execution on multiple Python versions (3.8, 3.9, 3.10, 3.11)
-- Performance regression detection
-- Security vulnerability scanning
-
----
-
-## 🔒 Security & Compliance
-
-### Data Privacy Architecture
-**Local Processing**: Complete data sovereignty with zero external dependencies
-- All AI inference performed locally using Ollama runtime
-- No telemetry or data transmission to external services
-- Knowledge graphs stored locally with configurable encryption
-- Session data isolated with automatic cleanup policies
-
-**Security Implementation**:
-- **Input validation**: Comprehensive sanitization preventing injection attacks
-- **Rate limiting**: Configurable request throttling with IP-based controls
-- **Audit logging**: Complete interaction tracking with structured logging
-- **Access control**: Role-based authentication with session management
-- **Error handling**: Secure error responses preventing information disclosure
-
-### Compliance Features
-**Enterprise Compliance**: Built-in support for regulatory requirements
-- GDPR compliance with data retention policies and right-to-deletion
-- HIPAA-ready architecture with audit trails and access controls
-- SOC2 Type II compatible logging and monitoring
-- ISO 27001 security controls implementation
-
-**Deployment Security**:
-- Air-gapped deployment support for sensitive environments
-- TLS/SSL encryption for all network communications
-- Configurable authentication backends (LDAP, OAuth, SAML)
-- Multi-tenant isolation with resource quotas
-
----
-
-## 🔧 Development & Deployment
-
-### System Requirements
-**Development Environment**:
-- Python 3.8+ (3.11+ recommended for optimal performance)
-- 16GB RAM for development (8GB minimum for production)
-- 10GB storage for models and knowledge graphs
-- Git for version control and dependency management
-
-**Production Deployment**:
-- Linux/Windows/macOS support with containerization options
-- Docker and Docker Compose for orchestrated deployment
-- Reverse proxy support (nginx, Apache) for production traffic
-- Systemd/supervisor integration for service management
-
-### Code Organization
-**Professional Structure**: Clean, maintainable codebase following Python best practices
-```
-improved-local-assistant/
-├── app/                    # FastAPI web application
-│   ├── api/               # REST API endpoints with OpenAPI documentation
-│   ├── core/              # Core application configuration and utilities
-│   └── ws/                # WebSocket handlers for real-time communication
-├── services/              # Core business logic with dependency injection
-│   ├── graph_manager/     # Knowledge graph construction and management
-│   ├── model_manager.py   # AI model orchestration and lifecycle management
-│   └── hybrid_retriever.py # Multi-modal retrieval engine
-├── cli/                   # Command-line tools for administration and testing
-├── tests/                 # Comprehensive test suite with 90%+ coverage
-└── docs/                  # Technical documentation and API references
-```
-
-**Code Quality**: Professional standards with automated enforcement
-- Zero lint violations with Black formatting and isort import organization
-- Comprehensive type annotations with mypy static analysis
-- Professional docstring coverage for all public APIs
-- Automated code quality checks in CI/CD pipeline
-
-### Monitoring & Observability
-**Production Monitoring**: Comprehensive system observability
-- Real-time performance metrics (response time, throughput, error rates)
-- Resource utilization monitoring (CPU, memory, disk, network)
-- Knowledge graph statistics (entities, relationships, query performance)
-- Health check endpoints for load balancer integration
-
-**Logging & Debugging**: Structured logging with multiple output formats
-- Configurable log levels (DEBUG, INFO, WARNING, ERROR)
-- JSON-structured logs for automated parsing and analysis
-- Request tracing with correlation IDs for debugging
-- Performance profiling with detailed timing information
-
-### Scalability & Performance
-**Horizontal Scaling**: Multi-instance deployment with load balancing
-- Stateless service design enabling horizontal scaling
-- Session affinity support for WebSocket connections
-- Database connection pooling and query optimization
-- Caching strategies for frequently accessed knowledge graph nodes
-
-**Performance Optimization**: Continuous performance improvement
-- Automated performance regression testing
-- Memory usage profiling and optimization
-- Database query optimization and indexing
-- CDN integration for static asset delivery
-
----
-
-## 📚 Technical Documentation
-
-### API Documentation
-**Complete API Reference**: Comprehensive documentation for all endpoints
-- OpenAPI 3.0 specification with interactive documentation
-- Request/response schemas with validation rules
-- Authentication and authorization examples
-- Rate limiting and error handling documentation
-- WebSocket protocol specification with message formats
-
-### Architecture Documentation
-**System Design**: Detailed technical architecture documentation
-- Component interaction diagrams and data flow
-- Database schema and relationship documentation
-- Security architecture and threat model analysis
-- Deployment architecture with scaling considerations
-- Deployment guides and optimization recommendations
-
-### Developer Resources
-**Getting Started**: Comprehensive onboarding for new developers
-- Development environment setup with automated scripts
-- Code contribution guidelines and review process
-- Testing strategies and continuous integration setup
-- Debugging guides and troubleshooting documentation
-- Performance profiling and optimization techniques
-
----
-
-## 🚀 Technical Validation
-
-### Production Readiness
-The system has undergone comprehensive validation for production deployment:
-
-**Performance Validation**:
-- ✅ Load testing with 100+ concurrent users
-- ✅ Memory leak detection and resource cleanup verification
-- ✅ 24/7 stability testing over 30-day periods
-- ✅ Edge device testing on Raspberry Pi and mobile platforms
-
-**Security Validation**:
-- ✅ Penetration testing and vulnerability assessment
-- ✅ Input validation and injection attack prevention
-- ✅ Authentication and authorization security review
-- ✅ Data encryption and privacy compliance verification
-
-**Code Quality Validation**:
-- ✅ 90%+ test coverage with comprehensive unit and integration tests
-- ✅ Zero critical security vulnerabilities in dependency scan
-- ✅ Professional code formatting and documentation standards
-- ✅ Automated CI/CD pipeline with quality gates
-
-**Deployment Validation**:
-- ✅ Multi-platform deployment testing (Linux, Windows, macOS)
-- ✅ Container orchestration with Docker and Kubernetes
-- ✅ Database migration and backup/restore procedures
-- ✅ Monitoring and alerting system integration
-
----
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### Development Setup
-```bash
-# Clone the repository
-git clone https://github.com/your-username/improved-local-assistant.git
+# 1) Clone
+git clone https://github.com/hugokos/improved-local-assistant.git
 cd improved-local-assistant
 
-# Install development dependencies
+# 2) Create & activate a virtual environment
+python -m venv .venv
+# Windows
+. .venv/Scripts/activate
+# macOS/Linux
+# source .venv/bin/activate
+
+# 3) Install Python dependencies
 pip install -r requirements.txt
-pip install -r requirements-dev.txt
 
-# Run tests
-python -m pytest tests/ -v --cov=services
+# 4) Pull default Ollama models (adjust to taste)
+ollama pull hermes3:3b
+ollama pull phi3:mini
 
-# Format code
-python -m black . --line-length 120
-python -m isort . --profile black
+# 5) (Optional) Download a prebuilt graph
+action="survivalist"  # or "all"
+python scripts/download_graphs.py "$action"
+
+# 6) Run the app
+python run_app.py
 ```
 
-### Code Quality
-- **Testing**: 90%+ code coverage required
-- **Formatting**: Black + isort with 120 character line length
-- **Type Checking**: mypy for static analysis
-- **Documentation**: Comprehensive docstrings for all public APIs
+**Open**
+
+* Web UI: [http://localhost:8000](http://localhost:8000)
+* API docs (OpenAPI): [http://localhost:8000/docs](http://localhost:8000/docs)
+* Health: [http://localhost:8000/api/health](http://localhost:8000/api/health)
+
+**CLI** (REPL):
+
+```bash
+python cli/graphrag_repl.py
+```
 
 ---
 
-## 📄 License
+## Configuration
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+ILA reads configuration from sensible defaults and environment variables. Common knobs:
+
+```bash
+# Ollama
+export OLLAMA_HOST="http://127.0.0.1:11434"
+export ILA_MODEL_CHAT="hermes3:3b"          # chat/inference
+export ILA_MODEL_EMBED="nomic-embed-text"   # embedding model name if applicable
+
+# App & storage
+export ILA_PORT=8000
+export ILA_DATA_DIR="./data"                 # stores graphs, caches, logs
+export ILA_PREBUILT_DIR="./data/prebuilt_graphs"
+
+# Router / retrieval (example weights; tune to your taste)
+export ILA_USE_GRAPH=true
+export ILA_USE_VECTOR=true
+export ILA_USE_BM25=true
+export ILA_ROUTER_GRAPH_WEIGHT=0.5
+export ILA_ROUTER_VECTOR_WEIGHT=0.4
+export ILA_ROUTER_BM25_WEIGHT=0.1
+```
+
+> Tip: put these in a `.env` file and load with your shell, or use your process manager.
 
 ---
 
-## 🙏 Acknowledgments
+## Knowledge Graphs
 
-- [Ollama](https://ollama.ai) for local model inference
-- [LlamaIndex](https://www.llamaindex.ai) for knowledge graph infrastructure
-- [FastAPI](https://fastapi.tiangolo.com) for the web framework
-- The open-source AI community for inspiration and tools
+**KG‑Prime (prebuilt):** a property graph you can ship with the app for a domain (e.g., "survivalist").
+
+**KG‑Live (dynamic):** updates during conversation—new entities/edges extracted from user and assistant turns.
+
+### Add your own documents
+
+```bash
+# Ingest a folder of markdown/PDF/text into a new prebuilt graph
+python scripts/build_graph.py --input ./my_docs --out ./data/prebuilt_graphs/my_domain
+
+# Point the app at it
+export ILA_PREBUILT_DIR="./data/prebuilt_graphs/my_domain"
+python run_app.py
+```
+
+Chunking and entity extraction are configurable. Start with smaller, semantically coherent chunks for tighter relationships; rely on the retriever to stitch cross‑chunk context.
 
 ---
 
-## 📞 Support
+## Retrieval & Routing
 
-- **Issues**: [GitHub Issues](https://github.com/hugokos/improved-local-assistant/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/hugokos/improved-local-assistant/discussions)
-- **Documentation**: [Wiki](https://github.com/hugokos/improved-local-assistant/wiki)
+* **Graph traversal** finds semantically linked entities and relations.
+* **Vector search** (embedding‑based) surfaces semantically similar passages.
+* **BM25** ensures exact‑term recall for names, commands, and IDs.
+* The **router** balances these signals and builds a small, cited context for the LLM.
+
+To tweak behavior, adjust the `ILA_USE_*` flags and weights, or the per‑retriever limits (k‑values) in your config.
 
 ---
 
-*This system represents production-ready AI technology with enterprise-grade architecture, comprehensive testing, and professional development practices suitable for technical evaluation and enterprise deployment.*
+## Voice Interface (Offline)
+
+* **STT (Vosk):** per‑session recognizers; real‑time partial and final transcripts; VAD‑assisted utterance boundaries.
+* **TTS (Piper):** streaming synthesis; configurable voices; audio chunks are sent to the UI while tokens stream from the LLM.
+
+**Enable voice in the Web UI:** toggle the mic orb to start/stop listening. Configure default devices in your browser/OS.
+
+---
+
+## APIs & Examples
+
+The server exposes a REST API and a WebSocket for streaming.
+
+**Health**
+
+```bash
+curl http://localhost:8000/api/health
+```
+
+**Chat (REST)**
+
+```bash
+curl -X POST http://localhost:8000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"messages":[{"role":"user","content":"Hello!"}]}'
+```
+
+**Streaming (WebSocket) — Python snippet**
+
+```python
+import asyncio, websockets, json
+
+async def main():
+    async with websockets.connect("ws://localhost:8000/ws") as ws:
+        await ws.send(json.dumps({"type": "user", "content": "Explain GraphRAG in 2 lines"}))
+        async for msg in ws:
+            print(msg)
+
+asyncio.run(main())
+```
+
+---
+
+## Performance & Tuning
+
+* **Model choice:** prefer smaller quantized models for low TTFT; switch to larger models for depth.
+* **Caching:** enable embedding/result caches to speed repeated queries.
+* **Concurrency:** limit concurrent sessions on low‑power systems; configure worker pool size.
+* **Retrieval budgets:** cap per‑retriever `k` and token budgets to avoid oversized contexts.
+
+### Benchmarks (reproducible)
+
+Use the included scripts to measure **TTFT**, **tokens/s**, and **end‑to‑end latency**:
+
+```bash
+python scripts/run_benchmarks.py
+python scripts/benchmark_models.py --model hermes3:3b --contexts 1024 2048 4096 --runs 5
+```
+
+Results are stored under `benchmarks/` with CSV/JSON outputs you can plot.
+
+---
+
+## Security & Privacy
+
+* No external API calls are required; network calls can be disabled entirely.
+* Logs and caches stay in `ILA_DATA_DIR` on your machine.
+* Sanitization hooks are available before content is persisted to the graph.
+
+---
+
+## Troubleshooting
+
+* **Ollama not reachable** → verify `OLLAMA_HOST` and that the daemon is running.
+* **Model not found** → `ollama pull <name>` again; confirm tags.
+* **Mic or TTS silent** → check OS device permissions and your browser’s site settings.
+* **Port in use** → change `ILA_PORT` or free the port.
+
+---
+
+## Roadmap (selected)
+
+* Presets for **speed vs. quality** routing and model bundles.
+* Optional Windows/macOS packaged launchers.
+* Coverage reporting and Codecov badge in CI.
+* Additional docs: developer internals, deployment patterns, and advanced voice controls.
+
+---
+
+## Contributing
+
+We welcome issues and PRs! Please read:
+
+* [CONTRIBUTING.md](CONTRIBUTING.md)
+* [CODE\_OF\_CONDUCT.md](CODE_OF_CONDUCT.md)
+
+Use conventional commits when possible (`feat:`, `fix:`, `docs:` …). Run linters before committing if you use pre‑commit.
+
+---
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+## Acknowledgments
+
+Thanks to the maintainers of **Ollama**, **LlamaIndex**, **FastAPI**, **Vosk**, and **Piper** for foundational tooling.
+
+<!-- Optional demo: place a short GIF at docs/assets/demo.gif and uncomment below -->
+
+<!-- ![Demo](docs/assets/demo.gif) -->
