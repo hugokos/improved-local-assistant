@@ -1,16 +1,28 @@
 name: docs
 
 on:
-  push: { branches: [main] }
+  push:
+    branches: [main]
+
+permissions:
+  contents: write  # needed to push to gh-pages
 
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with: 
           python-version: '3.12'
           cache: 'pip'
       - run: pip install mkdocs mkdocs-material mkdocstrings[python]
-      - run: mkdocs gh-deploy --force --config-file config/mkdocs.yml
+      - name: Configure git author
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Build & deploy
+        run: mkdocs gh-deploy --force --config-file config/mkdocs.yml

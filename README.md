@@ -24,7 +24,7 @@ Local‑first GraphRAG assistant with an offline voice interface. Runs entirely 
 
 ## Architecture
 
-A high‑level look at how the pieces fit together:
+A high-level look at how the pieces fit together:
 
 ```mermaid
 flowchart LR
@@ -38,7 +38,7 @@ flowchart LR
 
   %% API + Routing Layer
   subgraph API_Layer
-    API[FastAPI (REST/WebSocket)]
+    API_API[FastAPI REST & WebSocket]
     Router[Semantic Router]
     Ranker[Context Builder]
   end
@@ -52,7 +52,7 @@ flowchart LR
   end
 
   %% Model
-  LLM[Local LLM (Ollama)]
+  LLM[Local LLM via Ollama]
 
   %% Ingestion
   subgraph Ingestion
@@ -63,22 +63,21 @@ flowchart LR
   end
 
   %% Voice flow
-  UI -->|Audio| STT -->|Text| API
-  API -->|Text| TTS -->|Audio| UI
+  UI -->|Audio| STT -->|Text| API_API
+  API_API -->|Text| TTS -->|Audio| UI
 
   %% Chat flow
-  UI --> API --> Router
+  UI --> API_API --> Router
   Router --> KGPrime
   Router --> KGLive
   Router --> VDB
   Router --> BM25
-  Router --> Ranker -->|Cited Context| LLM --> API
+  Router --> Ranker -->|Cited Context| LLM --> API_API
 
   %% Ingestion flow
   DOCS --> CHUNK --> EXTRACT --> TRIPLES --> KGPrime
   EXTRACT --> KGLive
   TRIPLES --> VDB
-  
 ```
 
 ### Key components (what’s innovative and why it matters)
