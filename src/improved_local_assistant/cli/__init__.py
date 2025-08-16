@@ -1,11 +1,20 @@
 """
 Improved Local Assistant CLI
 """
+import platform
+import sys
 import typer
 import uvicorn
 import os
 from pathlib import Path
 from typing import Optional
+
+# Check for unsupported platforms
+if platform.system() == "Darwin":
+    print("❌ Improved Local Assistant: macOS is currently unsupported.")
+    print("   Please use Windows 10/11 or Linux (Ubuntu 20.04+ recommended).")
+    print("   See: https://github.com/hugokos/improved-local-assistant/blob/main/docs/installation.md")
+    sys.exit(1)
 
 app = typer.Typer(help="Improved Local Assistant CLI")
 

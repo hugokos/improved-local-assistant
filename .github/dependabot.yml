@@ -20,6 +20,12 @@ updates:
           - "ollama"
           - "sentence-transformers"
           - "tiktoken"
+      voice-audio:
+        patterns:
+          - "vosk*"
+          - "sounddevice*"
+          - "webrtcvad*"
+          - "piper-tts*"
       web-framework:
         patterns:
           - "fastapi"

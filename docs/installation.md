@@ -1,5 +1,9 @@
 # Installation Guide
 
+**Supported Platforms**: Windows 10/11 and Linux (Ubuntu 20.04+ recommended)
+
+> **macOS Note**: Currently unsupported in CI and may not work out of the box due to voice processing dependencies.
+
 ## 🪟 Windows Quick Start
 
 Works on Windows 10/11 using PowerShell. Requires Python 3.10+ and Git. Optional: install Ollama and pull models (`ollama pull hermes3:3b`) if you want local LLMs.
@@ -115,7 +119,7 @@ rmdir /s /q .venv
 
 ---
 
-## 🐧 Linux/macOS
+## 🐧 Linux
 
 ```bash
 # Clone and setup
@@ -126,7 +130,8 @@ cd improved-local-assistant
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Install dependencies
+# Install dependencies (includes PortAudio for voice features)
+sudo apt-get update && sudo apt-get install -y libportaudio2
 pip install -r requirements.txt
 pip install -e . -c constraints.txt
 

@@ -52,9 +52,11 @@ This document lists all environment variables used by Improved Local Assistant.
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `ILA_VOICE_ENABLED` | `true` | Enable voice interface |
+| `ILA_VOICE_ENABLED` | `true` | Enable voice interface (Windows/Linux only) |
 | `ILA_STT_MODEL` | `vosk-model-en-us-0.22` | STT model |
 | `ILA_TTS_VOICE` | `en_US-lessac-medium` | TTS voice |
+
+> **Note**: Voice features require Windows or Linux. macOS is currently unsupported.
 
 ## Legacy Environment Variables
 

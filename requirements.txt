@@ -43,11 +43,11 @@ httpx[http2]==0.27.0
 # CLI tools
 prompt-toolkit>=3.0.0  # For enhanced REPL experience
 
-# Voice processing dependencies
-vosk                    # Offline speech recognition
-sounddevice==0.4                # Audio capture and playback
-webrtcvad==2.0.10              # Voice activity detection (Phase 2)
-piper-tts              # Local text-to-speech
+# Voice processing dependencies (Windows + Linux only)
+vosk>=0.3.45 ; platform_system != "Darwin"                    # Offline speech recognition
+sounddevice==0.4 ; platform_system != "Darwin"               # Audio capture and playback
+webrtcvad==2.0.10 ; platform_system != "Darwin"              # Voice activity detection (Phase 2)
+piper-tts ; platform_system != "Darwin"                       # Local text-to-speech
 
 # Development
 black==23.11.0

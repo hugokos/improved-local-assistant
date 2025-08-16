@@ -20,14 +20,13 @@ classifiers = [
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11", 
+    "Operating System :: POSIX :: Linux",
     "Programming Language :: Python :: 3",
-
-
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -72,10 +71,10 @@ dependencies = [
     "prompt-toolkit>=3.0.0",
     "typer>=0.9.0",
     
-    # Voice processing - align with requirements.txt
-    "vosk>=0.3.45",
-    "sounddevice>=0.4,<0.5",
-    "webrtcvad>=2.0.10,<2.1",
+    # Voice processing - Windows + Linux only
+    "vosk>=0.3.45 ; platform_system != 'Darwin'",
+    "sounddevice>=0.4,<0.5 ; platform_system != 'Darwin'",
+    "webrtcvad>=2.0.10,<2.1 ; platform_system != 'Darwin'",
     
     # Platform-specific
     "pywin32>=306; sys_platform == 'win32'",

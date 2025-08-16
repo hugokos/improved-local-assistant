@@ -102,10 +102,13 @@ flowchart LR
 
 ### Prerequisites
 
+* **Operating Systems**: Windows 10/11 and Linux (Ubuntu 20.04+ recommended)
 * **Python** ≥ 3.10
 * **Git**
 * **Ollama** (running locally)
 * Optional: **CUDA‑capable GPU** for models that can use it
+
+> **Note**: macOS is currently unsupported in CI and may not work out of the box.
 
 ### Quick Start
 
