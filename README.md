@@ -200,20 +200,6 @@ export ILA_ROUTER_BM25_WEIGHT=0.1
 > **Tip**: Create a `.env` file in the project root with your settings, or copy and modify `configs/dev.yaml`.
 
 ---
-### Add your own documents
-
-```bash
-# Ingest a folder of markdown/PDF/text into a new prebuilt graph
-python scripts/build_graph.py --input ./my_docs --out ./data/prebuilt_graphs/my_domain
-
-# Point the app at it
-export ILA_PREBUILT_DIR="./data/prebuilt_graphs/my_domain"
-ila api
-```
-
-Chunking and entity extraction are configurable. Start with smaller, semantically coherent chunks for tighter relationships; rely on the retriever to stitch cross‑chunk context.
-
----
 
 ## Retrieval & Routing
 
