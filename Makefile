@@ -14,10 +14,12 @@ help:
 # Development setup
 dev:
 	pip install --upgrade pip
-	pip install -e .[dev] -c constraints.txt
+	pip install -r requirements.txt
+	pip install -e . -c constraints.txt
 
 # Install package
 install:
+	pip install -r requirements.txt
 	pip install -e . -c constraints.txt
 
 # Testing
@@ -60,6 +62,12 @@ clean:
 # CI simulation
 ci-local:
 	bash scripts/ci_local.sh
+
+# Dependency conflict check
+check-deps:
+	python -m pip check
+	pip install pipdeptree
+	pipdeptree --warn fail -p llama-index,llama-index-core,llama-index-embeddings-ollama
 
 # Multi-version testing
 tox:

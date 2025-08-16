@@ -20,7 +20,8 @@ jobs:
       - name: Install dev dependencies
         run: |
           pip install --upgrade pip
-          pip install -e .[dev] -c constraints.txt
+          pip install -r requirements.txt
+          pip install -e . -c constraints.txt
       - name: Pre-commit hooks
         run: pre-commit run --all-files
       - name: Lint with ruff
@@ -39,7 +40,8 @@ jobs:
       - name: Install dev dependencies
         run: |
           pip install --upgrade pip
-          pip install -e .[dev] -c constraints.txt
+          pip install -r requirements.txt
+          pip install -e . -c constraints.txt
       - name: Type check with mypy
         run: mypy src
 
@@ -65,7 +67,13 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install -e .[dev] -c constraints.txt
+          pip install -r requirements.txt
+          pip install -e . -c constraints.txt
+      - name: Check for dependency conflicts
+        run: |
+          python -m pip check
+          pip install pipdeptree
+          pipdeptree --warn fail -p llama-index,llama-index-core,llama-index-embeddings-ollama
       - name: Run tests with coverage
         run: pytest -q --cov=improved_local_assistant --cov-report=xml --fail-under=70
       - name: Upload coverage
@@ -84,7 +92,8 @@ jobs:
       - name: Install security tools
         run: |
           pip install --upgrade pip
-          pip install -e .[dev] -c constraints.txt
+          pip install -r requirements.txt
+          pip install -e . -c constraints.txt
       - name: Run Bandit security scan
         run: bandit -r src/ -ll
       - name: Run Safety dependency scan

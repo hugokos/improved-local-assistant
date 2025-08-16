@@ -14,9 +14,15 @@ if [[ "${OSTYPE:-}" == "linux-gnu"* ]]; then
   fi
 fi
 
-echo "==> Install dependencies (with constraints)"
+echo "==> Install dependencies (requirements.txt + constraints)"
 python -m pip install -U pip
-pip install -e .[dev] -c constraints.txt
+pip install -r requirements.txt
+pip install -e . -c constraints.txt
+
+echo "==> Dependency conflict check"
+python -m pip check
+pip install pipdeptree
+pipdeptree --warn fail -p llama-index,llama-index-core,llama-index-embeddings-ollama
 
 echo "==> Environment check"
 python - << 'PY'
