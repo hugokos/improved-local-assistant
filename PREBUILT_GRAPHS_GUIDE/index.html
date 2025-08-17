@@ -1,0 +1,2569 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production-ready local AI assistant with GraphRAG technology and voice interface">
+      
+      
+      
+        <link rel="canonical" href="https://hugokos.github.io/improved-local-assistant/PREBUILT_GRAPHS_GUIDE/">
+      
+      
+        <link rel="prev" href="../quickstart/">
+      
+      
+        <link rel="next" href="../GRAPH_DOWNLOAD_SYSTEM/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+    
+    
+      
+        <title>Prebuilt Graphs - Improved Local Assistant</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#prebuilt-knowledge-graphs-distribution-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Improved Local Assistant" class="md-header__button md-logo" aria-label="Improved Local Assistant" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Improved Local Assistant
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Prebuilt Graphs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/hugokos/improved-local-assistant" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hugokos/improved-local-assistant
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../installation/" class="md-tabs__link">
+          
+  
+  
+  Getting Started
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  User Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../VOICE_CHAT_IMPLEMENTATION/" class="md-tabs__link">
+          
+  
+  
+  Voice Interface
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../EDGE_CHROME_AUDIO_FIXES/" class="md-tabs__link">
+          
+  
+  
+  Technical Guides
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../API/" class="md-tabs__link">
+          
+  
+  
+  API Reference
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../adr/001-project-structure/" class="md-tabs__link">
+          
+  
+  
+  Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../DEVELOPMENT_HISTORY/" class="md-tabs__link">
+          
+  
+  
+  Project Info
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Improved Local Assistant" class="md-nav__button md-logo" aria-label="Improved Local Assistant" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Improved Local Assistant
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/hugokos/improved-local-assistant" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hugokos/improved-local-assistant
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Prebuilt Graphs
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Prebuilt Graphs
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-separate-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Why Separate Distribution?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Why Separate Distribution?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#repository-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repository Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graph-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graph Benefits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#distribution-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Distribution Options
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Distribution Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-github-releases-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 1: GitHub Releases (Recommended)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option 1: GitHub Releases (Recommended)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup Process:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-release-notes-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Release Notes Template:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-download" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Download
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Verification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Changelog
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Changelog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-download-script-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Download Script Configuration:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-3-cdn-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 3: CDN Distribution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option 3: CDN Distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-with-jsdelivr-for-github-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup with jsDelivr (for GitHub releases):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup-with-cloudflare-r2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup with CloudFlare R2:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-4-self-hosted-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 4: Self-Hosted Distribution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option 4: Self-Hosted Distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nginx-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nginx Configuration:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Implementation Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛠️ Implementation Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-update-main-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Update Main Repository
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Update Main Repository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-to-gitignore" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add to .gitignore:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-datagraphsreadmemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create data/graphs/README.md:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available Graphs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Graphs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom Graphs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-new-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating New Graphs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-graph-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Graph Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graph-packaging-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Graph Packaging Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Graph Packaging Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-compression-and-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Compression and Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-metadata-and-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Metadata and Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-quality-assurance" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Quality Assurance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-distribution-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Advanced Distribution Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Advanced Distribution Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-platform-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Platform Packages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incremental-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incremental Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mirror-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mirror Distribution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-analytics-and-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      📈 Usage Analytics and Monitoring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📈 Usage Analytics and Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#download-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download Tracking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#health-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Health Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../GRAPH_DOWNLOAD_SYSTEM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Graph Download System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../PROPERTY_GRAPH_MIGRATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Property Graph Migration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../MEMORY_FALLBACK_SYSTEM/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Memory Fallback System
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../STORAGE_AND_PERSISTENCE_TESTING/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Storage & Persistence
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Voice Interface
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Voice Interface
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../VOICE_CHAT_IMPLEMENTATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Voice Chat Implementation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../VOICE_CONTROL_FIXES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Voice Control Fixes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../VOICE_PHASE1_IMPLEMENTATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Voice Phase 1
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../VOICE_PHASE2_IMPLEMENTATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Voice Phase 2
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Technical Guides
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Technical Guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EDGE_CHROME_AUDIO_FIXES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Edge Chrome Audio Fixes
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../EDGE_OPTIMIZATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Edge Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            API Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../API/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../adr/001-project-structure/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Project Structure
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Project Info
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            Project Info
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../DEVELOPMENT_HISTORY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development History
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CHANGELOG/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-separate-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Why Separate Distribution?
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🎯 Why Separate Distribution?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#repository-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Repository Benefits
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#graph-benefits" class="md-nav__link">
+    <span class="md-ellipsis">
+      Graph Benefits
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#distribution-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      📦 Distribution Options
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📦 Distribution Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#option-1-github-releases-recommended" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 1: GitHub Releases (Recommended)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option 1: GitHub Releases (Recommended)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup Process:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-release-notes-template" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example Release Notes Template:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#manual-download" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manual Download
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verification" class="md-nav__link">
+    <span class="md-ellipsis">
+      ✅ Verification
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#changelog" class="md-nav__link">
+    <span class="md-ellipsis">
+      📝 Changelog
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📝 Changelog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#update-download-script-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Download Script Configuration:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-3-cdn-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 3: CDN Distribution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option 3: CDN Distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#setup-with-jsdelivr-for-github-releases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup with jsDelivr (for GitHub releases):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup-with-cloudflare-r2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setup with CloudFlare R2:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#option-4-self-hosted-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Option 4: Self-Hosted Distribution
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Option 4: Self-Hosted Distribution">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nginx-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nginx Configuration:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      🛠️ Implementation Steps
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🛠️ Implementation Steps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-update-main-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Update Main Repository
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Update Main Repository">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-to-gitignore" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add to .gitignore:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-datagraphsreadmemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create data/graphs/README.md:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available Graphs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#custom-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Graphs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Custom Graphs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-new-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating New Graphs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-graph-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Graph Integration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#graph-packaging-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      📊 Graph Packaging Best Practices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📊 Graph Packaging Best Practices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-compression-and-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Compression and Optimization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-metadata-and-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Metadata and Documentation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-quality-assurance" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Quality Assurance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-distribution-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      🔧 Advanced Distribution Strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🔧 Advanced Distribution Strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multi-platform-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Platform Packages
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#incremental-updates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Incremental Updates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mirror-distribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mirror Distribution
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage-analytics-and-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      📈 Usage Analytics and Monitoring
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📈 Usage Analytics and Monitoring">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#download-tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Download Tracking
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#health-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      Health Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      🎯 Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="prebuilt-knowledge-graphs-distribution-guide">Prebuilt Knowledge Graphs Distribution Guide<a class="headerlink" href="#prebuilt-knowledge-graphs-distribution-guide" title="Permanent link">&para;</a></h1>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>This guide explains how to distribute and use prebuilt knowledge graphs for the Improved Local Assistant. Prebuilt graphs are hosted separately from the main repository to keep the codebase lightweight while providing ready-to-use knowledge bases.</p>
+<hr />
+<h2 id="why-separate-distribution">🎯 Why Separate Distribution?<a class="headerlink" href="#why-separate-distribution" title="Permanent link">&para;</a></h2>
+<h3 id="repository-benefits">Repository Benefits<a class="headerlink" href="#repository-benefits" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Lightweight codebase</strong>: Main repository stays under 50MB</li>
+<li><strong>Fast cloning</strong>: Quick setup for developers and users</li>
+<li><strong>Version control efficiency</strong>: No large binary files in Git history</li>
+<li><strong>Modular deployment</strong>: Users can choose which graphs to download</li>
+</ul>
+<h3 id="graph-benefits">Graph Benefits<a class="headerlink" href="#graph-benefits" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Large file support</strong>: Knowledge graphs can be 100MB+ each</li>
+<li><strong>Specialized hosting</strong>: Optimized for large file downloads</li>
+<li><strong>Version management</strong>: Independent versioning of graphs and code</li>
+<li><strong>Bandwidth efficiency</strong>: Download only needed graphs</li>
+</ul>
+<hr />
+<h2 id="distribution-options">📦 Distribution Options<a class="headerlink" href="#distribution-options" title="Permanent link">&para;</a></h2>
+<h3 id="option-1-github-releases-recommended">Option 1: GitHub Releases (Recommended)<a class="headerlink" href="#option-1-github-releases-recommended" title="Permanent link">&para;</a></h3>
+<p><strong>Best for</strong>: Open source projects with moderate file sizes (&lt;2GB per release)</p>
+<h4 id="setup-process">Setup Process:<a class="headerlink" href="#setup-process" title="Permanent link">&para;</a></h4>
+<ol>
+<li>
+<p><strong>Create Release Repository</strong> (optional)
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Create separate repository for graphs</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>git<span class="w"> </span>init<span class="w"> </span>improved-local-assistant-graphs
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">cd</span><span class="w"> </span>improved-local-assistant-graphs
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># Create README for graphs repository</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;# Improved Local Assistant - Prebuilt Knowledge Graphs&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>README.md
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;This repository contains prebuilt knowledge graphs for the Improved Local Assistant.&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>README.md
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>git<span class="w"> </span>add<span class="w"> </span>README.md
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Initial commit&quot;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>https://github.com/hugokos/improved-local-assistant-graphs.git
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>main
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Prepare Graph Packages</strong>
+   <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Navigate to your graphs directory</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>improved-local-assistant/data/graphs
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># Create compressed archives with metadata</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>tar<span class="w"> </span>-czf<span class="w"> </span>survivalist-knowledge-v1.0.tar.gz<span class="w"> </span>survivalist/
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="c1"># Generate checksums</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>sha256sum<span class="w"> </span>*.tar.gz<span class="w"> </span>&gt;<span class="w"> </span>checksums.txt
+</code></pre></div></p>
+</li>
+<li>
+<p><strong>Create GitHub Release</strong></p>
+</li>
+<li>Go to graphs repository → Releases → Create new release</li>
+<li>Tag: <code>graphs-v1.0.0</code></li>
+<li>Title: <code>Prebuilt Knowledge Graphs v1.0.0</code></li>
+<li>Upload compressed graph files and checksums.txt</li>
+<li>Include detailed release notes</li>
+</ol>
+<h4 id="example-release-notes-template">Example Release Notes Template:<a class="headerlink" href="#example-release-notes-template" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gh"># Prebuilt Knowledge Graphs v1.0.0</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="gu">## 📊 Available Graphs</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="gu">### Survivalist Knowledge Base</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="k">-</span><span class="w"> </span><span class="gs">**File**</span>: <span class="sb">`survivalist-knowledge-v1.0.tar.gz`</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Size**</span>: 45MB compressed, 180MB extracted
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Entities**</span>: 2,847 unique entities
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Relationships**</span>: 8,234 relationships
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Content**</span>: Outdoor survival, bushcraft, emergency preparedness, wilderness skills
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Sources**</span>: Survival manuals, outdoor guides, emergency response documentation
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="ge">*Additional knowledge domains (medical, technical, etc.) will be added in future releases.*</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="gu">## 🔧 Installation</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="gu">### Automatic Download (Recommended)</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>```bash
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="gh"># Download survivalist knowledge base</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>python scripts/download_graphs.py survivalist
+</code></pre></div>
+<h3 id="manual-download">Manual Download<a class="headerlink" href="#manual-download" title="Permanent link">&para;</a></h3>
+<ol>
+<li>Download the desired <code>.tar.gz</code> files from this release</li>
+<li>Extract to <code>improved-local-assistant/data/graphs/</code></li>
+<li>Verify checksums against <code>checksums.txt</code></li>
+</ol>
+<h2 id="verification">✅ Verification<a class="headerlink" href="#verification" title="Permanent link">&para;</a></h2>
+<p>After installation, verify graphs are working:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>python<span class="w"> </span>cli/graphrag_repl.py
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt;<span class="w"> </span>Tell<span class="w"> </span>me<span class="w"> </span>about<span class="w"> </span>fire<span class="w"> </span>starting<span class="w"> </span>techniques
+</code></pre></div></p>
+<h2 id="changelog">📝 Changelog<a class="headerlink" href="#changelog" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Initial release of prebuilt knowledge graphs</li>
+<li>Optimized for GraphRAG retrieval performance</li>
+<li>Comprehensive entity linking and relationship mapping
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>### Option 2: Cloud Storage (AWS S3, Google Cloud, etc.)
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>**Best for**: Large files, enterprise distribution, or bandwidth optimization
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>#### AWS S3 Setup:
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>```bash
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a># Create S3 bucket
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>aws s3 mb s3://improved-local-assistant-graphs
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a># Upload graphs with public read access
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>aws s3 cp survivalist-knowledge-v1.0.tar.gz s3://improved-local-assistant-graphs/v1.0/ --acl public-read
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>aws s3 cp checksums.txt s3://improved-local-assistant-graphs/v1.0/ --acl public-read
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a># Create index file
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>echo &#39;{&quot;version&quot;: &quot;1.0.0&quot;, &quot;graphs&quot;: [&quot;survivalist&quot;]}&#39; &gt; index.json
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>aws s3 cp index.json s3://improved-local-assistant-graphs/v1.0/ --acl public-read
+</code></pre></div></li>
+</ul>
+<h4 id="update-download-script-configuration">Update Download Script Configuration:<a class="headerlink" href="#update-download-script-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># In scripts/download_graphs.py, update GRAPHS_CONFIG:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">GRAPHS_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;s3&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="s2">&quot;base_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://improved-local-assistant-graphs.s3.amazonaws.com/v1.0&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="s2">&quot;release_tag&quot;</span><span class="p">:</span> <span class="s2">&quot;v1.0&quot;</span><span class="p">,</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    <span class="c1"># ... rest of config</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="option-3-cdn-distribution">Option 3: CDN Distribution<a class="headerlink" href="#option-3-cdn-distribution" title="Permanent link">&para;</a></h3>
+<p><strong>Best for</strong>: High-traffic projects, global distribution</p>
+<h4 id="setup-with-jsdelivr-for-github-releases">Setup with jsDelivr (for GitHub releases):<a class="headerlink" href="#setup-with-jsdelivr-for-github-releases" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Update download script for CDN</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">GRAPHS_CONFIG</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;cdn&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>    <span class="s2">&quot;base_url&quot;</span><span class="p">:</span> <span class="s2">&quot;https://cdn.jsdelivr.net/gh/hugokos/improved-local-assistant-graphs@graphs-v1.0.0&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="c1"># ... rest of config</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">}</span>
+</code></pre></div>
+<h4 id="setup-with-cloudflare-r2">Setup with CloudFlare R2:<a class="headerlink" href="#setup-with-cloudflare-r2" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Upload to R2 with public access</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>wrangler<span class="w"> </span>r2<span class="w"> </span>object<span class="w"> </span>put<span class="w"> </span>improved-local-assistant-graphs/v1.0/survivalist-knowledge-v1.0.tar.gz<span class="w"> </span>--file<span class="w"> </span>survivalist-knowledge-v1.0.tar.gz
+</code></pre></div>
+<h3 id="option-4-self-hosted-distribution">Option 4: Self-Hosted Distribution<a class="headerlink" href="#option-4-self-hosted-distribution" title="Permanent link">&para;</a></h3>
+<p><strong>Best for</strong>: Complete control, custom domains</p>
+<h4 id="nginx-configuration">Nginx Configuration:<a class="headerlink" href="#nginx-configuration" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">server</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="kn">listen</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="kn">server_name</span><span class="w"> </span><span class="s">graphs.your-domain.com</span><span class="p">;</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="kn">location</span><span class="w"> </span><span class="s">/v1.0/</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">        </span><span class="kn">root</span><span class="w"> </span><span class="s">/var/www/graphs</span><span class="p">;</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">        </span><span class="kn">autoindex</span><span class="w"> </span><span class="no">on</span><span class="p">;</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">        </span><span class="kn">add_header</span><span class="w"> </span><span class="s">Access-Control-Allow-Origin</span><span class="w"> </span><span class="s">*</span><span class="p">;</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="p">}</span>
+</code></pre></div>
+<hr />
+<h2 id="implementation-steps">🛠️ Implementation Steps<a class="headerlink" href="#implementation-steps" title="Permanent link">&para;</a></h2>
+<h3 id="1-update-main-repository">1. Update Main Repository<a class="headerlink" href="#1-update-main-repository" title="Permanent link">&para;</a></h3>
+<h4 id="add-to-gitignore">Add to .gitignore:<a class="headerlink" href="#add-to-gitignore" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a># Knowledge graphs (downloaded separately)
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>data/graphs/*/
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>!data/graphs/.gitkeep
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>!data/graphs/README.md
+</code></pre></div>
+<h4 id="create-datagraphsreadmemd">Create data/graphs/README.md:<a class="headerlink" href="#create-datagraphsreadmemd" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="gh"># Knowledge Graphs Directory</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>This directory contains prebuilt knowledge graphs for the Improved Local Assistant.
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="gu">## Download Graphs</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>Use the download script to get prebuilt graphs:
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>```bash
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="gh"># Interactive selection</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>python scripts/download_graphs.py
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="gh"># Download specific graphs</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>python scripts/download_graphs.py survivalist medical
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="gh"># Download all graphs</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>python scripts/download_graphs.py all
+</code></pre></div>
+<h2 id="available-graphs">Available Graphs<a class="headerlink" href="#available-graphs" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>survivalist</strong>: Outdoor survival and bushcraft knowledge</li>
+</ul>
+<p><em>Additional knowledge domains will be added in future releases.</em></p>
+<h2 id="custom-graphs">Custom Graphs<a class="headerlink" href="#custom-graphs" title="Permanent link">&para;</a></h2>
+<p>To create your own knowledge graphs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Use the kg_builder tool</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nb">cd</span><span class="w"> </span>kg_builder
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>python<span class="w"> </span>src/graph_builder.py<span class="w"> </span>--input<span class="w"> </span>your_documents/<span class="w"> </span>--output<span class="w"> </span>../improved-local-assistant/data/graphs/custom/
+</code></pre></div>
+<p>For more information, see the <a href="../../kg_builder/README.md">Graph Builder Documentation</a>.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>### 2. Update Installation Documentation
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>#### Add to CONTRIBUTING.md:
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>```markdown
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>### Working with Knowledge Graphs
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>#### Download Development Graphs
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>```bash
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a># Download test graphs for development
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>python scripts/download_graphs.py survivalist
+</code></pre></div></p>
+<h4 id="creating-new-graphs">Creating New Graphs<a class="headerlink" href="#creating-new-graphs" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Build custom graphs for testing</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="nb">cd</span><span class="w"> </span>kg_builder
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>python<span class="w"> </span>src/graph_builder.py<span class="w"> </span>--input<span class="w"> </span>test_data/<span class="w"> </span>--output<span class="w"> </span>../improved-local-assistant/data/graphs/test/
+</code></pre></div>
+<h4 id="testing-graph-integration">Testing Graph Integration<a class="headerlink" href="#testing-graph-integration" title="Permanent link">&para;</a></h4>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Test GraphRAG with specific graph</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>python<span class="w"> </span>cli/graphrag_repl.py<span class="w"> </span>--graph<span class="w"> </span>survivalist
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>### 3. Create Release Automation
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>#### GitHub Actions Workflow (.github/workflows/release-graphs.yml):
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>```yaml
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>name: Release Knowledge Graphs
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>on:
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>  workflow_dispatch:
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>    inputs:
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>      version:
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>        description: &#39;Graph version (e.g., v1.0.0)&#39;
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>        required: true
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>        default: &#39;v1.0.0&#39;
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a>jobs:
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>  release-graphs:
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>    runs-on: ubuntu-latest
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>    steps:
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>    - uses: actions/checkout@v3
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>    - name: Setup Python
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>      uses: actions/setup-python@v4
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>      with:
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>        python-version: &#39;3.11&#39;
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>    - name: Install dependencies
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a>      run: |
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a>        pip install -r requirements.txt
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a>
+<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a>    - name: Build knowledge graphs
+<a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a>      run: |
+<a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a>        cd kg_builder
+<a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a>        python src/graph_builder.py --input data/survivalist/ --output ../data/graphs/survivalist/
+<a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a>
+<a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a>    - name: Package graphs
+<a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a>      run: |
+<a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a>        cd data/graphs
+<a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a>        tar -czf survivalist-knowledge-${{ github.event.inputs.version }}.tar.gz survivalist/
+<a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a>        sha256sum *.tar.gz &gt; checksums.txt
+<a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a>
+<a id="__codelineno-15-41" name="__codelineno-15-41" href="#__codelineno-15-41"></a>    - name: Create Release
+<a id="__codelineno-15-42" name="__codelineno-15-42" href="#__codelineno-15-42"></a>      uses: softprops/action-gh-release@v1
+<a id="__codelineno-15-43" name="__codelineno-15-43" href="#__codelineno-15-43"></a>      with:
+<a id="__codelineno-15-44" name="__codelineno-15-44" href="#__codelineno-15-44"></a>        tag_name: graphs-${{ github.event.inputs.version }}
+<a id="__codelineno-15-45" name="__codelineno-15-45" href="#__codelineno-15-45"></a>        name: Prebuilt Knowledge Graphs ${{ github.event.inputs.version }}
+<a id="__codelineno-15-46" name="__codelineno-15-46" href="#__codelineno-15-46"></a>        files: |
+<a id="__codelineno-15-47" name="__codelineno-15-47" href="#__codelineno-15-47"></a>          data/graphs/*.tar.gz
+<a id="__codelineno-15-48" name="__codelineno-15-48" href="#__codelineno-15-48"></a>          data/graphs/checksums.txt
+<a id="__codelineno-15-49" name="__codelineno-15-49" href="#__codelineno-15-49"></a>        body: |
+<a id="__codelineno-15-50" name="__codelineno-15-50" href="#__codelineno-15-50"></a>          # Prebuilt Knowledge Graphs ${{ github.event.inputs.version }}
+<a id="__codelineno-15-51" name="__codelineno-15-51" href="#__codelineno-15-51"></a>
+<a id="__codelineno-15-52" name="__codelineno-15-52" href="#__codelineno-15-52"></a>          Automatically generated knowledge graphs for the Improved Local Assistant.
+<a id="__codelineno-15-53" name="__codelineno-15-53" href="#__codelineno-15-53"></a>
+<a id="__codelineno-15-54" name="__codelineno-15-54" href="#__codelineno-15-54"></a>          ## Installation
+<a id="__codelineno-15-55" name="__codelineno-15-55" href="#__codelineno-15-55"></a>          ```bash
+<a id="__codelineno-15-56" name="__codelineno-15-56" href="#__codelineno-15-56"></a>          python scripts/download_graphs.py all
+<a id="__codelineno-15-57" name="__codelineno-15-57" href="#__codelineno-15-57"></a>          ```
+<a id="__codelineno-15-58" name="__codelineno-15-58" href="#__codelineno-15-58"></a>
+<a id="__codelineno-15-59" name="__codelineno-15-59" href="#__codelineno-15-59"></a>          ## Verification
+<a id="__codelineno-15-60" name="__codelineno-15-60" href="#__codelineno-15-60"></a>          ```bash
+<a id="__codelineno-15-61" name="__codelineno-15-61" href="#__codelineno-15-61"></a>          cd data/graphs
+<a id="__codelineno-15-62" name="__codelineno-15-62" href="#__codelineno-15-62"></a>          sha256sum -c checksums.txt
+<a id="__codelineno-15-63" name="__codelineno-15-63" href="#__codelineno-15-63"></a>          ```
+</code></pre></div></p>
+<hr />
+<h2 id="graph-packaging-best-practices">📊 Graph Packaging Best Practices<a class="headerlink" href="#graph-packaging-best-practices" title="Permanent link">&para;</a></h2>
+<h3 id="1-compression-and-optimization">1. Compression and Optimization<a class="headerlink" href="#1-compression-and-optimization" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Optimize graph files before packaging</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>python<span class="w"> </span>scripts/optimize_graphs.py<span class="w"> </span>--input<span class="w"> </span>data/graphs/survivalist/<span class="w"> </span>--output<span class="w"> </span>data/graphs/survivalist-optimized/
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># Create compressed archives with maximum compression</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>tar<span class="w"> </span>-czf<span class="w"> </span>survivalist-knowledge-v1.0.tar.gz<span class="w"> </span>--best<span class="w"> </span>survivalist-optimized/
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1"># Alternative: Use 7zip for better compression</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>7z<span class="w"> </span>a<span class="w"> </span>-t7z<span class="w"> </span>-mx<span class="o">=</span><span class="m">9</span><span class="w"> </span>survivalist-knowledge-v1.0.7z<span class="w"> </span>survivalist-optimized/
+</code></pre></div>
+<h3 id="2-metadata-and-documentation">2. Metadata and Documentation<a class="headerlink" href="#2-metadata-and-documentation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Create metadata file for each graph</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>survivalist/metadata.json<span class="w"> </span><span class="s">&lt;&lt; EOF</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="s">{</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="s">  &quot;name&quot;: &quot;survivalist&quot;,</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="s">  &quot;version&quot;: &quot;1.0.0&quot;,</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="s">  &quot;description&quot;: &quot;Survivalist and outdoor knowledge base&quot;,</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="s">  &quot;created_at&quot;: &quot;2025-01-04T12:00:00Z&quot;,</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="s">  &quot;entities&quot;: 2847,</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="s">  &quot;relationships&quot;: 8234,</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="s">  &quot;size_mb&quot;: 180,</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="s">  &quot;sources&quot;: [</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="s">    &quot;SAS Survival Handbook&quot;,</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="s">    &quot;Bushcraft 101&quot;,</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="s">    &quot;Emergency Response Guides&quot;</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="s">  ],</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="s">  &quot;tags&quot;: [&quot;survival&quot;, &quot;outdoor&quot;, &quot;emergency&quot;, &quot;bushcraft&quot;],</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="s">  &quot;compatibility&quot;: {</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="s">    &quot;min_version&quot;: &quot;2.0.0&quot;,</span>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="s">    &quot;max_version&quot;: &quot;2.x.x&quot;</span>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="s">  }</span>
+<a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="s">}</span>
+<a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="s">EOF</span>
+</code></pre></div>
+<h3 id="3-quality-assurance">3. Quality Assurance<a class="headerlink" href="#3-quality-assurance" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Validate graphs before packaging</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>python<span class="w"> </span>scripts/validate_graphs.py<span class="w"> </span>--input<span class="w"> </span>data/graphs/survivalist/
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>python<span class="w"> </span>scripts/test_graph_queries.py<span class="w"> </span>--graph<span class="w"> </span>survivalist<span class="w"> </span>--queries<span class="w"> </span>test_queries.txt
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c1"># Performance benchmarks</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>python<span class="w"> </span>scripts/benchmark_graph_performance.py<span class="w"> </span>--graph<span class="w"> </span>survivalist
+</code></pre></div>
+<hr />
+<h2 id="advanced-distribution-strategies">🔧 Advanced Distribution Strategies<a class="headerlink" href="#advanced-distribution-strategies" title="Permanent link">&para;</a></h2>
+<h3 id="multi-platform-packages">Multi-Platform Packages<a class="headerlink" href="#multi-platform-packages" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Create platform-specific packages</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>tar<span class="w"> </span>-czf<span class="w"> </span>survivalist-knowledge-v1.0-linux.tar.gz<span class="w"> </span>survivalist/
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>zip<span class="w"> </span>-r<span class="w"> </span>survivalist-knowledge-v1.0-windows.zip<span class="w"> </span>survivalist/
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>tar<span class="w"> </span>-czf<span class="w"> </span>survivalist-knowledge-v1.0-macos.tar.gz<span class="w"> </span>survivalist/
+</code></pre></div>
+<h3 id="incremental-updates">Incremental Updates<a class="headerlink" href="#incremental-updates" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Create delta packages for updates</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>python<span class="w"> </span>scripts/create_graph_delta.py<span class="w"> </span>--old<span class="w"> </span>v1.0.0<span class="w"> </span>--new<span class="w"> </span>v1.1.0<span class="w"> </span>--output<span class="w"> </span>survivalist-delta-v1.0.0-to-v1.1.0.tar.gz
+</code></pre></div>
+<h3 id="mirror-distribution">Mirror Distribution<a class="headerlink" href="#mirror-distribution" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Upload to multiple mirrors</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>python<span class="w"> </span>scripts/upload_to_mirrors.py<span class="w"> </span>--graphs<span class="w"> </span>*.tar.gz<span class="w"> </span>--mirrors<span class="w"> </span>github,s3,cloudflare
+</code></pre></div>
+<hr />
+<h2 id="usage-analytics-and-monitoring">📈 Usage Analytics and Monitoring<a class="headerlink" href="#usage-analytics-and-monitoring" title="Permanent link">&para;</a></h2>
+<h3 id="download-tracking">Download Tracking<a class="headerlink" href="#download-tracking" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Add to download script</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">track_download</span><span class="p">(</span><span class="n">graph_name</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Track graph downloads for analytics.&quot;&quot;&quot;</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>        <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;https://analytics.your-domain.com/track&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>            <span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="s2">&quot;graph_download&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>            <span class="s2">&quot;graph&quot;</span><span class="p">:</span> <span class="n">graph_name</span><span class="p">,</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a>            <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">version</span><span class="p">,</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>            <span class="s2">&quot;timestamp&quot;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a>        <span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>    <span class="k">except</span><span class="p">:</span>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a>        <span class="k">pass</span>  <span class="c1"># Don&#39;t fail download for analytics</span>
+</code></pre></div>
+<h3 id="health-monitoring">Health Monitoring<a class="headerlink" href="#health-monitoring" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># Monitor download endpoints</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>python<span class="w"> </span>scripts/monitor_graph_availability.py<span class="w"> </span>--check-all<span class="w"> </span>--notify-on-failure
+</code></pre></div>
+<hr />
+<h2 id="summary">🎯 Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>This comprehensive guide provides multiple options for distributing prebuilt knowledge graphs:</p>
+<ol>
+<li><strong>GitHub Releases</strong>: Best for most open source projects</li>
+<li><strong>Cloud Storage</strong>: Best for large files and enterprise use</li>
+<li><strong>CDN Distribution</strong>: Best for high-traffic global distribution</li>
+<li><strong>Self-Hosted</strong>: Best for complete control</li>
+</ol>
+<p>The included Python download script provides a user-friendly interface for downloading and managing graphs, while the automation workflows ensure consistent packaging and distribution.</p>
+<p>Choose the distribution method that best fits your project's needs, audience, and infrastructure requirements.</p>
+<p><function_calls>
+<invoke name="strReplace">
+<parameter name="path">improved-local-assistant/README.md</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/hugokos/improved-local-assistant" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://hugokos.github.io/improved-local-assistant" target="_blank" rel="noopener" title="hugokos.github.io" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M384 512H96c-53 0-96-43-96-96V96C0 43 43 0 96 0h304c26.5 0 48 21.5 48 48v288c0 20.9-13.4 38.7-32 45.3V448c17.7 0 32 14.3 32 32s-14.3 32-32 32zM96 384c-17.7 0-32 14.3-32 32s14.3 32 32 32h256v-64zm32-232c0 13.3 10.7 24 24 24h176c13.3 0 24-10.7 24-24s-10.7-24-24-24H152c-13.3 0-24 10.7-24 24m24 72c-13.3 0-24 10.7-24 24s10.7 24 24 24h176c13.3 0 24-10.7 24-24s-10.7-24-24-24z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.path", "navigation.top", "search.highlight", "search.share", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>
