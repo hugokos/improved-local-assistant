@@ -73,7 +73,7 @@ dependencies = [
 
     # Voice processing - Windows + Linux only
     "vosk>=0.3.45 ; platform_system != 'Darwin'",
-    "sounddevice>=0.4,<0.5 ; platform_system != 'Darwin'",
+    "sounddevice>=0.4,<0.6 ; platform_system != 'Darwin'",
     "webrtcvad>=2.0.10,<2.1 ; platform_system != 'Darwin'",
 
     # Platform-specific
