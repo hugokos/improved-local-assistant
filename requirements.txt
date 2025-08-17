@@ -37,7 +37,7 @@ pywin32>=306; sys_platform == 'win32'  # Windows-specific dependency for process
 
 # Testing
 pytest==7.4.3
-pytest-asyncio==0.21.1
+pytest-asyncio==1.1.0
 httpx[http2]==0.27.0
 
 # CLI tools
