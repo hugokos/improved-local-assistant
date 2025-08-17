@@ -1,13 +1,13 @@
 {
-  "monitor": {
-    "created_at": "2025-08-12T16:20:55.325585",
-    "updated_at": "2025-08-12T16:20:55.325585",
-    "message_count": 0,
+  "35cb02f9-a85e-491d-9420-63be0aeca1bd": {
+    "created_at": "2025-08-17T11:33:18.353989",
+    "updated_at": "2025-08-17T11:34:13.645804",
+    "message_count": 2,
     "has_summary": false
   },
-  "35cb02f9-a85e-491d-9420-63be0aeca1bd": {
-    "created_at": "2025-08-12T16:20:59.269674",
-    "updated_at": "2025-08-12T16:20:59.269674",
+  "monitor": {
+    "created_at": "2025-08-17T11:33:18.376449",
+    "updated_at": "2025-08-17T11:33:18.376449",
     "message_count": 0,
     "has_summary": false
   }
