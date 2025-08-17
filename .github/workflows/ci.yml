@@ -102,7 +102,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Bandit (code scan)
-        uses: tj-actions/bandit@v5.1
+        uses: tj-actions/bandit@v5.5
         with:
           targets: "src"
           options: "-r -lll"
