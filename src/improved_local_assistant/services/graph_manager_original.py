@@ -15,7 +15,7 @@ import time
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 import contextlib
-from typing import Any
+from typing import Any, Optional
 
 import networkx as nx
 
@@ -108,7 +108,7 @@ class KnowledgeGraphManager:
         # Configure LlamaIndex to use Ollama
         self._configure_llama_index()
 
-    def _safe_get_networkx_graph(self, kg_index, graph_id: str = "unknown") -> nx.Graph | None:
+    def _safe_get_networkx_graph(self, kg_index, graph_id: str = "unknown") -> Optional[nx.Graph]:
         """
         Safely get NetworkX graph from a knowledge graph index.
 
@@ -321,7 +321,7 @@ class KnowledgeGraphManager:
         self.logger.error(f"All loading methods failed for {graph_path}")
         return None
 
-    def load_prebuilt_graphs(self, directory: str | None = None) -> list[str]:
+    def load_prebuilt_graphs(self, directory: Optional[str] = None) -> list[str]:
         """
         Load all pre-built knowledge graphs from directory.
 
@@ -435,8 +435,8 @@ class KnowledgeGraphManager:
             return loaded_graphs
 
     def create_graph_from_documents(
-        self, docs_path: str, graph_id: str | None = None
-    ) -> str | None:
+        self, docs_path: str, graph_id: Optional[str] = None
+    ) -> Optional[str]:
         """
         Create a new knowledge graph from documents.
 
@@ -612,7 +612,7 @@ class KnowledgeGraphManager:
         except Exception as e:
             self.logger.error(f"Error processing entities: {str(e)}")
 
-    def query_graphs(self, query: str, context: list[str] | None = None) -> dict[str, Any]:
+    def query_graphs(self, query: str, context: Optional[list[str]] = None) -> dict[str, Any]:
         """
         Query all knowledge graphs using ensemble method.
 
@@ -631,9 +631,9 @@ class KnowledgeGraphManager:
 
         try:
             # Import optimizer here to avoid circular imports
-            from services.kg_optimizer import cache_query_result
-            from services.kg_optimizer import get_cached_query
-            from services.kg_optimizer import optimize_query
+            from improved_local_assistant.services.kg_optimizer import cache_query_result
+            from improved_local_assistant.services.kg_optimizer import get_cached_query
+            from improved_local_assistant.services.kg_optimizer import optimize_query
 
             # Check cache first
             cached_result = get_cached_query(query)
@@ -743,7 +743,7 @@ class KnowledgeGraphManager:
             query_time = time.time() - start_time
 
             # Import error handler
-            from services.error_handler import handle_error
+            from improved_local_assistant.services.error_handler import handle_error
 
             # Get user-friendly error message
             error_response = handle_error(
@@ -760,7 +760,7 @@ class KnowledgeGraphManager:
 
             return error_result
 
-    def visualize_graph(self, graph_id: str | None = None) -> str:
+    def visualize_graph(self, graph_id: Optional[str] = None) -> str:
         """
         Generate HTML visualization of knowledge graph.
 
@@ -835,7 +835,7 @@ class KnowledgeGraphManager:
             self.logger.error(f"Error visualizing graph: {str(e)}")
             return f"<p>Error visualizing graph: {str(e)}</p>"
 
-    def add_new_graph(self, graph_path: str, graph_id: str | None = None) -> str | None:
+    def add_new_graph(self, graph_path: str, graph_id: Optional[str] = None) -> Optional[str]:
         """
         Add a new pre-built graph at runtime.
 

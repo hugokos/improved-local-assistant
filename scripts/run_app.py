@@ -18,7 +18,7 @@ if project_root not in sys.path:
 
 # Apply UTF-8 runtime patch for Windows compatibility
 try:
-    from services.utf8_runtime_patch import apply_utf8_patch
+    from improved_local_assistant.services.utf8_runtime_patch import apply_utf8_patch
 
     apply_utf8_patch()
 except ImportError:

@@ -11,7 +11,7 @@ import time
 from collections.abc import Awaitable
 from collections.abc import Callable
 from enum import Enum
-from typing import Any
+from typing import Any, Union
 from typing import TypeVar
 
 # Type variables for generic functions
@@ -95,7 +95,7 @@ class DegradationManager:
 
     async def execute_with_fallback(
         self, component: str, primary_func: Callable[..., Awaitable[T]], *args, **kwargs
-    ) -> T | Any:
+    ) -> Union[T, Any]:
         """
         Execute a function with fallback if it fails.
 
@@ -195,7 +195,7 @@ degradation_manager = DegradationManager()
 
 async def with_degradation(
     component: str, primary_func: Callable[..., Awaitable[T]], *args, **kwargs
-) -> T | Any:
+) -> Union[T, Any]:
     """
     Execute a function with graceful degradation using the global manager.
 

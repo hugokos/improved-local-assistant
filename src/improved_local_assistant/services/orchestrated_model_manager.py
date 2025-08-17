@@ -10,18 +10,18 @@ import asyncio
 import logging
 import sys
 from collections.abc import AsyncGenerator
-from typing import Any
+from typing import Any, Optional
 
 # Fix for Windows asyncio event loop issue
 if sys.platform == "win32":
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-from services.extraction_pipeline import ExtractionPipeline
-from services.hybrid_retriever import HybridEnsembleRetriever
-from services.llm_orchestrator import LLMOrchestrator
-from services.model_mgr import ModelConfig  # Import original config class
-from services.system_monitor import SystemMonitor
-from services.working_set_cache import WorkingSetCache
+from improved_local_assistant.services.extraction_pipeline import ExtractionPipeline
+from improved_local_assistant.services.hybrid_retriever import HybridEnsembleRetriever
+from improved_local_assistant.services.llm_orchestrator import LLMOrchestrator
+from improved_local_assistant.services.model_mgr import ModelConfig  # Import original config class
+from improved_local_assistant.services.system_monitor import SystemMonitor
+from improved_local_assistant.services.working_set_cache import WorkingSetCache
 
 
 class OrchestratedModelManager:
@@ -33,7 +33,7 @@ class OrchestratedModelManager:
     management, and hybrid retrieval.
     """
 
-    def __init__(self, config: dict[str, Any], system_monitor: SystemMonitor | None = None):
+    def __init__(self, config: dict[str, Any], system_monitor: Optional[SystemMonitor] = None):
         """Initialize Orchestrated Model Manager with configuration."""
         try:
             self.config = config
@@ -130,7 +130,7 @@ class OrchestratedModelManager:
 
             # Set up embeddings
             try:
-                from services.embedding_singleton import get_embedding_model
+                from improved_local_assistant.services.embedding_singleton import get_embedding_model
 
                 Settings.embed_model = get_embedding_model("BAAI/bge-small-en-v1.5")
             except ImportError:
@@ -196,7 +196,7 @@ class OrchestratedModelManager:
         messages: list[dict[str, str]],
         temperature: float = 0.7,
         max_tokens: int = 2048,
-        session_id: str | None = None,
+        session_id: Optional[str] = None,
     ) -> AsyncGenerator[str, None]:
         """
         Stream response from conversation model using orchestration.
@@ -442,7 +442,7 @@ def create_model_manager(config: dict[str, Any], use_orchestration: bool = None)
         return OrchestratedModelManager(config)
     else:
         # Fall back to original model manager
-        from services.model_mgr import ModelManager
+        from improved_local_assistant.services.model_mgr import ModelManager
 
         host = config.get("ollama", {}).get("host", "http://localhost:11434")
         return ModelManager(host=host)

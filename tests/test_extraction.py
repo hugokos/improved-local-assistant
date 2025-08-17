@@ -13,8 +13,8 @@ import time
 from pathlib import Path
 
 import pytest
-from services.extraction_pipeline import ExtractionPipeline
-from services.extraction_pipeline import ExtractionResult
+from improved_local_assistant.services.extraction_pipeline import ExtractionPipeline
+from improved_local_assistant.services.extraction_pipeline import ExtractionResult
 
 # Setup logging for tests
 logging.basicConfig(level=logging.INFO)
@@ -249,7 +249,7 @@ class TestExtractionPipeline:
         await asyncio.sleep(0.1)  # 100ms simulated processing
 
         # Create mock triples based on content
-        from services.extraction_pipeline import Triple
+        from improved_local_assistant.services.extraction_pipeline import Triple
 
         # Simple heuristic: create triples from key words in content
         words = content.lower().split()
@@ -327,7 +327,7 @@ class TestExtractionPipeline:
         # Simulate the chunking and context preparation
         await asyncio.sleep(0.05)  # Faster with context
 
-        from services.extraction_pipeline import Triple
+        from improved_local_assistant.services.extraction_pipeline import Triple
 
         # Create mock triples that might reference historical context
         words = content.lower().split()

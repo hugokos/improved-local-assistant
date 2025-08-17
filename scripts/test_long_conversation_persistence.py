@@ -29,11 +29,11 @@ from typing import Any
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import yaml
-from services.conversation_manager import ConversationManager
-from services.embedding_singleton import configure_global_embedding
-from services.graph_manager import KnowledgeGraphManager
-from services.model_mgr import ModelConfig
-from services.model_mgr import ModelManager
+from improved_local_assistant.services.conversation_manager import ConversationManager
+from improved_local_assistant.services.embedding_singleton import configure_global_embedding
+from improved_local_assistant.services.graph_manager import KnowledgeGraphManager
+from improved_local_assistant.services.model_mgr import ModelConfig
+from improved_local_assistant.services.model_mgr import ModelManager
 
 # Configure logging
 logging.basicConfig(

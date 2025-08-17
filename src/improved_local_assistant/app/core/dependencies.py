@@ -8,21 +8,21 @@ This module provides dependency injection functions for:
 • Other core services
 """
 
-from typing import Any
+from typing import Any, Dict
 
-from services.connection_pool_manager import ConnectionPoolManager
-from services.dynamic_model_manager import DynamicModelManager
-from services.system_monitor import SystemMonitor
+from improved_local_assistant.services.connection_pool_manager import ConnectionPoolManager
+from improved_local_assistant.core.dynamic_model_manager import DynamicModelManager
+from improved_local_assistant.core.system_monitor import SystemMonitor
 
 # Global instances (initialized by main app)
 _dynamic_model_manager: DynamicModelManager = None
 _connection_pool_manager: ConnectionPoolManager = None
 _system_monitor: SystemMonitor = None
-_config: dict[str, Any] = None
+_config: Dict[str, Any] = None
 
 
 def initialize_dependencies(
-    config: dict[str, Any], connection_pool: ConnectionPoolManager, system_monitor: SystemMonitor
+    config: Dict[str, Any], connection_pool: ConnectionPoolManager, system_monitor: SystemMonitor
 ) -> None:
     """
     Initialize global dependency instances.
@@ -61,7 +61,7 @@ def get_system_monitor() -> SystemMonitor:
     return _system_monitor
 
 
-def get_config() -> dict[str, Any]:
+def get_config() -> Dict[str, Any]:
     """Get the application configuration."""
     if _config is None:
         raise RuntimeError("Configuration not initialized")

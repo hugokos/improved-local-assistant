@@ -6,6 +6,7 @@ Tests full conversation replay, dynamic graph building, and retrieval
 with probe questions to validate the complete pipeline.
 """
 
+from typing import Optional
 import asyncio
 import json
 import logging
@@ -16,8 +17,8 @@ from pathlib import Path
 import pytest
 
 # Import the services we need for integration testing
-from services.extraction_pipeline import ExtractionPipeline
-from services.extraction_pipeline import ExtractionResult
+from improved_local_assistant.services.extraction_pipeline import ExtractionPipeline
+from improved_local_assistant.services.extraction_pipeline import ExtractionResult
 
 # Setup logging for tests
 logging.basicConfig(level=logging.INFO)
@@ -120,8 +121,8 @@ class MockGraphManager:
 
     async def _mock_extraction(self, content: str) -> ExtractionResult:
         """Mock extraction for integration testing."""
-        from services.extraction_pipeline import ExtractionResult
-        from services.extraction_pipeline import Triple
+        from improved_local_assistant.services.extraction_pipeline import ExtractionResult
+        from improved_local_assistant.services.extraction_pipeline import Triple
 
         # Simulate extraction delay
         await asyncio.sleep(0.1)
@@ -194,7 +195,7 @@ class MockRetriever:
         self.metrics = {"queries_processed": 0, "avg_retrieval_time": 0.0}
 
     async def retrieve_chunks(
-        self, query: str, session_id: str | None = None, budget: int | None = None
+        self, query: str, session_id: Optional[str] = None, budget: Optional[int] = None
     ) -> list:
         """Mock retrieval that searches through the graph nodes with improved matching."""
         start_time = time.time()

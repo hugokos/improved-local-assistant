@@ -29,9 +29,9 @@ if sys.platform == "win32":
 
 async def rebuild_survivalist_graph():
     """Rebuild the survivalist knowledge graph from scratch."""
-    from services.graph_manager import KnowledgeGraphManager
-    from services.model_mgr import ModelConfig
-    from services.model_mgr import ModelManager
+    from improved_local_assistant.services.graph_manager import KnowledgeGraphManager
+    from improved_local_assistant.services.model_mgr import ModelConfig
+    from improved_local_assistant.services.model_mgr import ModelManager
 
     # Define paths
     source_file = Path(project_root) / "data" / "test_docs" / "sas_survival.txt"

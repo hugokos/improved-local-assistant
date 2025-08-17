@@ -15,11 +15,11 @@ from pathlib import Path
 # Add the parent directory to the path so we can import from services
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.core.config import load_config
-from services.connection_pool_manager import ConnectionPoolManager
-from services.llm_orchestrator import LLMOrchestrator
-from services.system_monitor import SystemMonitor
-from services.working_set_cache import WorkingSetCache
+from improved_local_assistant.app.core.config import load_config
+from improved_local_assistant.services.connection_pool_manager import ConnectionPoolManager
+from improved_local_assistant.services.llm_orchestrator import LLMOrchestrator
+from improved_local_assistant.services.system_monitor import SystemMonitor
+from improved_local_assistant.services.working_set_cache import WorkingSetCache
 
 
 async def test_basic_orchestration():

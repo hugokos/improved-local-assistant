@@ -22,9 +22,9 @@ from pathlib import Path
 # Add parent directory to path to import from services
 sys.path.append(str(Path(__file__).parent.parent))
 
-from services.graph_manager import KnowledgeGraphManager
-from services.model_mgr import ModelConfig
-from services.model_mgr import ModelManager
+from improved_local_assistant.services.graph_manager import KnowledgeGraphManager
+from improved_local_assistant.services.model_mgr import ModelConfig
+from improved_local_assistant.services.model_mgr import ModelManager
 
 # Configure logging
 logging.basicConfig(
@@ -73,7 +73,7 @@ async def initialize_managers():
 
     # Initialize the knowledge graph optimizer
     try:
-        from services.kg_optimizer import initialize_optimizer
+        from improved_local_assistant.services.kg_optimizer import initialize_optimizer
 
         initialize_optimizer(graph_manager)
         logger.info("Knowledge graph optimizer initialized successfully")

@@ -1,8 +1,8 @@
 """API routers for the Improved Local AI Assistant."""
 
-from app.api.chat import router as chat_router
-from app.api.graph import router as graph_router
-from app.api.system import router as system_router
+from improved_local_assistant.app.api.chat import router as chat_router
+from improved_local_assistant.app.api.graph import router as graph_router
+from improved_local_assistant.app.api.system import router as system_router
 from fastapi import APIRouter
 
 # Create a combined router

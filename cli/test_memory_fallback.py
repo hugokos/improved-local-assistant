@@ -14,11 +14,11 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from app.core.config import load_config  # noqa: E402
-from services.graceful_degradation import ComponentStatus  # noqa: E402
-from services.graceful_degradation import degradation_manager  # noqa: E402
-from services.llm_orchestrator import LLMOrchestrator  # noqa: E402
-from services.system_monitor import SystemMonitor  # noqa: E402
+from improved_local_assistant.app.core.config import load_config  # noqa: E402
+from improved_local_assistant.services.graceful_degradation import ComponentStatus  # noqa: E402
+from improved_local_assistant.services.graceful_degradation import degradation_manager  # noqa: E402
+from improved_local_assistant.services.llm_orchestrator import LLMOrchestrator  # noqa: E402
+from improved_local_assistant.services.system_monitor import SystemMonitor  # noqa: E402
 
 
 async def test_memory_fallback():

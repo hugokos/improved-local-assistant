@@ -5,6 +5,7 @@ Improved Local Assistant CLI
 import os
 import platform
 import sys
+from typing import Optional
 
 import typer
 import uvicorn
@@ -26,7 +27,7 @@ def api(
     host: str = typer.Option("127.0.0.1", help="Host to bind to"),
     port: int = typer.Option(8000, help="Port to bind to"),
     reload: bool = typer.Option(False, help="Enable auto-reload"),
-    config: str | None = typer.Option(None, help="Config file path"),
+    config: Optional[str] = typer.Option(None, help="Config file path"),
 ):
     """Run FastAPI server."""
     if config:

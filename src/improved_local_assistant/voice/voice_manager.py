@@ -10,6 +10,7 @@ import logging
 import time
 from collections.abc import AsyncGenerator
 from datetime import datetime
+from typing import Optional
 
 from .piper_tts_service import PiperTTSService
 from .vosk_stt_service import VoskSTTService
@@ -35,9 +36,9 @@ class VoiceManager:
         self.logger = logging.getLogger(__name__)
 
         # Voice services
-        self.stt_service: VoskSTTService | None = None
-        self.tts_service: PiperTTSService | None = None
-        self.vad_service: WebRTCVADService | None = None
+        self.stt_service: Optional[VoskSTTService] = None
+        self.tts_service: Optional[PiperTTSService] = None
+        self.vad_service: Optional[WebRTCVADService] = None
 
         # Voice session management
         self.voice_sessions: dict[str, dict] = {}
@@ -719,7 +720,7 @@ class VoiceManager:
             # HALF-DUPLEX: Return to listening on error
             self._set_half_duplex_mode(session_id, "listening")
 
-    def get_voice_session_state(self, session_id: str) -> dict | None:
+    def get_voice_session_state(self, session_id: str) -> Optional[dict]:
         """
         Get the current state of a voice session.
 

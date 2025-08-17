@@ -14,11 +14,11 @@ import time
 from typing import Any
 
 from fastapi import FastAPI
-from services import ConversationManager
-from services import KnowledgeGraphManager
-from services import ModelConfig
-from services import ModelManager
-from services import SystemMonitor
+from improved_local_assistant.services import ConversationManager
+from improved_local_assistant.services import KnowledgeGraphManager
+from improved_local_assistant.services import ModelConfig
+from improved_local_assistant.services import ModelManager
+from improved_local_assistant.services import SystemMonitor
 
 logger = logging.getLogger(__name__)
 
@@ -118,7 +118,7 @@ async def initialize_services(config: dict[str, Any]) -> dict[str, Any]:
             if _EMBEDDING_MODEL is not None:
                 try:
                     from llama_index.core import Settings
-                    from services.embedding_singleton import get_embedding_model
+                    from improved_local_assistant.services.embedding_singleton import get_embedding_model
 
                     # Use the singleton embedding model to configure LlamaIndex globally
                     Settings.embed_model = get_embedding_model("BAAI/bge-small-en-v1.5")
@@ -128,8 +128,8 @@ async def initialize_services(config: dict[str, Any]) -> dict[str, Any]:
 
         # Resource manager with optimized settings
         logger.info("Initializing ResourceManager...")
-        from services.resource_manager import resource_manager
-        from services.resource_manager import start_resource_monitoring
+        from improved_local_assistant.services.resource_manager import resource_manager
+        from improved_local_assistant.services.resource_manager import start_resource_monitoring
 
         await start_resource_monitoring(config)
         services["resource_manager"] = resource_manager
@@ -144,7 +144,7 @@ async def initialize_services(config: dict[str, Any]) -> dict[str, Any]:
 
         if use_orchestration:
             logger.info("Using orchestrated model manager for edge optimization")
-            from services.orchestrated_model_manager import create_model_manager
+            from improved_local_assistant.services.orchestrated_model_manager import create_model_manager
 
             try:
                 model_manager = create_model_manager(config, use_orchestration=True)
@@ -204,12 +204,12 @@ async def initialize_services(config: dict[str, Any]) -> dict[str, Any]:
         # Lazy initialize optimizer and summarizer
         if startup_mode == "all":
             logger.info("Initializing KnowledgeGraphOptimizer...")
-            from services.kg_optimizer import initialize_optimizer
+            from improved_local_assistant.services.kg_optimizer import initialize_optimizer
 
             initialize_optimizer(kg_manager)
 
             logger.info("Initializing ConversationSummarizer...")
-            from services.conversation_summarizer import initialize_summarizer
+            from improved_local_assistant.services.conversation_summarizer import initialize_summarizer
 
             initialize_summarizer(model_manager)
         else:
@@ -230,8 +230,8 @@ async def initialize_services(config: dict[str, Any]) -> dict[str, Any]:
 
         # Dynamic model manager for runtime model switching
         logger.info("Initializing DynamicModelManager...")
-        from services.connection_pool_manager import ConnectionPoolManager
-        from services.dynamic_model_manager import DynamicModelManager
+        from improved_local_assistant.services.connection_pool_manager import ConnectionPoolManager
+        from improved_local_assistant.core.dynamic_model_manager import DynamicModelManager
 
         # Create connection pool manager if not already available
         connection_pool = getattr(model_manager, "connection_pool", None)
@@ -244,7 +244,7 @@ async def initialize_services(config: dict[str, Any]) -> dict[str, Any]:
         # Voice manager for speech processing
         logger.info("Initializing VoiceManager...")
         try:
-            from services.voice_manager import VoiceManager
+            from improved_local_assistant.voice.voice_manager import VoiceManager
 
             voice_manager = VoiceManager(config)
             services["voice_manager"] = voice_manager
@@ -255,7 +255,7 @@ async def initialize_services(config: dict[str, Any]) -> dict[str, Any]:
             services["voice_manager"] = None
 
         # Initialize dependencies for API
-        from app.core.dependencies import initialize_dependencies
+        from improved_local_assistant.app.core.dependencies import initialize_dependencies
 
         initialize_dependencies(config, connection_pool, system_monitor)
 
@@ -273,7 +273,7 @@ async def initialize_services(config: dict[str, Any]) -> dict[str, Any]:
             logger.warning(
                 f"Memory pressure detected ({memory_percent}%), optimizing conversation memory"
             )
-            from services.resource_manager import optimize_memory_usage
+            from improved_local_assistant.services.resource_manager import optimize_memory_usage
 
             await optimize_memory_usage(conversation_manager, kg_manager)
             last_cleanup_time = current_time
@@ -447,7 +447,7 @@ def init_app(app: FastAPI, config: dict[str, Any]) -> None:
 
             # Save knowledge graph query cache
             try:
-                from services.kg_optimizer import optimizer
+                from improved_local_assistant.services.kg_optimizer import optimizer
 
                 if optimizer:
                     logger.info("Saving knowledge graph query cache...")

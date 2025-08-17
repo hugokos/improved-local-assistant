@@ -16,9 +16,9 @@ from pathlib import Path
 # Add the project root to the path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from services.embedding_singleton import configure_global_embedding
-from services.embedding_singleton import get_embedding_model
-from services.graph_router import GraphRouter
+from improved_local_assistant.services.embedding_singleton import configure_global_embedding
+from improved_local_assistant.services.embedding_singleton import get_embedding_model
+from improved_local_assistant.services.graph_router import GraphRouter
 
 # Configure logging
 logging.basicConfig(

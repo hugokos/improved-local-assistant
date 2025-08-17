@@ -12,7 +12,7 @@ import logging
 import os
 import time
 from collections import OrderedDict
-from typing import Any
+from typing import Any, Optional
 
 try:
     from llama_index.core.storage import StorageContext
@@ -153,7 +153,7 @@ class WorkingSetCache:
             self.metrics["total_nodes_cached"] = self._total_cached_nodes
 
     async def get_neighborhood(
-        self, session_id: str, node_ids: set[str] | None = None, max_edges: int | None = None
+        self, session_id: str, node_ids: Optional[set[str]] = None, max_edges: Optional[int] = None
     ) -> list[dict[str, Any]]:
         """
         Get 1-hop neighborhood for nodes in the working set.

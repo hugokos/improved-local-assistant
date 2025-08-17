@@ -8,6 +8,7 @@ recognition using the Vosk library.
 import json
 import logging
 from pathlib import Path
+from typing import Optional
 
 try:
     import vosk
@@ -38,7 +39,7 @@ class VoskSTTService:
             raise ImportError("Vosk library not installed. Run: pip install vosk")
 
         # Model and recognizer management
-        self.model: vosk.Model | None = None
+        self.model: Optional[vosk.Model] = None
         self.recognizers: dict[str, vosk.KaldiRecognizer] = {}  # Free dictation recognizers
         self.command_recognizers: dict[str, vosk.KaldiRecognizer] = {}  # Command recognizers
 
@@ -466,7 +467,7 @@ class VoskSTTService:
             self.logger.error(f"Failed to reset recognizer for session {session_id}: {str(e)}")
             return False
 
-    def get_recognizer_info(self, session_id: str) -> dict | None:
+    def get_recognizer_info(self, session_id: str) -> Optional[dict]:
         """
         Get information about a recognizer.
 

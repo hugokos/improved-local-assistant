@@ -91,10 +91,10 @@ async def initialize_graphrag_system():
     try:
         from llama_index.core import Settings
         from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-        from services.conversation_manager import ConversationManager
-        from services.graph_manager import KnowledgeGraphManager
-        from services.model_mgr import ModelConfig
-        from services.model_mgr import ModelManager
+        from improved_local_assistant.services.conversation_manager import ConversationManager
+        from improved_local_assistant.services.graph_manager import KnowledgeGraphManager
+        from improved_local_assistant.services.model_mgr import ModelConfig
+        from improved_local_assistant.services.model_mgr import ModelManager
 
         # Configure embedding model to match prebuilt graphs
         Settings.embed_model = HuggingFaceEmbedding(

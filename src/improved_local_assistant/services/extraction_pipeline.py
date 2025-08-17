@@ -12,13 +12,13 @@ import logging
 import sqlite3
 import time
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Dict, List, Optional
 
 import psutil
 import tiktoken
 from rapidfuzz import process
-from services.connection_pool_manager import ConnectionPoolManager
-from services.system_monitor import SystemMonitor
+from improved_local_assistant.services.connection_pool_manager import ConnectionPoolManager
+from improved_local_assistant.core.system_monitor import SystemMonitor
 
 
 @dataclass
@@ -29,7 +29,7 @@ class Triple:
     predicate: str
     object: str
     confidence: float
-    source_span: str | None = None
+    source_span: Optional[str] = None
 
 
 @dataclass
@@ -199,9 +199,9 @@ class ExtractionPipeline:
     async def extract_bounded(
         self,
         text: str,
-        conversation_history: list[dict[str, str]] | None = None,
-        budget: dict[str, Any] | None = None,
-    ) -> ExtractionResult | None:
+        conversation_history: Optional[List[Dict[str, str]]] = None,
+        budget: Optional[Dict[str, Any]] = None,
+    ) -> Optional[ExtractionResult]:
         """
         Perform bounded knowledge extraction with time and token limits.
 
@@ -601,7 +601,7 @@ Relationships:"""
             self.logger.debug(f"Error checking CPU pressure: {e}")
             return False
 
-    async def _persist_triples(self, triples: list[Triple], session_id: str | None = None) -> None:
+    async def _persist_triples(self, triples: list[Triple], session_id: Optional[str] = None) -> None:
         """
         Persist extracted triples to the knowledge graph.
 

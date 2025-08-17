@@ -34,8 +34,8 @@ async def test_runtime_fixes():
     # Test 1: Embedding singleton
     print("\n1. Testing embedding singleton...")
     try:
-        from services.embedding_singleton import configure_global_embedding
-        from services.embedding_singleton import get_embedding_model
+        from improved_local_assistant.services.embedding_singleton import configure_global_embedding
+        from improved_local_assistant.services.embedding_singleton import get_embedding_model
 
         start_time = time.time()
         model1 = get_embedding_model("BAAI/bge-small-en-v1.5")
@@ -77,10 +77,10 @@ async def test_runtime_fixes():
     # Test 3: Graph loading with simplified fallback
     print("\n3. Testing simplified graph loading...")
     try:
-        from services.embedding_singleton import configure_global_embedding
-        from services.graph_manager import KnowledgeGraphManager
-        from services.model_mgr import ModelConfig
-        from services.model_mgr import ModelManager
+        from improved_local_assistant.services.embedding_singleton import configure_global_embedding
+        from improved_local_assistant.services.graph_manager import KnowledgeGraphManager
+        from improved_local_assistant.services.model_mgr import ModelConfig
+        from improved_local_assistant.services.model_mgr import ModelManager
 
         # Configure global embedding first
         configure_global_embedding("BAAI/bge-small-en-v1.5")
@@ -166,7 +166,7 @@ async def test_runtime_fixes():
     # Test 4: Quick conversation test
     print("\n4. Testing conversation with optimizations...")
     try:
-        from services.conversation_manager import ConversationManager
+        from improved_local_assistant.services.conversation_manager import ConversationManager
 
         conv_config = {"conversation": {"max_history_length": 10}}
         conv_manager = ConversationManager(model_manager, kg_manager, conv_config)

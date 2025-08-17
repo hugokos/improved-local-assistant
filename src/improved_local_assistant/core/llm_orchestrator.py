@@ -10,7 +10,7 @@ import asyncio
 import logging
 import time
 from collections.abc import AsyncGenerator
-from typing import Any
+from typing import Any, Optional
 
 # Fix nested async issues
 try:
@@ -20,10 +20,10 @@ try:
 except ImportError:
     pass
 
-from services.connection_pool_manager import ConnectionPoolManager
-from services.graceful_degradation import ComponentStatus
-from services.graceful_degradation import degradation_manager
-from services.system_monitor import SystemMonitor
+from improved_local_assistant.services.connection_pool_manager import ConnectionPoolManager
+from improved_local_assistant.services.graceful_degradation import ComponentStatus
+from improved_local_assistant.services.graceful_degradation import degradation_manager
+from improved_local_assistant.core.system_monitor import SystemMonitor
 
 
 class LLMOrchestrator:
@@ -77,7 +77,7 @@ class LLMOrchestrator:
         }
 
         # Active extraction task for cancellation
-        self._active_extraction_task: asyncio.Task | None = None
+        self._active_extraction_task: Optional[asyncio.Task] = None
 
         # Pre-warming status
         self._hermes_prewarmed = False

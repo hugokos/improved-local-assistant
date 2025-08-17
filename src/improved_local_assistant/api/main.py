@@ -131,3 +131,7 @@ def create_app() -> FastAPI:
 def fastapi_app():
     """Factory function for uvicorn."""
     return create_app()
+
+
+# Create the app instance for uvicorn
+app = create_app()

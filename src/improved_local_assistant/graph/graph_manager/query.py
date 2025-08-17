@@ -6,7 +6,7 @@ and graph traversal operations.
 """
 
 import time
-from typing import Any
+from typing import Any, Optional
 
 import networkx as nx
 
@@ -14,7 +14,7 @@ import networkx as nx
 class KnowledgeGraphQuery:
     """Handles querying operations for knowledge graphs."""
 
-    async def query_graphs(self, query: str, context: list[str] | None = None) -> dict[str, Any]:
+    async def query_graphs(self, query: str, context: Optional[list[str]] = None) -> dict[str, Any]:
         """
         Query all knowledge graphs using advanced routing and hybrid retrieval.
 
@@ -65,7 +65,7 @@ class KnowledgeGraphQuery:
         return await self._legacy_query_graphs(query, context)
 
     async def _legacy_query_graphs(
-        self, query: str, context: list[str] | None = None
+        self, query: str, context: Optional[list[str]] = None
     ) -> dict[str, Any]:
         """
         Legacy query method for backward compatibility.
@@ -78,10 +78,10 @@ class KnowledgeGraphQuery:
 
         try:
             # Import optimizer here to avoid circular imports
-            from services.kg_optimizer import cache_query_result
-            from services.kg_optimizer import get_cached_query
-            from services.kg_optimizer import optimize_query
-            from services.kg_optimizer import optimizer
+            from improved_local_assistant.services.kg_optimizer import cache_query_result
+            from improved_local_assistant.services.kg_optimizer import get_cached_query
+            from improved_local_assistant.services.kg_optimizer import optimize_query
+            from improved_local_assistant.services.kg_optimizer import optimizer
 
             # Only use optimizer if it's initialized
             if optimizer is not None:
@@ -154,7 +154,7 @@ class KnowledgeGraphQuery:
             # Use HybridEnsembleRetriever as primary approach
             try:
                 from llama_index.core.schema import QueryBundle
-                from services.hybrid_retriever import HybridEnsembleRetriever
+                from improved_local_assistant.services.hybrid_retriever import HybridEnsembleRetriever
 
                 # Build hybrid retriever once and cache
                 if not hasattr(self, "_cached_hybrid_retriever"):
@@ -275,7 +275,7 @@ class KnowledgeGraphQuery:
 
             # Cache the result if optimizer is available
             try:
-                from services.kg_optimizer import optimizer
+                from improved_local_assistant.services.kg_optimizer import optimizer
 
                 if optimizer is not None:
                     cache_query_result(query, query_result)

@@ -10,7 +10,7 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from services.voice_manager import VoiceManager
+from improved_local_assistant.services.voice_manager import VoiceManager
 
 
 async def test_voice_commands():

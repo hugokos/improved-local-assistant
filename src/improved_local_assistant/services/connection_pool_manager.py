@@ -10,7 +10,7 @@ import asyncio
 import logging
 import time
 from collections.abc import AsyncGenerator
-from typing import Any
+from typing import Any, Optional
 
 import httpx
 
@@ -49,7 +49,7 @@ class ConnectionPoolManager:
         self.ollama_host = ollama_config.get("host", "http://localhost:11434")
 
         # HTTP client (will be initialized in initialize())
-        self._client: httpx.AsyncClient | None = None
+        self._client: Optional[httpx.AsyncClient] = None
 
         # Metrics
         self.metrics = {
@@ -61,7 +61,7 @@ class ConnectionPoolManager:
         }
 
         # Residency check task
-        self._residency_check_task: asyncio.Task | None = None
+        self._residency_check_task: Optional[asyncio.Task] = None
         self._residency_check_interval = 60.0  # Check every minute
 
     async def initialize(self) -> None:
@@ -113,7 +113,7 @@ class ConnectionPoolManager:
         self,
         model: str,
         messages: list[dict[str, str]],
-        keep_alive: Any | None = None,
+        keep_alive: Optional[Any] = None,
         **options,
     ) -> dict[str, Any]:
         """
@@ -176,7 +176,7 @@ class ConnectionPoolManager:
         self,
         model: str,
         messages: list[dict[str, str]],
-        keep_alive: Any | None = None,
+        keep_alive: Optional[Any] = None,
         **options,
     ) -> AsyncGenerator[str, None]:
         """

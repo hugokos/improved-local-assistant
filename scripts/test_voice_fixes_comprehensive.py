@@ -21,10 +21,10 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from services.piper_tts_service import PiperTTSService
-from services.voice_manager import VoiceManager
-from services.vosk_stt_service import VoskSTTService
-from services.webrtc_vad_service import WebRTCVADService
+from improved_local_assistant.services.piper_tts_service import PiperTTSService
+from improved_local_assistant.services.voice_manager import VoiceManager
+from improved_local_assistant.services.vosk_stt_service import VoskSTTService
+from improved_local_assistant.services.webrtc_vad_service import WebRTCVADService
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

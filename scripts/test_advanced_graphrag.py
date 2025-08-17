@@ -30,10 +30,10 @@ async def test_advanced_graphrag():
         # Initialize the system
         from llama_index.core import Settings
         from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-        from services.conversation_manager import ConversationManager
-        from services.graph_manager import KnowledgeGraphManager
-        from services.model_mgr import ModelConfig
-        from services.model_mgr import ModelManager
+        from improved_local_assistant.services.conversation_manager import ConversationManager
+        from improved_local_assistant.services.graph_manager import KnowledgeGraphManager
+        from improved_local_assistant.services.model_mgr import ModelConfig
+        from improved_local_assistant.services.model_mgr import ModelManager
 
         # Configure embedding model
         Settings.embed_model = HuggingFaceEmbedding(
@@ -140,7 +140,7 @@ async def test_direct_router():
     print("=" * 30)
 
     try:
-        from services.graph_router import GraphRouter
+        from improved_local_assistant.services.graph_router import GraphRouter
 
         config = {
             "embedding_model": "BAAI/bge-small-en-v1.5",

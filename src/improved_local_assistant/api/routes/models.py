@@ -2,7 +2,6 @@
 Model Management API endpoints.
 
 This module provides REST API endpoints for:
-• Switching conversation and knowledge extraction models
 • Getting available model options
 • Checking current model status
 • Model availability testing
@@ -10,32 +9,11 @@ This module provides REST API endpoints for:
 
 from typing import Any
 
-from app.core.dependencies import get_dynamic_model_manager
 from fastapi import APIRouter
-from fastapi import Depends
 from fastapi import HTTPException
 from pydantic import BaseModel
-from services.dynamic_model_manager import DynamicModelManager
 
 router = APIRouter(prefix="/api/models", tags=["models"])
-
-
-class ModelSwitchRequest(BaseModel):
-    """Request model for model switching."""
-
-    model_name: str
-
-
-class ModelSwitchResponse(BaseModel):
-    """Response model for model switching."""
-
-    success: bool
-    message: str
-    old_model: str | None = None
-    new_model: str | None = None
-    switch_time: float | None = None
-    error: str | None = None
-    config: dict[str, Any] | None = None
 
 
 class ModelStatusResponse(BaseModel):
@@ -46,90 +24,36 @@ class ModelStatusResponse(BaseModel):
     metrics: dict[str, Any]
 
 
-@router.post("/conversation/switch", response_model=ModelSwitchResponse)
-async def switch_conversation_model(
-    request: ModelSwitchRequest,
-    model_manager: DynamicModelManager = Depends(get_dynamic_model_manager),
-):
-    """
-    Switch the conversation model to the specified model.
-
-    Args:
-        request: Model switch request containing the target model name
-        model_manager: Dynamic model manager instance
-
-    Returns:
-        ModelSwitchResponse: Result of the model switch operation
-    """
-    try:
-        result = await model_manager.switch_conversation_model(request.model_name)
-
-        return ModelSwitchResponse(
-            success=result["success"],
-            message=result.get("message", ""),
-            old_model=result.get("old_model"),
-            new_model=result.get("new_model"),
-            switch_time=result.get("switch_time"),
-            error=result.get("error"),
-            config=result.get("model_config"),
-        )
-
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Failed to switch conversation model: {str(e)}"
-        )
-
-
-@router.post("/knowledge/switch", response_model=ModelSwitchResponse)
-async def switch_knowledge_model(
-    request: ModelSwitchRequest,
-    model_manager: DynamicModelManager = Depends(get_dynamic_model_manager),
-):
-    """
-    Switch the knowledge extraction model to the specified model.
-
-    Args:
-        request: Model switch request containing the target model name
-        model_manager: Dynamic model manager instance
-
-    Returns:
-        ModelSwitchResponse: Result of the model switch operation
-    """
-    try:
-        result = await model_manager.switch_knowledge_model(request.model_name)
-
-        return ModelSwitchResponse(
-            success=result["success"],
-            message=result.get("message", ""),
-            old_model=result.get("old_model"),
-            new_model=result.get("new_model"),
-            switch_time=result.get("switch_time"),
-            error=result.get("error"),
-            config=result.get("model_config"),
-        )
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to switch knowledge model: {str(e)}")
-
-
 @router.get("/status", response_model=ModelStatusResponse)
-async def get_model_status(model_manager: DynamicModelManager = Depends(get_dynamic_model_manager)):
+async def get_model_status():
     """
-    Get current model status and available options.
-
-    Args:
-        model_manager: Dynamic model manager instance
+    Get current model status and available models.
 
     Returns:
         ModelStatusResponse: Current model status and available options
     """
     try:
-        status = model_manager.get_status()
-
+        # Placeholder response - will be implemented when model management is ready
         return ModelStatusResponse(
-            current_models=status["current_models"],
-            available_models=status["available_models"],
-            metrics=status["metrics"],
+            current_models={
+                "conversation": "hermes3:3b",
+                "knowledge": "phi3:mini"
+            },
+            available_models={
+                "conversation": [
+                    {"name": "hermes3:3b", "description": "Default conversation model"},
+                    {"name": "llama3.2:3b", "description": "Alternative conversation model"}
+                ],
+                "knowledge": [
+                    {"name": "phi3:mini", "description": "Default knowledge extraction model"},
+                    {"name": "llama3.2:1b", "description": "Alternative knowledge model"}
+                ]
+            },
+            metrics={
+                "total_requests": 0,
+                "successful_switches": 0,
+                "last_switch_time": None
+            }
         )
 
     except Exception as e:
@@ -137,60 +61,24 @@ async def get_model_status(model_manager: DynamicModelManager = Depends(get_dyna
 
 
 @router.get("/available")
-async def get_available_models(
-    model_manager: DynamicModelManager = Depends(get_dynamic_model_manager),
-):
+async def get_available_models():
     """
-    Get available model options for conversation and knowledge extraction.
-
-    Args:
-        model_manager: Dynamic model manager instance
+    Get list of available models.
 
     Returns:
-        Dict: Available model options
+        dict: Available model options
     """
     try:
-        return model_manager.get_available_models()
+        return {
+            "conversation_models": [
+                {"name": "hermes3:3b", "description": "Default conversation model"},
+                {"name": "llama3.2:3b", "description": "Alternative conversation model"}
+            ],
+            "knowledge_models": [
+                {"name": "phi3:mini", "description": "Default knowledge extraction model"},
+                {"name": "llama3.2:1b", "description": "Alternative knowledge model"}
+            ]
+        }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to get available models: {str(e)}")
-
-
-@router.get("/current")
-async def get_current_models(
-    model_manager: DynamicModelManager = Depends(get_dynamic_model_manager),
-):
-    """
-    Get currently active models.
-
-    Args:
-        model_manager: Dynamic model manager instance
-
-    Returns:
-        Dict: Currently active models
-    """
-    try:
-        return model_manager.get_current_models()
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get current models: {str(e)}")
-
-
-@router.get("/metrics")
-async def get_model_metrics(
-    model_manager: DynamicModelManager = Depends(get_dynamic_model_manager),
-):
-    """
-    Get model management metrics.
-
-    Args:
-        model_manager: Dynamic model manager instance
-
-    Returns:
-        Dict: Model management metrics
-    """
-    try:
-        return model_manager.get_metrics()
-
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get model metrics: {str(e)}")

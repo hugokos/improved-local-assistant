@@ -27,7 +27,7 @@ async def test_integration():
     logger.info("Testing Phase 1 & 2 integration...")
 
     try:
-        from services.voice_manager import VoiceManager
+        from improved_local_assistant.services.voice_manager import VoiceManager
 
         # Complete configuration with both phases
         config = {

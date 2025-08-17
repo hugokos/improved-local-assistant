@@ -18,6 +18,7 @@ Usage:
     python -m asyncio cli.graphrag_repl --max-triple-per-chunk 6
 """
 
+from typing import Optional
 import argparse
 import asyncio
 import logging
@@ -64,11 +65,11 @@ except ImportError:
 
 # Import services
 # Import conversation extensions to add get_response method
-from services.conversation_manager import ConversationManager  # noqa: E402
-from services.graph_manager import KnowledgeGraphManager  # noqa: E402
-from services.model_mgr import ModelConfig  # noqa: E402
-from services.model_mgr import ModelManager  # noqa: E402
-from services.resource_manager import ResourceManager  # noqa: E402
+from improved_local_assistant.services.conversation_manager import ConversationManager  # noqa: E402
+from improved_local_assistant.services.graph_manager import KnowledgeGraphManager  # noqa: E402
+from improved_local_assistant.services.model_mgr import ModelConfig  # noqa: E402
+from improved_local_assistant.services.model_mgr import ModelManager  # noqa: E402
+from improved_local_assistant.services.resource_manager import ResourceManager  # noqa: E402
 
 # Import embedding model singleton
 try:
@@ -97,11 +98,11 @@ class GraphRAGREPL:
         self.max_triple_per_chunk = max_triple_per_chunk
 
         # Initialize components
-        self.model_manager: ModelManager | None = None
-        self.kg_manager: KnowledgeGraphManager | None = None
-        self.conversation_manager: ConversationManager | None = None
-        self.resource_manager: ResourceManager | None = None
-        self.session_id: str | None = None
+        self.model_manager: Optional[ModelManager] = None
+        self.kg_manager: Optional[KnowledgeGraphManager] = None
+        self.conversation_manager: Optional[ConversationManager] = None
+        self.resource_manager: Optional[ResourceManager] = None
+        self.session_id: Optional[str] = None
 
         # Embedding model singleton
         self.embedding_model = None
@@ -135,8 +136,8 @@ class GraphRAGREPL:
             logger.info("Initializing singleton embedding model: BAAI/bge-small-en-v1.5")
 
             # Use the embedding singleton to ensure consistency
-            from services.embedding_singleton import configure_global_embedding
-            from services.embedding_singleton import get_embedding_model
+            from improved_local_assistant.services.embedding_singleton import configure_global_embedding
+            from improved_local_assistant.services.embedding_singleton import get_embedding_model
 
             # Configure global embedding using singleton
             configure_global_embedding("BAAI/bge-small-en-v1.5")
@@ -473,7 +474,7 @@ class GraphRAGREPL:
             logger.error(f"Failed to initialize components: {str(e)}")
             return False
 
-    async def get_user_input(self, prompt: str = "You: ") -> str | None:
+    async def get_user_input(self, prompt: str = "You: ") -> Optional[str]:
         """
         Get user input using prompt_toolkit if available, otherwise fallback to input().
 

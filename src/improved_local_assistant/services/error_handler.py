@@ -9,7 +9,7 @@ import logging
 import re
 import traceback
 from enum import Enum
-from typing import Any
+from typing import Any, Dict, Optional
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -236,7 +236,7 @@ class ErrorHandler:
         return suggestions[0]
 
     def format_error_response(
-        self, error: Exception, include_details: bool = False, error_code: str | None = None
+        self, error: Exception, include_details: bool = False, error_code: Optional[str] = None
     ) -> dict[str, Any]:
         """
         Format an error response for API endpoints.
@@ -267,7 +267,7 @@ class ErrorHandler:
         return response
 
     def log_error(
-        self, error: Exception, context: dict[str, Any] | None = None, level: int = logging.ERROR
+        self, error: Exception, context: Optional[Dict[str, Any]] = None, level: int = logging.ERROR
     ) -> None:
         """
         Log an error with context information.
@@ -298,7 +298,7 @@ class ErrorHandler:
         error: Exception,
         context: dict[str, Any] | None = None,
         include_details: bool = False,
-        error_code: str | None = None,
+        error_code: Optional[str] = None,
         log_level: int = logging.ERROR,
     ) -> dict[str, Any]:
         """
@@ -329,7 +329,7 @@ def handle_error(
     error: Exception,
     context: dict[str, Any] | None = None,
     include_details: bool = False,
-    error_code: str | None = None,
+    error_code: Optional[str] = None,
     log_level: int = logging.ERROR,
 ) -> dict[str, Any]:
     """

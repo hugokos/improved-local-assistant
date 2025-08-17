@@ -15,7 +15,7 @@ from __future__ import annotations
 import asyncio
 import logging
 import time
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 from typing import Any
 
 # REQUIRED symbols – fail loudly if they're missing
@@ -43,14 +43,14 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
 
     from llama_index.core.schema import NodeWithScore
-    from services.working_set_cache import WorkingSetCache
+    from improved_local_assistant.services.working_set_cache import WorkingSetCache
 
 # ---------------------------------------------------------------------------
 # graph retriever factory
 # ---------------------------------------------------------------------------
 
 
-def _make_graph_retriever(graph_index, *, depth: int, top_k: int) -> BaseRetriever | None:
+def _make_graph_retriever(graph_index, *, depth: int, top_k: int) -> Optional[BaseRetriever]:
     """
     Create appropriate retriever for PropertyGraphIndex or KnowledgeGraphIndex.
     Prefer KnowledgeGraphRAGRetriever for KnowledgeGraphIndex.
@@ -120,7 +120,7 @@ class HybridEnsembleRetriever(BaseRetriever):
         bm25_top_k: int = 4,
         vector_top_k: int = 4,
         weights=(0.6, 0.25, 0.15),  # graph, vector, bm25
-        working_set_cache: WorkingSetCache | None = None,
+        working_set_cache: Optional[WorkingSetCache] = None,
         config: dict[str, Any] | None = None,
     ):
         """Initialize Hybrid Ensemble Retriever with improved graph handling."""
@@ -349,7 +349,7 @@ class HybridEnsembleRetriever(BaseRetriever):
         graph_index,
         document_nodes=None,
         config: dict[str, Any] | None = None,
-        working_set_cache: WorkingSetCache | None = None,
+        working_set_cache: Optional[WorkingSetCache] = None,
     ) -> HybridEnsembleRetriever:
         """
         Factory method to create HybridEnsembleRetriever with proper initialization.
@@ -435,7 +435,7 @@ class HybridEnsembleRetriever(BaseRetriever):
             raise
 
     async def retrieve_chunks(
-        self, query: str, session_id: str | None = None, budget: int | None = None
+        self, query: str, session_id: Optional[str] = None, budget: Optional[int] = None
     ) -> list[RetrievedChunk]:
         """
         Retrieve relevant chunks using hybrid ensemble approach.
@@ -504,7 +504,7 @@ class HybridEnsembleRetriever(BaseRetriever):
             self.logger.warning(f"Error applying working set boost: {e}")
             return nodes
 
-    async def query_with_context(self, query: str, session_id: str | None = None) -> str:
+    async def query_with_context(self, query: str, session_id: Optional[str] = None) -> str:
         """
         Query with context assembly using the retriever.
 
@@ -553,7 +553,7 @@ class HybridEnsembleRetriever(BaseRetriever):
         graph_index=None,
         document_nodes=None,
         config: dict[str, Any] | None = None,
-        working_set_cache: WorkingSetCache | None = None,
+        working_set_cache: Optional[WorkingSetCache] = None,
     ):
         """
         Synchronous wrapper that simply awaits .create() if called

@@ -5,6 +5,7 @@ This module provides the PiperTTSService class that handles offline speech
 synthesis using the Piper TTS library.
 """
 
+from typing import Optional
 import asyncio
 import logging
 import wave
@@ -43,7 +44,7 @@ class PiperTTSService:
             raise ImportError("Piper TTS library not installed. Run: pip install piper-tts")
 
         # Voice management
-        self.voice: PiperVoice | None = None
+        self.voice: Optional[PiperVoice] = None
         self.voice_path = self._get_voice_path()
 
         # Configuration

@@ -132,7 +132,7 @@ def extend_conversation_manager():
     """
     Extend ConversationManager with additional methods for CLI compatibility.
     """
-    from services.conversation_manager import ConversationManager
+    from improved_local_assistant.services.conversation_manager import ConversationManager
 
     # Add the get_response method
     ConversationManager.get_response = ConversationManagerExtensions.get_response
@@ -147,7 +147,7 @@ extend_conversation_manager()
 # Apply extensions to ConversationManager
 def apply_extensions():
     """Apply extensions to ConversationManager class."""
-    from services.conversation_manager import ConversationManager
+    from improved_local_assistant.services.conversation_manager import ConversationManager
 
     # Add methods from ConversationManagerExtensions to ConversationManager
     for attr_name in dir(ConversationManagerExtensions):

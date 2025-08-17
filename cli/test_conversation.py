@@ -19,10 +19,10 @@ import yaml
 # Add parent directory to path to import from services
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from services.conversation_manager import ConversationManager
-from services.graph_manager import KnowledgeGraphManager
-from services.model_mgr import ModelConfig
-from services.model_mgr import ModelManager
+from improved_local_assistant.services.conversation_manager import ConversationManager
+from improved_local_assistant.services.graph_manager import KnowledgeGraphManager
+from improved_local_assistant.services.model_mgr import ModelConfig
+from improved_local_assistant.services.model_mgr import ModelManager
 
 # Configure logging
 logging.basicConfig(

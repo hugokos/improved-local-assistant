@@ -15,8 +15,8 @@ from pathlib import Path
 # Add the parent directory to the path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from app.core.config import load_config
-from services.orchestrated_model_manager import create_model_manager
+from improved_local_assistant.app.core.config import load_config
+from improved_local_assistant.services.orchestrated_model_manager import create_model_manager
 
 
 async def test_orchestrated_model_manager():
@@ -33,7 +33,7 @@ async def test_orchestrated_model_manager():
     try:
         # Initialize with dummy config for backward compatibility
         try:
-            from services.model_mgr import ModelConfig
+            from improved_local_assistant.services.model_mgr import ModelConfig
 
             model_config = ModelConfig(
                 name="hermes3:3b", type="conversation", max_parallel=1, max_loaded=1
@@ -145,7 +145,7 @@ async def test_backward_compatibility():
     model_manager = create_model_manager(config, use_orchestration=False)
 
     try:
-        from services.model_mgr import ModelConfig
+        from improved_local_assistant.services.model_mgr import ModelConfig
 
         model_config = ModelConfig(name="hermes3:3b", type="conversation")
 
@@ -204,7 +204,7 @@ async def test_performance_comparison():
     orchestrated_manager = create_model_manager(config, use_orchestration=True)
 
     try:
-        from services.model_mgr import ModelConfig
+        from improved_local_assistant.services.model_mgr import ModelConfig
 
         model_config = ModelConfig(name="hermes3:3b", type="conversation")
 
@@ -290,7 +290,7 @@ async def test_resource_monitoring():
     model_manager = create_model_manager(config, use_orchestration=True)
 
     try:
-        from services.model_mgr import ModelConfig
+        from improved_local_assistant.services.model_mgr import ModelConfig
 
         model_config = ModelConfig(name="hermes3:3b", type="conversation")
 

@@ -10,7 +10,7 @@ import os
 from logging.handlers import TimedRotatingFileHandler
 from typing import Any
 
-from services import DEFAULTS
+from improved_local_assistant.services import DEFAULTS
 
 
 def setup_logging(config: dict[str, Any] = None) -> logging.Logger:

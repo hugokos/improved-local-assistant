@@ -6,7 +6,7 @@ This module provides REST API endpoints for chat functionality.
 
 import logging
 
-from app.schemas import MessageRequest
+from improved_local_assistant.app.schemas import MessageRequest
 from fastapi import APIRouter
 from fastapi import HTTPException
 from fastapi import Request

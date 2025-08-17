@@ -7,7 +7,7 @@ including a connection manager and safe send functions.
 
 import logging
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional
 
 from fastapi import WebSocket
 from starlette.websockets import WebSocketDisconnect
@@ -57,7 +57,7 @@ async def ws_send_text_safe(ws: WebSocket, text: str) -> bool:
 
 
 async def ws_error(
-    ws: WebSocket, message: str, code: int = 1011, extra: dict[str, Any] | None = None
+    ws: WebSocket, message: str, code: int = 1011, extra: Optional[dict[str, Any]] = None
 ):
     """
     Send an error over WebSocket and try to close gracefully.

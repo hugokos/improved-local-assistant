@@ -42,9 +42,9 @@ if sys.platform == "win32":
 
 # Import services
 # Import conversation extensions to add get_response method
-from services.conversation_manager import ConversationManager  # noqa: E402
-from services.model_mgr import ModelConfig  # noqa: E402
-from services.model_mgr import ModelManager  # noqa: E402
+from improved_local_assistant.services.conversation_manager import ConversationManager  # noqa: E402
+from improved_local_assistant.services.model_mgr import ModelConfig  # noqa: E402
+from improved_local_assistant.services.model_mgr import ModelManager  # noqa: E402
 
 
 class MinimalGraphRAGREPL:
@@ -64,10 +64,10 @@ class MinimalGraphRAGREPL:
         self.max_triple_per_chunk = max_triple_per_chunk
 
         # Initialize components
-        self.model_manager: ModelManager | None = None
+        self.model_manager: Optional[ModelManager] = None
         self.kg_manager: Optional = None  # Will be None if --no-kg
-        self.conversation_manager: ConversationManager | None = None
-        self.session_id: str | None = None
+        self.conversation_manager: Optional[ConversationManager] = None
+        self.session_id: Optional[str] = None
 
         # Simple metrics
         self.queries_processed = 0
@@ -123,7 +123,7 @@ class MinimalGraphRAGREPL:
             print("Initializing knowledge graph...")
 
             # Import KG manager only if needed
-            from services.graph_manager import KnowledgeGraphManager
+            from improved_local_assistant.services.graph_manager import KnowledgeGraphManager
 
             # Minimal KG configuration
             kg_config = {
@@ -211,7 +211,7 @@ class MinimalGraphRAGREPL:
             print(f"❌ Failed to initialize components: {str(e)}")
             return False
 
-    def get_user_input(self) -> str | None:
+    def get_user_input(self) -> Optional[str]:
         """Get user input using simple synchronous input."""
         try:
             return input("You: ")

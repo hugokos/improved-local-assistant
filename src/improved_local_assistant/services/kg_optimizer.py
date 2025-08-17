@@ -9,7 +9,7 @@ import json
 import logging
 import os
 import time
-from typing import Any
+from typing import Any, Dict, Optional
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -48,7 +48,7 @@ class KnowledgeGraphOptimizer:
 
         logger.info("Knowledge graph optimizer initialized")
 
-    def get_cached_query(self, query: str) -> dict[str, Any] | None:
+    def get_cached_query(self, query: str) -> Optional[Dict[str, Any]]:
         """
         Get a cached query result if available and not expired.
 

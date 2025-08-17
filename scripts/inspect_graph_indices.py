@@ -107,7 +107,7 @@ def test_loading_indices(graph_path: Path):
         from llama_index.core import VectorStoreIndex
         from llama_index.core import load_indices_from_storage
         from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-        from services.utf8_import_helper import get_utf8_filesystem
+        from improved_local_assistant.services.utf8_import_helper import get_utf8_filesystem
 
         # Set up embedding model and disable LLM to avoid OpenAI error
         Settings.embed_model = HuggingFaceEmbedding(

@@ -11,7 +11,7 @@ import logging
 import time
 from datetime import datetime
 
-from app.core.websockets import ws_error
+from improved_local_assistant.app.core.websockets import ws_error
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
 from starlette.websockets import WebSocketState

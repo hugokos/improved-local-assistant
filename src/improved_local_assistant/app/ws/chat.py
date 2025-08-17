@@ -11,10 +11,10 @@ import time
 import uuid
 from datetime import datetime
 
-from app.core.websockets import ws_error
+from improved_local_assistant.app.core.websockets import ws_error
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
-from services import get_timeout
+from improved_local_assistant.services import get_timeout
 from starlette.websockets import WebSocketState
 
 logger = logging.getLogger(__name__)

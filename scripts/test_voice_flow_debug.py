@@ -22,7 +22,7 @@ async def test_voice_services():
         # Test TTS service
         print("🔊 Testing TTS Service...")
         from app.core.config import load_config
-        from services.piper_tts_service import PiperTTSService
+        from improved_local_assistant.services.piper_tts_service import PiperTTSService
 
         config = load_config()
         tts_service = PiperTTSService(config)
@@ -40,7 +40,7 @@ async def test_voice_services():
 
         # Test STT service
         print("\n🎤 Testing STT Service...")
-        from services.vosk_stt_service import VoskSTTService
+        from improved_local_assistant.services.vosk_stt_service import VoskSTTService
 
         VoskSTTService(config)
         # STT service initializes automatically in constructor
@@ -48,7 +48,7 @@ async def test_voice_services():
 
         # Test Voice Manager
         print("\n🎙️ Testing Voice Manager...")
-        from services.voice_manager import VoiceManager
+        from improved_local_assistant.services.voice_manager import VoiceManager
 
         voice_manager = VoiceManager(config)
         # Voice manager initializes automatically in constructor

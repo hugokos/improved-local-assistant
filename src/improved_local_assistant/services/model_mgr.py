@@ -262,9 +262,9 @@ class ModelManager:
         token_count = 0
 
         # Import circuit breaker here to avoid circular imports
-        from services.circuit_breaker import CircuitBreakerOpenError
-        from services.circuit_breaker import with_circuit_breaker
-        from services.error_handler import handle_error
+        from improved_local_assistant.services.circuit_breaker import CircuitBreakerOpenError
+        from improved_local_assistant.services.circuit_breaker import with_circuit_breaker
+        from improved_local_assistant.services.error_handler import handle_error
 
         try:
             # Define the actual query function
@@ -316,7 +316,7 @@ class ModelManager:
             self.logger.error(f"Error querying conversation model: {str(e)}")
 
             # Import error handler
-            from services.error_handler import handle_error
+            from improved_local_assistant.services.error_handler import handle_error
 
             # Get user-friendly error message
             error_response = handle_error(
@@ -342,11 +342,11 @@ class ModelManager:
         start_time = time.time()
 
         # Import circuit breaker and graceful degradation here to avoid circular imports
-        from services.circuit_breaker import CircuitBreakerOpenError
-        from services.circuit_breaker import with_circuit_breaker
-        from services.error_handler import handle_error
-        from services.graceful_degradation import degradation_manager
-        from services.graceful_degradation import with_degradation
+        from improved_local_assistant.services.circuit_breaker import CircuitBreakerOpenError
+        from improved_local_assistant.services.circuit_breaker import with_circuit_breaker
+        from improved_local_assistant.services.error_handler import handle_error
+        from improved_local_assistant.services.graceful_degradation import degradation_manager
+        from improved_local_assistant.services.graceful_degradation import with_degradation
 
         try:
             prompt = f"""Extract entities and relationships from the following text.

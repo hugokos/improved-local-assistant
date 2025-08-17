@@ -23,8 +23,8 @@ import psutil
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 
-from app.core.config import load_config  # noqa: E402
-from services.model_manager import ModelManager  # noqa: E402
+from improved_local_assistant.app.core.config import load_config  # noqa: E402
+from improved_local_assistant.services.model_manager import ModelManager  # noqa: E402
 
 
 class ModelBenchmark:
@@ -416,7 +416,7 @@ class ModelBenchmark:
         print("-" * 50)
 
         # Initialize the model manager
-        from services.model_manager import ModelConfig
+        from improved_local_assistant.services.model_manager import ModelConfig
 
         config = ModelConfig(
             name=self.model_name, type="conversation", temperature=0.7, max_tokens=500

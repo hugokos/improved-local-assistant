@@ -20,8 +20,8 @@ async def test_memory_threshold():
 
     try:
         from app.core.config import load_config
-        from services.llm_orchestrator import LLMOrchestrator
-        from services.system_monitor import SystemMonitor
+        from improved_local_assistant.services.llm_orchestrator import LLMOrchestrator
+        from improved_local_assistant.services.system_monitor import SystemMonitor
 
         # Load configuration
         config = load_config()

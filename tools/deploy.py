@@ -116,7 +116,7 @@ def update_config_for_platform(platform_name: str) -> bool:
         project_root = Path(__file__).resolve().parent
         if str(project_root) not in sys.path:
             sys.path.insert(0, str(project_root))
-        from services.config_validator import ConfigManager
+        from improved_local_assistant.services.config_validator import ConfigManager
 
         # Create config manager
         config_manager = ConfigManager()

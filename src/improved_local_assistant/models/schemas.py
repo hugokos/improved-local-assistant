@@ -4,7 +4,7 @@ Pydantic schemas for the Improved Local AI Assistant API.
 This module defines the request and response models for the FastAPI endpoints.
 """
 
-from typing import Any
+from typing import Any, Optional
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -14,7 +14,7 @@ class MessageRequest(BaseModel):
     """Request model for chat messages."""
 
     message: str = Field(..., description="The user's message")
-    session_id: str | None = Field(None, description="Session ID for conversation continuity")
+    session_id: Optional[str] = Field(None, description="Session ID for conversation continuity")
 
 
 class MessageResponse(BaseModel):
@@ -28,7 +28,7 @@ class GraphRequest(BaseModel):
     """Request model for knowledge graph queries."""
 
     query: str = Field(..., description="The query to search in knowledge graphs")
-    graph_ids: list[str] | None = Field(None, description="Specific graph IDs to search (optional)")
+    graph_ids: Optional[list[str]] = Field(None, description="Specific graph IDs to search (optional)")
 
 
 class GraphResponse(BaseModel):
@@ -45,7 +45,7 @@ class GraphCreateRequest(BaseModel):
     """Request model for creating new knowledge graphs."""
 
     docs_path: str = Field(..., description="Path to documents for graph creation")
-    graph_id: str | None = Field(None, description="Optional ID for the new graph")
+    graph_id: Optional[str] = Field(None, description="Optional ID for the new graph")
 
 
 class GraphTraversalRequest(BaseModel):
@@ -95,5 +95,5 @@ class WSMessage(BaseModel):
     type: str = Field(..., description="Message type")
     content: str = Field(..., description="Message content")
     session_id: str = Field(..., description="Session ID")
-    message_id: str | None = Field(None, description="Message ID")
-    timestamp: str | None = Field(None, description="Message timestamp")
+    message_id: Optional[str] = Field(None, description="Message ID")
+    timestamp: Optional[str] = Field(None, description="Message timestamp")

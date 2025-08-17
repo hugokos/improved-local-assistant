@@ -189,9 +189,9 @@ async def test_kg_loading():
     try:
         from llama_index.core import Settings
         from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-        from services.graph_manager import KnowledgeGraphManager
-        from services.model_mgr import ModelConfig
-        from services.model_mgr import ModelManager
+        from improved_local_assistant.services.graph_manager import KnowledgeGraphManager
+        from improved_local_assistant.services.model_mgr import ModelConfig
+        from improved_local_assistant.services.model_mgr import ModelManager
 
         # Configure embedding model globally
         Settings.embed_model = HuggingFaceEmbedding(

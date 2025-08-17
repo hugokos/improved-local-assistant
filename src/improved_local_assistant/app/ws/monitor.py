@@ -11,7 +11,7 @@ from datetime import datetime
 
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
-from services import DEFAULTS
+from improved_local_assistant.services import DEFAULTS
 
 logger = logging.getLogger(__name__)
 

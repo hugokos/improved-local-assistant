@@ -10,9 +10,9 @@ This module provides the DynamicModelManager class that handles:
 
 import logging
 import time
-from typing import Any
+from typing import Any, Dict, Optional
 
-from services.connection_pool_manager import ConnectionPoolManager
+from improved_local_assistant.services.connection_pool_manager import ConnectionPoolManager
 
 
 class DynamicModelManager:
@@ -241,7 +241,7 @@ class DynamicModelManager:
                 "model": model_name,
             }
 
-    def _get_model_config(self, model_type: str, model_name: str) -> dict[str, Any] | None:
+    def _get_model_config(self, model_type: str, model_name: str) -> Optional[Dict[str, Any]]:
         """
         Get configuration for a specific model.
 

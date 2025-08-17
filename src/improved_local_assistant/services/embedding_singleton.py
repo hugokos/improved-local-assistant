@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 # Global embedding model instance
 _embedding_model: Optional = None
-_embedding_model_name: str | None = None
+_embedding_model_name: Optional[str] = None
 
 
 def get_embedding_model(model_name: str = "BAAI/bge-small-en-v1.5"):

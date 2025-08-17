@@ -32,7 +32,7 @@ def setup_environment():
 
     # Configure LlamaIndex settings
     from llama_index.core import Settings
-    from services.embedding_singleton import get_embedding_model
+    from improved_local_assistant.services.embedding_singleton import get_embedding_model
 
     # Set up local embedding model
     logger.info("📊 Initializing embedding model...")
@@ -51,7 +51,7 @@ def load_survivalist_graph():
 
     from llama_index.core import StorageContext
     from llama_index.core import load_index_from_storage
-    from services.utf8_import_helper import get_utf8_filesystem
+    from improved_local_assistant.services.utf8_import_helper import get_utf8_filesystem
 
     # Path to the survivalist graph
     graph_path = project_root / "data" / "prebuilt_graphs" / "survivalist"

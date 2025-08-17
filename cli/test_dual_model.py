@@ -30,14 +30,14 @@ if USE_MOCK:
     # Import mock client
     sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "tests"))
     # Monkey patch the AsyncClient in model_mgr
-    import services.model_mgr
+from improved_local_assistant import services.model_mgr
     from mock_ollama import MockAsyncClient
 
     services.model_mgr.AsyncClient = MockAsyncClient
     print("Using mock Ollama client for testing")
 
-from services.model_mgr import ModelConfig  # noqa: E402
-from services.model_mgr import ModelManager  # noqa: E402
+from improved_local_assistant.services.model_mgr import ModelConfig  # noqa: E402
+from improved_local_assistant.services.model_mgr import ModelManager  # noqa: E402
 
 # Load environment variables from .env file
 load_dotenv()

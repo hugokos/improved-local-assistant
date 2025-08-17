@@ -23,8 +23,8 @@ from dotenv import load_dotenv
 # Add parent directory to path to import from services
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from services.model_mgr import ModelConfig
-from services.model_mgr import ModelManager
+from improved_local_assistant.services.model_mgr import ModelConfig
+from improved_local_assistant.services.model_mgr import ModelManager
 
 # Load environment variables from .env file
 load_dotenv()

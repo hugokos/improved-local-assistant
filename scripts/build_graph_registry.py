@@ -221,7 +221,7 @@ async def test_registry():
         print(f"📊 Loaded registry with {len(registry)} graphs")
 
         # Test routing
-        from services.graph_router import GraphRouter
+        from improved_local_assistant.services.graph_router import GraphRouter
 
         config = {
             "embedding_model": "BAAI/bge-small-en-v1.5",

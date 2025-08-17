@@ -5,7 +5,7 @@ Settings management for Improved Local Assistant
 import logging
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
 import yaml
 from pydantic import BaseModel
@@ -94,7 +94,7 @@ class Settings(BaseModel):
 
 
 # Global settings instance
-_settings: Settings | None = None
+_settings: Optional[Settings] = None
 
 
 def get_settings() -> Settings:

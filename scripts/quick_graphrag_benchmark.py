@@ -20,11 +20,11 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from app.core.config import load_config  # noqa: E402
-from services.conversation_manager import ConversationManager  # noqa: E402
-from services.graph_manager import KnowledgeGraphManager  # noqa: E402
-from services.model_manager import ModelConfig  # noqa: E402
-from services.model_manager import ModelManager  # noqa: E402
+from improved_local_assistant.app.core.config import load_config  # noqa: E402
+from improved_local_assistant.services.conversation_manager import ConversationManager  # noqa: E402
+from improved_local_assistant.services.graph_manager import KnowledgeGraphManager  # noqa: E402
+from improved_local_assistant.services.model_manager import ModelConfig  # noqa: E402
+from improved_local_assistant.services.model_manager import ModelManager  # noqa: E402
 
 
 async def quick_benchmark():

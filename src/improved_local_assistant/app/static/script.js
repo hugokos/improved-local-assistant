@@ -217,8 +217,12 @@ class ChatInterface {
         this.arcCpu(cpuArc, cpu / 100);
         this.arcRam(ramArc, ram / 100);
 
-        if (cpuTxt) cpuTxt.textContent = Math.round(cpu) + '%';
-        if (ramTxt) ramTxt.textContent = Math.round(ram) + '%';
+        if (cpuTxt) {
+            cpuTxt.textContent = Math.round(cpu) + '%';
+        }
+        if (ramTxt) {
+            ramTxt.textContent = Math.round(ram) + '%';
+        }
     }
 
     initializeSliders() {
@@ -547,7 +551,9 @@ class ChatInterface {
             text = message.trim();
         } else {
             const messageInput = this.messageInput;
-            if (!messageInput || !messageInput.value.trim()) return;
+            if (!messageInput || !messageInput.value.trim()) {
+            return;
+        }
             text = messageInput.value.trim();
             messageInput.value = '';
         }
@@ -676,7 +682,9 @@ class ChatInterface {
     }
 
     maybeStartTTS() {
-        if (!this.voiceController?.isVoiceMode || this.ttsStarted) return;
+        if (!this.voiceController?.isVoiceMode || this.ttsStarted) {
+            return;
+        }
         const text = this.currentMessageText || '';
         const firstSentence = text.match(/^[\s\S]*?[.!?](?:\s|$)/)?.[0] || '';
         if (firstSentence.length >= 20) {
@@ -731,8 +739,6 @@ class ChatInterface {
             this.debouncedUpdatePrebuilt([]);
         }
     }
-
-
 
     updateAvailableGraphs(graphs) {
         const graphList = document.getElementById('graphList');
@@ -824,7 +830,9 @@ class ChatInterface {
 
     setMicState(state, level = 0) {
         const el = this.micOrbEl;
-        if (!el) return;
+        if (!el) {
+            return;
+        }
 
         // clamp and set audio level (drives the conic gradient & glow)
         const clamped = Math.max(0, Math.min(1, level || 0));
@@ -851,11 +859,15 @@ class ChatInterface {
             'muted': 'muted'
         };
         const cls = map[s] || null;
-        if (cls) el.classList.add(cls);
+        if (cls) {
+            el.classList.add(cls);
+        }
     }
 
     showMicOrb(show = true) {
-        if (this.micOrbEl) this.micOrbEl.style.display = show ? 'block' : 'none';
+        if (this.micOrbEl) {
+            this.micOrbEl.style.display = show ? 'block' : 'none';
+        }
     }
 
     updateStatus(status) {
@@ -878,7 +890,9 @@ class ChatInterface {
     }
 
     updateMetrics(data) {
-        if (!data.resource_usage) return;
+        if (!data.resource_usage) {
+            return;
+        }
 
         const cpuUsage = data.resource_usage.cpu_percent || 0;
         const memoryUsage = data.resource_usage.memory_percent || 0;
@@ -1034,7 +1048,9 @@ class ChatInterface {
     }
 
     updatePrebuiltCitations(citations) {
-        if (!this.prebuiltCitationsContainer) return;
+        if (!this.prebuiltCitationsContainer) {
+            return;
+        }
 
         if (!citations || citations.length === 0) {
             this.prebuiltCitationsContainer.innerHTML = '<p class="no-data-message emboss">No prebuilt citations available</p>';
@@ -1063,7 +1079,9 @@ class ChatInterface {
     }
 
     updateDynamicKg(triples) {
-        if (!this.dynamicKgContainer) return;
+        if (!this.dynamicKgContainer) {
+            return;
+        }
 
         if (!triples || triples.length === 0) {
             this.dynamicKgContainer.innerHTML = '<p class="no-data-message emboss">No dynamic updates available</p>';
@@ -1092,7 +1110,9 @@ class ChatInterface {
     }
 
     addPrebuiltCitation(citation) {
-        if (!this.prebuiltCitationsContainer) return;
+        if (!this.prebuiltCitationsContainer) {
+            return;
+        }
 
         // Remove "no data" message if present
         const noDataMsg = this.prebuiltCitationsContainer.querySelector('.no-data-message');
@@ -1119,7 +1139,9 @@ class ChatInterface {
     }
 
     addDynamicTriple(triple) {
-        if (!this.dynamicKgContainer) return;
+        if (!this.dynamicKgContainer) {
+            return;
+        }
 
         // Remove "no data" message if present
         const noDataMsg = this.dynamicKgContainer.querySelector('.no-data-message');
@@ -1208,10 +1230,10 @@ class ChatInterface {
             };
 
             // Create a download link
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(settings, null, 2));
+            const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(settings, null, 2));
             const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "assistant_config.json");
+            downloadAnchorNode.setAttribute('href', dataStr);
+            downloadAnchorNode.setAttribute('download', 'assistant_config.json');
             document.body.appendChild(downloadAnchorNode);
             downloadAnchorNode.click();
             downloadAnchorNode.remove();
@@ -1231,7 +1253,9 @@ class ChatInterface {
 
         fileInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
-            if (!file) return;
+            if (!file) {
+                return;
+            }
 
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -1326,7 +1350,9 @@ class ChatInterface {
 
         fileInput.addEventListener('change', (event) => {
             const file = event.target.files[0];
-            if (!file) return;
+            if (!file) {
+                return;
+            }
 
             this.showSystemMessage(`Importing graph from file: ${file.name}`);
 
@@ -1493,25 +1519,6 @@ class ChatInterface {
         }
     }
 
-    // Voice Controller Integration Methods
-    setMicState(state, level = 0) {
-        // Update microphone orb visualization based on voice state
-        if (this.micOrbEl) {
-            // Remove all state classes
-            this.micOrbEl.classList.remove('listening', 'speaking', 'muted', 'utterance_active', 'finalizing', 'waiting_for_bot');
-
-            // Add current state class
-            if (state && state !== 'idle') {
-                this.micOrbEl.classList.add(state);
-            }
-
-            // Update audio level visualization
-            if (level !== undefined && level >= 0) {
-                this.micOrbEl.style.setProperty('--level', Math.max(0, Math.min(1, level)));
-            }
-        }
-    }
-
 
 
     // The one renderer everyone uses
@@ -1540,10 +1547,10 @@ class ChatInterface {
             this.scrollToBottom();
         } else {
             console.error('❌ chatMessages element not found! Available elements:', {
-                'chatBox': !!document.getElementById('chatBox'),
-                'chatMessages': !!document.getElementById('chatMessages'),
+                chatBox: !!document.getElementById('chatBox'),
+                chatMessages: !!document.getElementById('chatMessages'),
                 'message-input': !!document.getElementById('message-input'),
-                'messageInput': !!document.getElementById('messageInput')
+                messageInput: !!document.getElementById('messageInput')
             });
         }
     }
@@ -1559,14 +1566,6 @@ class ChatInterface {
             this.micOrbEl.style.display = show ? 'block' : 'none';
         }
     }
-
-
-
-
-
-
-
-
 
     showError(message) {
         // Show an error message to the user
@@ -1647,7 +1646,9 @@ class VoiceTestWidget {
         const out = new Float32Array(n * up);
         for (let i = 0, j = 0; i < n; i++) {
             const v = pcm16[i] / 32768;
-            for (let k = 0; k < up; k++) out[j++] = v;
+            for (let k = 0; k < up; k++) {
+            out[j++] = v;
+        }
         }
 
         const buf = ctx.createBuffer(1, out.length, srOut);
@@ -1877,7 +1878,6 @@ class VoiceTestWidget {
             }, 1000);
         });
     }
-    }
 
     // Edge-specific audio diagnostics
     async runEdgeAudioDiagnostics() {
@@ -1998,7 +1998,9 @@ class VoiceTestWidget {
 
     // Monitor for browser speaker icon (Edge-specific)
     monitorSpeakerIcon(speakerIconEl) {
-        if (!speakerIconEl) return;
+        if (!speakerIconEl) {
+            return;
+        }
 
         // Check if we can detect audio output
         let iconDetected = false;
@@ -2031,7 +2033,9 @@ class VoiceTestWidget {
 
         const checkTitle = () => {
             titleCheckCount++;
-            if (titleCheckCount > 20) return; // Stop after 10 seconds
+            if (titleCheckCount > 20) {
+                return; // Stop after 10 seconds
+            }
 
             // Edge sometimes shows audio indicator in title or tab
             if (document.title !== originalTitle || document.title.includes('🔊')) {
@@ -2155,7 +2159,353 @@ class VoiceTestWidget {
             // Draw meter with RMS calculation
             const data = new Uint8Array(this.analyser.frequencyBinCount);
             const tick = () => {
-                if (!this.isTestingMic) return;
+                if (!this.isTestingMic) {
+                    return;
+                }
+
+                this.analyser.getByteTimeDomainData(data);
+
+                // Compute RMS 0..1
+                let sum = 0;
+                for (let i = 0; i < data.length; i++) {
+                    const v = (data[i] - 128) / 128;
+                    sum += v * v;
+                }
+                const rms = Math.sqrt(sum / data.length);
+
+                // Update meter (scale RMS for better visibility)
+                const level = Math.min(1, rms * 4) * 100;
+                indicatorEl.style.width = `${level}%`;
+
+                // Debug high levels
+                if (rms > 0.1) {
+                    console.debug('🎤 Mic level:', rms.toFixed(3));
+                }
+
+                this._micTestRAF = requestAnimationFrame(tick);
+            };
+
+            this._micTestRAF = requestAnimationFrame(tick);
+
+        } catch (error) {
+            console.error('🎤 Microphone test error:', error);
+            statusEl.textContent = `❌ Microphone test failed: ${error.message}`;
+            statusEl.className = 'voice-test-status error';
+            this.isTestingMic = false;
+            button.disabled = false;
+        }
+    }
+
+    stopMicTest() {
+        const button = document.getElementById('testMicBtn');
+        const meterEl = document.getElementById('micLevelMeter');
+        const statusEl = document.getElementById('voiceTestStatus');
+
+        if (this._micTestRAF) {
+            cancelAnimationFrame(this._micTestRAF);
+            this._micTestRAF = null;
+        }
+
+        if (this.micStream) {
+            this.micStream.getTracks().forEach(track => track.stop());
+            this.micStream = null;
+        }
+
+        // Clean up audio nodes
+        this.analyser = null;
+        this.micSource = null;
+
+        this.isTestingMic = false;
+        button.textContent = '🎤 Test Microphone';
+        button.disabled = false;
+        meterEl.style.display = 'none';
+        statusEl.textContent = '✅ Microphone test completed';
+        statusEl.className = 'voice-test-status success';
+    }
+
+    // Edge-specific audio diagnostics
+    async runEdgeAudioDiagnostics() {
+        console.log('🔍 === EDGE AUDIO DIAGNOSTICS ===');
+
+        // Show the Edge indicator
+        const indicator = document.getElementById('edgeAudioIndicator');
+        const statusEl = document.getElementById('edgeAudioStatus');
+        const speakerIconEl = document.getElementById('speakerIconStatus');
+
+        if (indicator) {
+            indicator.style.display = 'block';
+            statusEl.textContent = 'Running diagnostics...';
+        }
+
+        // 1. Browser detection
+        const userAgent = navigator.userAgent;
+        const isEdge = /Edg/.test(userAgent);
+        const edgeVersion = isEdge ? userAgent.match(/Edg\/(\d+)/)?.[1] : null;
+
+        console.log('🔍 Browser Info:', {
+            userAgent,
+            isEdge,
+            edgeVersion,
+            isSecureContext: window.isSecureContext,
+            protocol: window.location.protocol,
+            hostname: window.location.hostname
+        });
+
+        if (statusEl) {
+            statusEl.textContent = isEdge ? `Edge ${edgeVersion}` : 'Not Edge';
+        }
+
+        // 2. Audio API availability
+        const audioSupport = {
+            AudioContext: !!window.AudioContext,
+            webkitAudioContext: !!window.webkitAudioContext,
+            HTMLAudioElement: !!window.HTMLAudioElement,
+            getUserMedia: !!navigator.mediaDevices?.getUserMedia
+        };
+
+        console.log('🔍 Audio APIs:', audioSupport);
+
+        // 3. Test AudioContext creation
+        let contextWorking = false;
+        try {
+            const testCtx = new (window.AudioContext || window.webkitAudioContext)();
+            console.log('🔍 AudioContext Test:', {
+                state: testCtx.state,
+                sampleRate: testCtx.sampleRate,
+                baseLatency: testCtx.baseLatency,
+                outputLatency: testCtx.outputLatency,
+                maxChannelCount: testCtx.destination.maxChannelCount
+            });
+
+            // Test resume
+            if (testCtx.state === 'suspended') {
+                await testCtx.resume();
+                console.log('🔍 AudioContext resumed to state:', testCtx.state);
+            }
+
+            contextWorking = testCtx.state === 'running';
+            await testCtx.close();
+        } catch (error) {
+            console.error('🔍 AudioContext creation failed:', error);
+        }
+
+        // 4. Monitor for browser speaker icon
+        this.monitorSpeakerIcon(speakerIconEl);
+
+        // 5. Test simple oscillator
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            await ctx.resume();
+
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.frequency.value = 440;
+            gain.gain.value = 0.1;
+
+            osc.start();
+            osc.stop(ctx.currentTime + 0.1);
+
+            console.log('🔍 Oscillator test: Created and scheduled successfully');
+
+            setTimeout(async () => {
+                await ctx.close();
+            }, 200);
+
+        } catch (error) {
+            console.error('🔍 Oscillator test failed:', error);
+        }
+
+        // 6. Test HTML5 Audio
+        try {
+            const audio = new Audio();
+            console.log('🔍 HTML5 Audio:', {
+                canPlayType_wav: audio.canPlayType('audio/wav'),
+                canPlayType_mp3: audio.canPlayType('audio/mpeg'),
+                canPlayType_ogg: audio.canPlayType('audio/ogg'),
+                volume: audio.volume,
+                muted: audio.muted
+            });
+        } catch (error) {
+            console.error('🔍 HTML5 Audio test failed:', error);
+        }
+
+        console.log('🔍 === DIAGNOSTICS COMPLETE ===');
+
+        if (statusEl) {
+            statusEl.textContent = contextWorking ? '✅ Ready' : '❌ Issues detected';
+        }
+    }
+
+    // Monitor for browser speaker icon (Edge-specific)
+    monitorSpeakerIcon(speakerIconEl) {
+        if (!speakerIconEl) {
+            return;
+        }
+
+        // Check if we can detect audio output
+        let iconDetected = false;
+
+        // Method 1: Check for audio output devices
+        if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+            navigator.mediaDevices.enumerateDevices()
+                .then(devices => {
+                    const audioOutputs = devices.filter(device => device.kind === 'audiooutput');
+                    console.log('🔊 Audio output devices:', audioOutputs.length);
+
+                    if (audioOutputs.length > 0) {
+                        speakerIconEl.textContent = '🔊 Audio devices detected';
+                        speakerIconEl.style.color = 'green';
+                    } else {
+                        speakerIconEl.textContent = '❌ No audio devices';
+                        speakerIconEl.style.color = 'red';
+                    }
+                })
+                .catch(error => {
+                    console.error('🔊 Device enumeration failed:', error);
+                    speakerIconEl.textContent = '❓ Cannot detect devices';
+                    speakerIconEl.style.color = 'orange';
+                });
+        }
+
+        // Method 2: Monitor document title for speaker icon (Edge shows it there)
+        const originalTitle = document.title;
+        let titleCheckCount = 0;
+
+        const checkTitle = () => {
+            titleCheckCount++;
+            if (titleCheckCount > 20) {
+                return; // Stop after 10 seconds
+            }
+
+            // Edge sometimes shows audio indicator in title or tab
+            if (document.title !== originalTitle || document.title.includes('🔊')) {
+                console.log('🔊 Title changed, possible audio indicator:', document.title);
+                speakerIconEl.textContent = '🔊 Audio active (title changed)';
+                speakerIconEl.style.color = 'green';
+                iconDetected = true;
+            }
+
+            if (!iconDetected) {
+                setTimeout(checkTitle, 500);
+            }
+        };
+
+        setTimeout(checkTitle, 1000); // Start checking after 1 second
+
+        // Method 3: Check for audio context state changes
+        setTimeout(() => {
+            if (!iconDetected) {
+                speakerIconEl.textContent = '❓ No speaker icon detected';
+                speakerIconEl.style.color = 'gray';
+                console.log('🔊 No speaker icon detected in Edge after 10 seconds');
+            }
+        }, 10000);
+    }
+
+    // Build microphone constraints with proper WebRTC best practices
+    buildMicConstraints(deviceId = null, opts = {}) {
+        const {
+            echoCancellation = false,
+            noiseSuppression = false,
+            autoGainControl = false
+        } = opts;
+
+        return {
+            audio: {
+                deviceId: deviceId ? { exact: deviceId } : undefined,
+                channelCount: { ideal: 1 },
+                sampleRate: { ideal: 48000 }, // browser HW rate; downsampled to 16k later
+                echoCancellation,
+                noiseSuppression,
+                autoGainControl
+            },
+            video: false
+        };
+    }
+
+    async testMicrophone() {
+        const statusEl = document.getElementById('voiceTestStatus');
+        const button = document.getElementById('testMicBtn');
+        const meterEl = document.getElementById('micLevelMeter');
+        const indicatorEl = document.getElementById('micLevelIndicator');
+
+        if (this.isTestingMic) {
+            this.stopMicTest();
+            return;
+        }
+
+        try {
+            button.disabled = true;
+            statusEl.textContent = 'Checking microphone support...';
+            statusEl.className = 'voice-test-status info';
+
+            // Debug: Check microphone support
+            console.log('🔍 Microphone support check:', {
+                hasGetUserMedia: !!navigator.mediaDevices?.getUserMedia,
+                hasEnumerateDevices: !!navigator.mediaDevices?.enumerateDevices,
+                isSecureContext: window.isSecureContext,
+                protocol: window.location.protocol
+            });
+
+            if (!navigator.mediaDevices?.getUserMedia) {
+                throw new Error('getUserMedia not supported (HTTPS required for microphone access)');
+            }
+
+            statusEl.textContent = 'Requesting microphone access...';
+
+            // Create fresh AudioContext for testing
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            const testCtx = new AudioContextClass({ latencyHint: 'interactive' });
+
+            if (testCtx.state === 'suspended') {
+                await testCtx.resume();
+            }
+
+            console.log('🔍 Test AudioContext:', {
+                state: testCtx.state,
+                sampleRate: testCtx.sampleRate
+            });
+
+            // Get microphone with proper constraints
+            this.micStream = await navigator.mediaDevices.getUserMedia(
+                this.buildMicConstraints(null, {
+                    echoCancellation: false,
+                    noiseSuppression: false,
+                    autoGainControl: false
+                })
+            );
+
+            console.log('🔍 Microphone stream:', {
+                active: this.micStream.active,
+                tracks: this.micStream.getTracks().length,
+                trackSettings: this.micStream.getTracks()[0]?.getSettings()
+            });
+
+            // Visual level meter using AnalyserNode
+            this.micSource = testCtx.createMediaStreamSource(this.micStream);
+            this.analyser = testCtx.createAnalyser();
+            this.analyser.fftSize = 512;
+            this.micSource.connect(this.analyser);
+
+            this.testCtx = testCtx; // Store for cleanup
+
+            this.isTestingMic = true;
+            button.textContent = '🛑 Stop Test';
+            button.disabled = false;
+            meterEl.style.display = 'block';
+            statusEl.textContent = '🎤 Microphone active - speak to see levels';
+            statusEl.className = 'voice-test-status success';
+
+            // Draw meter with RMS calculation
+            const data = new Uint8Array(this.analyser.frequencyBinCount);
+            const tick = () => {
+                if (!this.isTestingMic) {
+                    return;
+                }
 
                 this.analyser.getByteTimeDomainData(data);
 

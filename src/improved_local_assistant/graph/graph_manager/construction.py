@@ -10,6 +10,7 @@ import json
 import os
 import time
 from datetime import datetime
+from typing import Optional
 
 from llama_index.core import KnowledgeGraphIndex
 from llama_index.core import SimpleDirectoryReader
@@ -23,7 +24,7 @@ from llama_index.core.indices.property_graph import PropertyGraphIndex
 class KnowledgeGraphConstruction:
     """Handles construction and dynamic updates of knowledge graphs."""
 
-    def load_prebuilt_graphs(self, directory: str | None = None) -> list[str]:
+    def load_prebuilt_graphs(self, directory: Optional[str] = None) -> list[str]:
         """
         Load all pre-built knowledge graphs from directory.
 
@@ -289,8 +290,8 @@ class KnowledgeGraphConstruction:
             return loaded_graphs
 
     def create_graph_from_documents(
-        self, docs_path: str, graph_id: str | None = None
-    ) -> str | None:
+        self, docs_path: str, graph_id: Optional[str] = None
+    ) -> Optional[str]:
         """
         Create a new knowledge graph from documents.
 
@@ -1051,7 +1052,7 @@ Triplets:"""
         except Exception as e:
             self.logger.error(f"Error processing entities: {str(e)}")
 
-    def add_new_graph(self, graph_path: str, graph_id: str | None = None) -> str | None:
+    def add_new_graph(self, graph_path: str, graph_id: Optional[str] = None) -> Optional[str]:
         """
         Add a new pre-built graph at runtime.
 

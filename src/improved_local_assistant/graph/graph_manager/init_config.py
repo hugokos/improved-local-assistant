@@ -10,6 +10,7 @@ import logging
 import os
 import sys
 import time
+from typing import Optional
 
 import networkx as nx
 from llama_index.core import Settings
@@ -124,7 +125,7 @@ class KnowledgeGraphInitializer:
         """Configure embedding model to match prebuilt graph metadata using singleton."""
         try:
             # Always use the embedding singleton to ensure consistency
-            from services.embedding_singleton import configure_global_embedding
+            from improved_local_assistant.services.embedding_singleton import configure_global_embedding
 
             # get_embedding_model import removed - not used in this function
 
@@ -208,8 +209,8 @@ class KnowledgeGraphInitializer:
                 return
 
             # Import and initialize GraphRouter with singleton embedder
-            from services.embedding_singleton import get_embedding_model
-            from services.graph_router import GraphRouter
+            from improved_local_assistant.services.embedding_singleton import get_embedding_model
+            from improved_local_assistant.retrieval.graph_router import GraphRouter
 
             router_config = {
                 "embedding_model": "BAAI/bge-small-en-v1.5",
@@ -235,7 +236,7 @@ class KnowledgeGraphInitializer:
             self.logger.warning(f"Could not initialize advanced GraphRouter: {e}")
             self._graph_router = None
 
-    def _safe_get_networkx_graph(self, kg_index, graph_id: str = "unknown") -> nx.Graph | None:
+    def _safe_get_networkx_graph(self, kg_index, graph_id: str = "unknown") -> Optional[nx.Graph]:
         """
         Safely get NetworkX graph from a knowledge graph index.
 

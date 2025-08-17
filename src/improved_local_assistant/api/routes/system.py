@@ -53,7 +53,7 @@ async def health_check(request: Request):
         # Get timeout function from app state or import
         get_timeout = getattr(request.app.state, "get_timeout", None)
         if not get_timeout:
-            from services import get_timeout
+            from improved_local_assistant.services import get_timeout
 
         # Get config from app state
         config = getattr(request.app.state, "config", {})

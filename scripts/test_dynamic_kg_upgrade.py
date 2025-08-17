@@ -29,13 +29,13 @@ def test_imports():
 
     try:
         # Core components - testing imports
-        from services.conversation_manager import ConversationManager  # noqa: F401
-        from services.graph_manager.construction import KnowledgeGraphConstruction  # noqa: F401
-        from services.graph_manager.init_config import KnowledgeGraphInitializer  # noqa: F401
-        from services.graph_manager.persistence_simple import (
+        from improved_local_assistant.services.conversation_manager import ConversationManager  # noqa: F401
+        from improved_local_assistant.services.graph_manager.construction import KnowledgeGraphConstruction  # noqa: F401
+        from improved_local_assistant.services.graph_manager.init_config import KnowledgeGraphInitializer  # noqa: F401
+        from improved_local_assistant.services.graph_manager.persistence_simple import (
             KnowledgeGraphPersistence,  # noqa: F401
         )
-        from services.hybrid_retriever import HybridEnsembleRetriever  # noqa: F401
+        from improved_local_assistant.services.hybrid_retriever import HybridEnsembleRetriever  # noqa: F401
 
         print("✅ All core imports successful")
         return True
@@ -107,7 +107,7 @@ def test_entity_canonicalization():
     print("\n🔍 Testing entity canonicalization...")
 
     try:
-        from services.graph_manager.construction import KnowledgeGraphConstruction
+        from improved_local_assistant.services.graph_manager.construction import KnowledgeGraphConstruction
 
         # Create temporary directory for testing
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -180,7 +180,7 @@ def test_utterance_tracking():
         import logging
         import unittest.mock
 
-        from services.graph_manager.construction import KnowledgeGraphConstruction
+        from improved_local_assistant.services.graph_manager.construction import KnowledgeGraphConstruction
 
         # Set up test instance
         kg_construction = KnowledgeGraphConstruction()
@@ -241,7 +241,7 @@ def test_wal_persistence():
     print("\n🔍 Testing WAL persistence...")
 
     try:
-        from services.graph_manager.persistence_simple import KnowledgeGraphPersistence
+        from improved_local_assistant.services.graph_manager.persistence_simple import KnowledgeGraphPersistence
 
         with tempfile.TemporaryDirectory() as temp_dir:
             # Set up test instance
@@ -303,7 +303,7 @@ def test_triple_parsing():
     print("\n🔍 Testing triple parsing...")
 
     try:
-        from services.graph_manager.construction import KnowledgeGraphConstruction
+        from improved_local_assistant.services.graph_manager.construction import KnowledgeGraphConstruction
 
         kg_construction = KnowledgeGraphConstruction()
         kg_construction.max_triplets_per_chunk = 5

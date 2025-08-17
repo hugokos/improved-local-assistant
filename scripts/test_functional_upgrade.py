@@ -27,8 +27,8 @@ async def test_end_to_end_functionality():
         # Import required components
         import logging
 
-        from services.conversation_manager import ConversationManager
-        from services.graph_manager import KnowledgeGraphManager
+        from improved_local_assistant.services.conversation_manager import ConversationManager
+        from improved_local_assistant.services.graph_manager import KnowledgeGraphManager
 
         # Set up logging
         logging.basicConfig(level=logging.INFO)

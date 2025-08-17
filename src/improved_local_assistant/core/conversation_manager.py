@@ -197,9 +197,9 @@ class ConversationManager:
         start_time = time.time()
 
         # Import error handling modules
-        from services.error_handler import handle_error
-        from services.graceful_degradation import degradation_manager
-        from services.graceful_degradation import with_degradation
+        from improved_local_assistant.services.error_handler import handle_error
+        from improved_local_assistant.services.graceful_degradation import degradation_manager
+        from improved_local_assistant.services.graceful_degradation import with_degradation
 
         # Session validation with proper error handling
         if session_id not in self.sessions:

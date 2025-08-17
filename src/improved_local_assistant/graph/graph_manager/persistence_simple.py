@@ -46,7 +46,7 @@ class KnowledgeGraphPersistence:
         try:
             # Configure LlamaIndex to use local models instead of OpenAI
             from llama_index.core import Settings
-            from services.embedding_singleton import get_embedding_model
+            from improved_local_assistant.services.embedding_singleton import get_embedding_model
 
             # Set up local embedding model
             embed_model = get_embedding_model("BAAI/bge-small-en-v1.5")

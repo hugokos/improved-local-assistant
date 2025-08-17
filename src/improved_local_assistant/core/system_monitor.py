@@ -60,7 +60,7 @@ class SystemMonitor:
         self.throttler = Throttler(rate_limit=1, period=5.0)  # Limit to 1 check per 5 seconds
 
         # Import constants
-        from services.constants import get_threshold
+        from improved_local_assistant.services.constants import get_threshold
 
         # Resource thresholds (use environment overrides)
         self.cpu_threshold = system_config.get(

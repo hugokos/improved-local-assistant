@@ -25,7 +25,7 @@ def test_llamaindex_settings():
     try:
         # Initialize model manager first to set up Settings
         from app.core.config import load_config
-        from services.orchestrated_model_manager import OrchestratedModelManager
+        from improved_local_assistant.services.orchestrated_model_manager import OrchestratedModelManager
 
         config = load_config()
         OrchestratedModelManager(config)  # This sets up Settings.llm
@@ -72,7 +72,7 @@ def test_model_manager_setup():
 
     try:
         from app.core.config import load_config
-        from services.orchestrated_model_manager import OrchestratedModelManager
+        from improved_local_assistant.services.orchestrated_model_manager import OrchestratedModelManager
 
         config = load_config()
         mgr = OrchestratedModelManager(config)

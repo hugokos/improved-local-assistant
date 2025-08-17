@@ -49,8 +49,8 @@ def test_basic_initialization():
 
     try:
         from app.core.config import load_config
-        from services.system_monitor import SystemMonitor
-        from services.working_set_cache import WorkingSetCache
+        from improved_local_assistant.services.system_monitor import SystemMonitor
+        from improved_local_assistant.services.working_set_cache import WorkingSetCache
 
         # Load config
         config = load_config()

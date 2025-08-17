@@ -40,7 +40,7 @@ async def test_voice_services():
 
         # Test VoiceManager initialization
         print("\n2. Initializing VoiceManager...")
-        from services.voice_manager import VoiceManager
+        from improved_local_assistant.services.voice_manager import VoiceManager
 
         voice_manager = VoiceManager(config)
 
