@@ -2,11 +2,18 @@
 HTTP utilities with proper timeout and retry handling.
 """
 
+from pathlib import Path
+
+from platformdirs import user_cache_dir
 from requests import Session
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
 DEFAULT_TIMEOUT = (3.05, 30)  # (connect, read) seconds
+
+# Use platformdirs for cache directory
+CACHE_DIR = Path(user_cache_dir("improved-local-assistant", "hugokos"))
+CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def http_session(timeout: tuple[float, float] = DEFAULT_TIMEOUT, retries: int = 3) -> Session:

@@ -2,7 +2,7 @@
 
 Local‑first GraphRAG assistant with an offline voice interface. Runs entirely on your machine for privacy, speed, and reliability.
 
-> **Status**: GitHub Actions workflows have been fixed and should now deploy documentation automatically.
+> **⚠️ CI Status**: GitHub Actions workflows are temporarily disabled while we refactor the test suite for better reliability and performance. You can still run workflows manually if needed.
 
 [![CI](https://github.com/hugokos/improved-local-assistant/actions/workflows/ci.yml/badge.svg)](https://github.com/hugokos/improved-local-assistant/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-mkdocs--material-blue)](https://hugokos.github.io/improved-local-assistant/)

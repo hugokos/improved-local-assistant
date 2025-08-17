@@ -5,7 +5,8 @@ This module centralizes magic numbers, timeouts, and thresholds
 to make them easier to configure and maintain.
 """
 
-from typing import Any, Optional, Union
+from typing import Any
+from typing import Optional
 
 # Timeout constants (in seconds)
 DEFAULTS = {

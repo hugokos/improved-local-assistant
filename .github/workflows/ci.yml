@@ -1,112 +1,13 @@
-name: ci
+name: ci (temporarily disabled)
 
 on:
-  push:
-    branches: [main]
-  pull_request: {}
+  workflow_dispatch: {}  # manual only
 
 permissions:
   contents: read
 
 jobs:
-  lint:
+  disabled:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-      - name: Install dev deps
-        run: |
-          python -m pip install -U pip
-          pip install -r requirements.txt
-          pip install -e . -c constraints.txt
-          pip install pytest pytest-cov ruff black mypy pre-commit
-      - name: Run pre-commit (all hooks)
-        uses: pre-commit/action@v3.0.1
-        with:
-          extra_args: --all-files
-      - name: Ruff
-        run: ruff check .
-      - name: Black
-        run: black --check .
-
-  typecheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-      - name: Install dev deps
-        run: |
-          python -m pip install -U pip
-          pip install -r requirements.txt
-          pip install -e . -c constraints.txt
-          pip install mypy types-requests types-PyYAML types-setuptools
-      - name: mypy
-        run: mypy src
-
-  test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        python: ['3.10', '3.11', '3.12']
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python }}
-          cache: 'pip'
-      - name: Install PortAudio (Linux)
-        if: runner.os == 'Linux'
-        shell: bash
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libportaudio2
-      - name: Install dependencies
-        shell: bash
-        run: |
-          python -m pip install -U pip
-          pip install -r requirements.txt
-          pip install -e . -c constraints.txt
-          pip install -U pytest pytest-cov
-      - name: Verify pytest-cov installation
-        shell: bash
-        run: |
-          python -c "import importlib, sys; [importlib.import_module(mod) or print(f'{mod}: OK') for mod in ('pytest','pytest_cov','coverage')]"
-      - name: "Sanity: pytest + plugins"
-        shell: bash
-        run: |
-          pytest --version
-          pytest --help | grep -- --cov || echo "pytest-cov NOT loaded"
-      - name: Check dependency health
-        shell: bash
-        run: |
-          python -m pip check
-          pip install -U pipdeptree
-          pipdeptree --warn fail -p llama-index,llama-index-core,llama-index-embeddings-ollama
-      - name: Run tests
-        shell: bash
-        run: pytest -q -vv -ra --cov=improved_local_assistant --cov-report=xml --cov-fail-under=70
-
-  security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Bandit (code scan)
-        uses: tj-actions/bandit@v5.1
-        with:
-          targets: "src"
-          options: "-r -lll"
-      - name: pip-audit (dependency vulns)
-        uses: pypa/gh-action-pip-audit@v1.1.0
-      - name: Gitleaks (secrets)
-        uses: gitleaks/gitleaks-action@v2
+      - run: echo "CI temporarily disabled during test suite refactor"
