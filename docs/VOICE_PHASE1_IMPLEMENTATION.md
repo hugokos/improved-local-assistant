@@ -90,7 +90,7 @@ idle → listening → utterance_active → finalizing → waiting_for_bot → s
 ```python
 async def handle_barge_in(self, session_id: str) -> bool:
     """Handle barge-in request - immediately stop TTS and switch to listening."""
-    
+
 async def process_voice_command(self, session_id: str, command: str) -> Dict:
     """Process voice command (not sent to LLM)."""
 ```
@@ -110,7 +110,7 @@ self.command_grammar = json.dumps(self.command_phrases)
 ```python
 async def cancel_synthesis(self, session_id: str) -> bool:
     """Cancel active synthesis for a session."""
-    
+
 async def synthesize_stream(self, text: str, session_id: str = None):
     """Stream with cancellation checking between chunks."""
 ```
@@ -124,10 +124,10 @@ handleBargeIn() {
     if (this.pcmPlayer) {
         this.pcmPlayer.port.postMessage({ type: 'stop' });
     }
-    
+
     // Send barge-in signal to server
     this.ttsSocket.send(JSON.stringify({ type: 'barge_in' }));
-    
+
     // Transition to new utterance
     this.setState('utterance_active');
 }
@@ -152,7 +152,7 @@ handleVoiceCommand(message) {
 }
 
 {
-  "type": "stt_partial_command", 
+  "type": "stt_partial_command",
   "text": "slow"
 }
 ```

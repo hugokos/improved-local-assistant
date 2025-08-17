@@ -141,7 +141,7 @@ graph.upsert_triplet((subject, predicate, object))
 # New approach
 graph_store.upsert_nodes([{
     "id": node_id,
-    "label": "ENTITY", 
+    "label": "ENTITY",
     "properties": {"name": entity_name}
 }])
 

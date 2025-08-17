@@ -115,7 +115,7 @@ python scripts/download_graphs.py --list
        # Stream download with progress tracking
        response = requests.get(url, stream=True)
        total_size = int(response.headers.get('content-length', 0))
-       
+
        with open(filepath, 'wb') as f:
            for chunk in response.iter_content(chunk_size=8192):
                f.write(chunk)
@@ -127,11 +127,11 @@ python scripts/download_graphs.py --list
    def verify_checksum(filepath, expected_checksum):
        hash_type, expected_hash = expected_checksum.split(":", 1)
        hasher = hashlib.sha256()
-       
+
        with open(filepath, 'rb') as f:
            for chunk in iter(lambda: f.read(4096), b""):
                hasher.update(chunk)
-       
+
        return hasher.hexdigest() == expected_hash
    ```
 
@@ -176,11 +176,11 @@ The application automatically discovers downloaded graphs:
 def discover_graphs():
     graphs_dir = Path("data/graphs")
     available_graphs = []
-    
+
     for graph_dir in graphs_dir.iterdir():
         if graph_dir.is_dir() and (graph_dir / "graph_meta.json").exists():
             available_graphs.append(graph_dir.name)
-    
+
     return available_graphs
 ```
 
@@ -189,7 +189,7 @@ def discover_graphs():
 # services/graph_manager/persistence_simple.py
 def load_graph(graph_name):
     graph_path = Path(f"data/graphs/{graph_name}")
-    
+
     # Check for property graph format
     if (graph_path / "kg.json").exists():
         return load_property_graph(graph_path)
@@ -245,10 +245,10 @@ import concurrent.futures
 def download_multiple_graphs(graph_names):
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
         futures = {
-            executor.submit(download_graph, name): name 
+            executor.submit(download_graph, name): name
             for name in graph_names
         }
-        
+
         for future in concurrent.futures.as_completed(futures):
             graph_name = futures[future]
             try:
@@ -307,7 +307,7 @@ def track_download(graph_name, version, success):
         "timestamp": datetime.utcnow().isoformat(),
         "user_agent": "improved-local-assistant/2.0.0"
     }
-    
+
     # Send to analytics endpoint (optional)
     try:
         requests.post(ANALYTICS_URL, json=analytics_data, timeout=5)

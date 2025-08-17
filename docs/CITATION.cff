@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "Improved Local AI Assistant"
+abstract: "A production-ready local AI assistant with GraphRAG technology, dynamic knowledge graphs, and complete voice interface. Features 100% local processing, enterprise-grade reliability, and advanced retrieval-augmented generation."
+authors:
+  - family-names: "AI Team"
+    given-names: ""
+    email: "team@example.com"
+repository-code: "https://github.com/hugokos/improved-local-assistant"
+url: "https://hugokos.github.io/improved-local-assistant"
+license: MIT
+version: "1.0.0"
+date-released: "2025-08-15"
+keywords:
+  - "artificial intelligence"
+  - "local AI"
+  - "GraphRAG"
+  - "knowledge graphs"
+  - "voice interface"
+  - "privacy-preserving AI"
+  - "retrieval-augmented generation"
+  - "conversational AI"
+  - "natural language processing"
+  - "machine learning"
