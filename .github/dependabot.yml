@@ -51,7 +51,7 @@ updates:
         versions: [">=0.8"]
       - dependency-name: "networkx"
         versions: [">=3.3"]
-    
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

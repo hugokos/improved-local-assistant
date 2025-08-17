@@ -33,11 +33,11 @@ This guide explains how to distribute and use prebuilt knowledge graphs for the 
    # Create separate repository for graphs
    git init improved-local-assistant-graphs
    cd improved-local-assistant-graphs
-   
+
    # Create README for graphs repository
    echo "# Improved Local Assistant - Prebuilt Knowledge Graphs" > README.md
    echo "This repository contains prebuilt knowledge graphs for the Improved Local Assistant." >> README.md
-   
+
    git add README.md
    git commit -m "Initial commit"
    git remote add origin https://github.com/hugokos/improved-local-assistant-graphs.git
@@ -48,10 +48,10 @@ This guide explains how to distribute and use prebuilt knowledge graphs for the 
    ```bash
    # Navigate to your graphs directory
    cd improved-local-assistant/data/graphs
-   
+
    # Create compressed archives with metadata
    tar -czf survivalist-knowledge-v1.0.tar.gz survivalist/
-   
+
    # Generate checksums
    sha256sum *.tar.gz > checksums.txt
    ```
@@ -160,7 +160,7 @@ wrangler r2 object put improved-local-assistant-graphs/v1.0/survivalist-knowledg
 server {
     listen 80;
     server_name graphs.your-domain.com;
-    
+
     location /v1.0/ {
         root /var/www/graphs;
         autoindex on;
@@ -268,27 +268,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-    
+
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
-    
+
     - name: Build knowledge graphs
       run: |
         cd kg_builder
         python src/graph_builder.py --input data/survivalist/ --output ../data/graphs/survivalist/
-    
+
     - name: Package graphs
       run: |
         cd data/graphs
         tar -czf survivalist-knowledge-${{ github.event.inputs.version }}.tar.gz survivalist/
         sha256sum *.tar.gz > checksums.txt
-    
+
     - name: Create Release
       uses: softprops/action-gh-release@v1
       with:
@@ -299,14 +299,14 @@ jobs:
           data/graphs/checksums.txt
         body: |
           # Prebuilt Knowledge Graphs ${{ github.event.inputs.version }}
-          
+
           Automatically generated knowledge graphs for the Improved Local Assistant.
-          
+
           ## Installation
           ```bash
           python scripts/download_graphs.py all
           ```
-          
+
           ## Verification
           ```bash
           cd data/graphs

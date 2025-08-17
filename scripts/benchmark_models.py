@@ -23,8 +23,8 @@ import psutil
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 
-from app.core.config import load_config
-from services.model_manager import ModelManager
+from app.core.config import load_config  # noqa: E402
+from services.model_manager import ModelManager  # noqa: E402
 
 
 class ModelBenchmark:
@@ -139,13 +139,13 @@ class ModelBenchmark:
                             gpu_info["gpus"].append(
                                 {
                                     "name": parts[0],
-                                    "memory_total_mb": int(parts[1])
-                                    if parts[1].isdigit()
-                                    else None,
+                                    "memory_total_mb": (
+                                        int(parts[1]) if parts[1].isdigit() else None
+                                    ),
                                     "memory_free_mb": int(parts[2]) if parts[2].isdigit() else None,
-                                    "utilization_percent": int(parts[3])
-                                    if parts[3].isdigit()
-                                    else None,
+                                    "utilization_percent": (
+                                        int(parts[3]) if parts[3].isdigit() else None
+                                    ),
                                     "type": "NVIDIA",
                                 }
                             )
@@ -212,9 +212,11 @@ class ModelBenchmark:
                                     gpu_info["gpus"].append(
                                         {
                                             "name": name,
-                                            "memory_total_mb": int(ram_bytes) // (1024 * 1024)
-                                            if ram_bytes
-                                            else None,
+                                            "memory_total_mb": (
+                                                int(ram_bytes) // (1024 * 1024)
+                                                if ram_bytes
+                                                else None
+                                            ),
                                             "type": "Windows",
                                         }
                                     )

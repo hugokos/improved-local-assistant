@@ -23,7 +23,7 @@ Thank you for your interest in contributing to the Improved Local Assistant! We 
    python -m venv .venv
    source .venv/bin/activate  # Linux/macOS
    # .venv\Scripts\activate   # Windows
-   
+
    # Install in development mode with all dependencies
    pip install -e ".[dev]"
    ```
@@ -37,12 +37,12 @@ Thank you for your interest in contributing to the Improved Local Assistant! We 
    ```bash
    # Run tests
    pytest tests/ -v
-   
+
    # Check code quality
    ruff check .
    black --check .
    mypy src/
-   
+
    # Verify system functionality
    python cli/validate_milestone_6.py
    ```
@@ -129,7 +129,7 @@ class TestModelManager:
     def mock_ollama(self):
         with patch('services.model_manager.requests') as mock:
             yield mock
-    
+
     def test_model_loading(self, mock_ollama):
         # Test implementation
         pass

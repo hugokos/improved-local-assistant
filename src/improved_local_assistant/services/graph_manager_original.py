@@ -271,7 +271,7 @@ class KnowledgeGraphManager:
                         try:
                             content = binary_content.decode(encoding, errors="replace")
                             break
-                        except:
+                        except UnicodeDecodeError:
                             continue
 
                     if content is None:
@@ -1175,7 +1175,7 @@ class KnowledgeGraphManager:
             existing_kg = self.kg_indices[graph_id]
 
             # Get NetworkX representations for merging
-            existing_graph = self._safe_get_networkx_graph(existing_kg, existing_graph_id)
+            existing_graph = self._safe_get_networkx_graph(existing_kg, graph_id)
             incoming_graph = self._safe_get_networkx_graph(incoming_kg, "incoming")
 
             if existing_graph is None or incoming_graph is None:

@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import Any
 
 from fastapi import WebSocket
+from starlette.websockets import WebSocketDisconnect
 from starlette.websockets import WebSocketState
 
 logger = logging.getLogger(__name__)

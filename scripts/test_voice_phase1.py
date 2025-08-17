@@ -14,9 +14,9 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from services.piper_tts_service import PiperTTSService
-from services.voice_manager import VoiceManager
-from services.vosk_stt_service import VoskSTTService
+from services.piper_tts_service import PiperTTSService  # noqa: E402
+from services.voice_manager import VoiceManager  # noqa: E402
+from services.vosk_stt_service import VoskSTTService  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)

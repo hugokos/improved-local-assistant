@@ -3,6 +3,7 @@ Pytest configuration and fixtures for the improved local assistant tests.
 """
 
 import asyncio
+import importlib
 import sys
 from pathlib import Path
 
@@ -13,7 +14,11 @@ project_root = Path(__file__).parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from tests.mock_ollama import MockAsyncClient
+# Map legacy 'services' and 'app' to the new package structure
+sys.modules["services"] = importlib.import_module("improved_local_assistant.services")
+sys.modules["app"] = importlib.import_module("improved_local_assistant.app")
+
+from tests.mock_ollama import MockAsyncClient  # noqa: E402
 
 
 @pytest.fixture

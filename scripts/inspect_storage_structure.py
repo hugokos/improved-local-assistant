@@ -296,7 +296,7 @@ def show_storage_summary():
                     elif p.is_dir():
                         for item in p.iterdir():
                             calc_cat_size(item)
-                except:
+                except Exception:
                     pass
 
             calc_cat_size(path)

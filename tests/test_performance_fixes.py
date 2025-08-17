@@ -146,7 +146,7 @@ def test_memory_usage():
     print("\n🧠 Testing memory usage...")
 
     try:
-        import subprocess
+        # subprocess import removed - not used
 
         import psutil
 

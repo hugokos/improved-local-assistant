@@ -305,7 +305,9 @@ class TestExtractionPipeline:
                 if len(conversation_history) >= 2:  # Need at least 2 turns for context
                     try:
                         result = await self._mock_extract_bounded_with_history(
-                            extractor, content, conversation_history[:-1]  # Exclude current turn
+                            extractor,
+                            content,
+                            conversation_history[:-1],  # Exclude current turn
                         )
 
                         assert isinstance(result, ExtractionResult)

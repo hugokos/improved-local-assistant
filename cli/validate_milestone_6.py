@@ -683,9 +683,9 @@ async def run_stability_test():
                     "total_messages": total_messages,
                     "successful_messages": successful_messages,
                     "error_messages": error_messages,
-                    "success_rate": successful_messages / total_messages
-                    if total_messages > 0
-                    else 0,
+                    "success_rate": (
+                        successful_messages / total_messages if total_messages > 0 else 0
+                    ),
                     "avg_time": avg_time,
                     "max_time": max_time,
                     "min_time": min_time,

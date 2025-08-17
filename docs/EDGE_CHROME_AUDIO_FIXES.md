@@ -23,16 +23,16 @@ The "no audio + no speaker icon" issue in Edge/Chrome is caused by two critical 
 async function unlockAudio() {
     // Create AudioContext if needed
     if (!this.audioContext) {
-        this.audioContext = new (window.AudioContext || window.webkitAudioContext)({ 
-            latencyHint: 'interactive' 
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)({
+            latencyHint: 'interactive'
         });
     }
-    
+
     // CRITICAL: Resume AudioContext (must be in user gesture call stack)
     if (this.audioContext.state === 'suspended') {
         await this.audioContext.resume();
     }
-    
+
     // Play test tone to activate audio pipeline
     await this.playTestTone();
 }
@@ -67,33 +67,33 @@ enqueueTTSChunk(arrayBuffer) {
         this.audioContext.resume().catch(console.error);
         return; // Skip this chunk, next one will work
     }
-    
+
     // Convert PCM16LE to Float32Array with bounds checking
     const inSamples = new Int16Array(arrayBuffer);
     const upsampleRatio = Math.round(this.audioContext.sampleRate / 16000);
     const outSamples = new Float32Array(inSamples.length * upsampleRatio);
-    
+
     for (let i = 0, j = 0; i < inSamples.length; i++) {
         const normalizedValue = Math.max(-1, Math.min(1, inSamples[i] / 32768));
         for (let k = 0; k < upsampleRatio; k++) {
             outSamples[j++] = normalizedValue;
         }
     }
-    
+
     // Create and schedule AudioBuffer
     const audioBuffer = this.audioContext.createBuffer(1, outSamples.length, this.audioContext.sampleRate);
     audioBuffer.copyToChannel(outSamples, 0);
-    
+
     const source = this.audioContext.createBufferSource();
     source.buffer = audioBuffer;
     source.connect(this._ttsGain);
-    
+
     // Schedule with proper timing
     const now = this.audioContext.currentTime;
     if (!this._ttsPlayhead || this._ttsPlayhead < now + 0.01) {
         this._ttsPlayhead = now + 0.03;
     }
-    
+
     source.start(this._ttsPlayhead);
     this._ttsPlayhead += audioBuffer.duration;
 }
@@ -109,7 +109,7 @@ async startVoiceMode() {
     if (!audioUnlocked) {
         throw new Error('Failed to unlock audio - user gesture required');
     }
-    
+
     // Continue with microphone setup...
     this.micStream = await navigator.mediaDevices.getUserMedia({...});
     // ...
@@ -122,12 +122,12 @@ async startVoiceMode() {
 async function testSpeaker() {
     // Create AudioContext in user gesture call stack
     const testCtx = new AudioContext({ latencyHint: 'interactive' });
-    
+
     // Resume immediately (still in user gesture)
     if (testCtx.state === 'suspended') {
         await testCtx.resume();
     }
-    
+
     // Play test tone - this activates the audio pipeline
     // Browser will show speaker icon after this
     const oscillator = testCtx.createOscillator();

@@ -38,7 +38,7 @@ echo =^> Sanity check pytest-cov
 pytest --help | findstr /C:"--cov"
 
 echo =^> Tests
-pytest -q -vv -ra --cov=improved_local_assistant --cov-report=xml --fail-under=70
+pytest -q -vv -ra --cov=improved_local_assistant --cov-report=xml --cov-fail-under=70
 
 echo ✅ All preflight CI checks passed!
 echo Ready to push to GitHub!

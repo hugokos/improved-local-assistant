@@ -94,9 +94,10 @@ class TestVoiceSystemIntegration:
         """Test VoiceManager integration with mocked dependencies."""
         try:
             # Test with mocked dependencies to avoid requiring actual models
-            with patch("services.voice_manager.VoskSTTService") as mock_stt, patch(
-                "services.voice_manager.PiperTTSService"
-            ) as mock_tts:
+            with (
+                patch("services.voice_manager.VoskSTTService") as mock_stt,
+                patch("services.voice_manager.PiperTTSService") as mock_tts,
+            ):
                 # Setup mocks
                 mock_stt_instance = Mock()
                 mock_stt_instance.is_available.return_value = True
@@ -325,9 +326,10 @@ class TestVoicePerformance:
             initial_memory = process.memory_info().rss / 1024 / 1024  # MB
 
             # Test voice service creation with mocks
-            with patch("services.voice_manager.VoskSTTService") as mock_stt, patch(
-                "services.voice_manager.PiperTTSService"
-            ) as mock_tts:
+            with (
+                patch("services.voice_manager.VoskSTTService") as mock_stt,
+                patch("services.voice_manager.PiperTTSService") as mock_tts,
+            ):
                 # Setup lightweight mocks
                 mock_stt.return_value.is_available.return_value = True
                 mock_tts.return_value.is_available.return_value = True

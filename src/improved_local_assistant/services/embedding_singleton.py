@@ -3,9 +3,10 @@ Embedding model singleton to avoid duplicate SentenceTransformer instantiation.
 """
 
 import logging
-import os
-import sys
+from pathlib import Path
 from typing import Optional
+
+from platformdirs import user_cache_dir
 
 logger = logging.getLogger(__name__)
 
@@ -35,9 +36,9 @@ def get_embedding_model(model_name: str = "BAAI/bge-small-en-v1.5"):
         # Use the new LlamaIndex 0.14+ import path
         from llama_index.embeddings.huggingface import HuggingFaceEmbedding
 
-        # Set up cache folder
-        cache_folder = "C:/hf-cache" if sys.platform == "win32" else "/tmp/hf-cache"
-        os.makedirs(cache_folder, exist_ok=True)
+        # Set up cache folder using platform-appropriate directory
+        cache_folder = Path(user_cache_dir("improved-local-assistant", "hugokos"))
+        cache_folder.mkdir(parents=True, exist_ok=True)
 
         logger.info(f"Creating singleton embedding model: {model_name}")
 

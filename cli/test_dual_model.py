@@ -36,8 +36,8 @@ if USE_MOCK:
     services.model_mgr.AsyncClient = MockAsyncClient
     print("Using mock Ollama client for testing")
 
-from services.model_mgr import ModelConfig
-from services.model_mgr import ModelManager
+from services.model_mgr import ModelConfig  # noqa: E402
+from services.model_mgr import ModelManager  # noqa: E402
 
 # Load environment variables from .env file
 load_dotenv()

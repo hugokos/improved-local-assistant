@@ -10,11 +10,11 @@ from .constants import HTTP_STATUS
 from .constants import get_limit
 from .constants import get_threshold
 from .constants import get_timeout
-from .conversation_manager import ConversationManager
-from .graph_manager import KnowledgeGraphManager
+from ..core.conversation_manager import ConversationManager
+from ..graph.graph_manager import KnowledgeGraphManager
 from .model_mgr import ModelConfig
 from .model_mgr import ModelManager
-from .system_monitor import SystemMonitor
+from ..core.system_monitor import SystemMonitor
 
 __all__ = [
     "ModelManager",

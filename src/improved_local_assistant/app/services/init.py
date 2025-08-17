@@ -417,12 +417,16 @@ def init_app(app: FastAPI, config: dict[str, Any]) -> None:
                         for sid, s in conversation_manager.sessions.items():
                             try:
                                 session_data[sid] = {
-                                    "created_at": s["created_at"].isoformat()
-                                    if hasattr(s["created_at"], "isoformat")
-                                    else str(s["created_at"]),
-                                    "updated_at": s["updated_at"].isoformat()
-                                    if hasattr(s["updated_at"], "isoformat")
-                                    else str(s["updated_at"]),
+                                    "created_at": (
+                                        s["created_at"].isoformat()
+                                        if hasattr(s["created_at"], "isoformat")
+                                        else str(s["created_at"])
+                                    ),
+                                    "updated_at": (
+                                        s["updated_at"].isoformat()
+                                        if hasattr(s["updated_at"], "isoformat")
+                                        else str(s["updated_at"])
+                                    ),
                                     "message_count": len(s.get("messages", [])),
                                     "has_summary": bool(s.get("summary")),
                                 }

@@ -22,8 +22,7 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 
 try:
-    from llama_index.core import StorageContext
-    from llama_index.core import load_index_from_storage
+    # StorageContext and load_index_from_storage imports removed - not used
     from llama_index.embeddings.huggingface import HuggingFaceEmbedding
     from llama_index.llms.ollama import Ollama
 

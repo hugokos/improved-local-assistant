@@ -42,9 +42,9 @@ if sys.platform == "win32":
 
 # Import services
 # Import conversation extensions to add get_response method
-from services.conversation_manager import ConversationManager
-from services.model_mgr import ModelConfig
-from services.model_mgr import ModelManager
+from services.conversation_manager import ConversationManager  # noqa: E402
+from services.model_mgr import ModelConfig  # noqa: E402
+from services.model_mgr import ModelManager  # noqa: E402
 
 
 class MinimalGraphRAGREPL:

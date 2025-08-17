@@ -1,6 +1,7 @@
 """
 Settings management for Improved Local Assistant
 """
+
 import logging
 import os
 from pathlib import Path
@@ -17,7 +18,7 @@ class Settings(BaseModel):
     """Application settings with environment variable support."""
 
     # Server settings
-    host: str = Field(default="0.0.0.0", description="Server host")
+    host: str = Field(default="127.0.0.1", description="Server host")
     port: int = Field(default=8000, description="Server port")
 
     # Ollama settings
@@ -27,7 +28,9 @@ class Settings(BaseModel):
 
     # Storage settings
     data_dir: Path = Field(default=Path("./data"), description="Data directory")
-    prebuilt_dir: Path = Field(default=Path("./data/prebuilt_graphs"), description="Prebuilt graphs directory")
+    prebuilt_dir: Path = Field(
+        default=Path("./data/prebuilt_graphs"), description="Prebuilt graphs directory"
+    )
 
     # Router settings
     use_graph: bool = Field(default=True, description="Enable graph retrieval")
@@ -51,7 +54,9 @@ class Settings(BaseModel):
         case_sensitive = False
 
     @classmethod
-    def from_env(cls, env_key: str = "ILA_CONFIG", default_path: str = "configs/base.yaml") -> "Settings":
+    def from_env(
+        cls, env_key: str = "ILA_CONFIG", default_path: str = "configs/base.yaml"
+    ) -> "Settings":
         """Load settings from environment and config file."""
         config_path = Path(os.getenv(env_key, default_path))
 
@@ -61,7 +66,7 @@ class Settings(BaseModel):
         # Load from config file if it exists
         if config_path.exists():
             try:
-                with open(config_path, encoding='utf-8') as f:
+                with open(config_path, encoding="utf-8") as f:
                     file_data = yaml.safe_load(f) or {}
                 data.update(file_data)
                 logger.info(f"Loaded config from {config_path}")

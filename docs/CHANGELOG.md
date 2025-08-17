@@ -63,7 +63,7 @@ setMicState(state, level = 0) {
 
 **Expected Behavior:**
 1. **Browser** → Mic captures audio → PCM worklet → 320/640/960 byte frames
-2. **Client** → Computes RMS → Updates orb level → Sends ArrayBuffer to server  
+2. **Client** → Computes RMS → Updates orb level → Sends ArrayBuffer to server
 3. **Server** → Receives binary frames → Computes RMS → Sends level back → Forwards to VoiceManager
 4. **VoiceManager** → Processes audio → Returns partials/finals → Relayed to client
 5. **Client** → Updates orb state → Shows transcription → Sends to chat
@@ -72,7 +72,7 @@ setMicState(state, level = 0) {
 - **Idle** → No orb visible
 - **Listening** → Green orb with subtle breathing, grows with voice level
 - **User Speaking** → Amber pulsing orb (utterance-active)
-- **Processing** → Purple spinning orb (finalizing)  
+- **Processing** → Purple spinning orb (finalizing)
 - **Bot Speaking** → Green fast-pulsing orb (speaking)
 - **Hold-off** → Amber breathing orb (brief delay)
 - **Muted** → Orb with diagonal slash overlay
@@ -221,7 +221,7 @@ dynamic_kg:
 
 **100% Offline Processing**
 - No external API calls - All processing on-device
-- No audio data transmission - Voice models run locally  
+- No audio data transmission - Voice models run locally
 - Session isolation - Voice data isolated per user
 - No persistent storage - Audio data not saved
 

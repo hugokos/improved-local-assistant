@@ -12,8 +12,8 @@ from typing import Any
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from services.graph_manager.query import GraphQueryManager
-from services.hybrid_retriever import HybridRetriever
+from services.graph_manager.query import GraphQueryManager  # noqa: E402
+from services.hybrid_retriever import HybridRetriever  # noqa: E402
 
 
 class GraphRAGExample:

@@ -354,9 +354,9 @@ class WorkingSetCache:
             "total_nodes": self._total_cached_nodes,
             "memory_usage_mb": (self._total_cached_nodes * 1024) // (1024 * 1024),  # Rough estimate
             "memory_limit_mb": self.global_memory_limit_mb,
-            "memory_utilization": self._total_cached_nodes / self._max_total_nodes
-            if self._max_total_nodes > 0
-            else 0,
+            "memory_utilization": (
+                self._total_cached_nodes / self._max_total_nodes if self._max_total_nodes > 0 else 0
+            ),
             "metrics": self.metrics.copy(),
         }
 

@@ -83,11 +83,11 @@ def validate_audio_format(self, audio_data: bytes) -> bool:
     # Check even byte count (16-bit samples)
     if len(audio_data) % 2 != 0:
         return False
-    
+
     # Validate sample amplitudes
     samples = struct.unpack(f"<{len(audio_data)//2}h", audio_data)
     max_amplitude = max(abs(s) for s in samples)
-    
+
     return True
 ```
 
@@ -102,11 +102,11 @@ class WebRTCVADService:
         self.vad = webrtcvad.Vad(aggressiveness)
         self.frame_samples = int(sample_rate * frame_ms / 1000)
         self.frame_bytes = self.frame_samples * 2  # 16-bit PCM
-    
+
     def process_audio(self, audio_data: bytes) -> List[Tuple[bool, bytes]]:
         # Process complete frames only
         # Return (is_speech, frame_data) for each frame
-    
+
     def _update_vad_state(self, is_speech: bool):
         # Hysteresis smoothing to prevent rapid transitions
 ```
@@ -129,10 +129,10 @@ async def process_vad_frame(self, session_id: str, frame_data: bytes):
 processSample(sample) {
     // Add to VAD frame (exact timing)
     this.vadFrame[this.vadFrameIndex] = pcmSample;
-    
+
     // Add to batch (efficiency)
     this.batch[this.batchIndex] = pcmSample;
-    
+
     // Send VAD frame when complete
     if (this.vadFrameIndex >= this.vadFrameSize) {
         this.sendVADFrame();
@@ -145,7 +145,7 @@ processSample(sample) {
 // Enhanced VAD result handling
 handleVADResult(message) {
     const { is_speech_active, vad_type } = message;
-    
+
     if (vad_type === 'webrtc') {
         // More reliable than client-side RMS
         if (is_speech_active && this.state === 'listening') {

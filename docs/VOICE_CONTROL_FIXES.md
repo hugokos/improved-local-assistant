@@ -31,7 +31,7 @@ from fastapi import WebSocketDisconnect  # Correct import
 
 async def stt_websocket(websocket: WebSocket, session_id: str, app):
     await websocket.accept()
-    
+
     try:
         # 1) Handshake (text frame)
         msg = await websocket.receive_json()
@@ -43,22 +43,22 @@ async def stt_websocket(websocket: WebSocket, session_id: str, app):
         async for chunk in websocket.iter_bytes():
             if not chunk:
                 continue
-                
+
             # RMS logging to verify audio data
             r = rms16le(chunk)
             if r < 50:
                 logger.debug("Audio RMS ~0 (likely silence); len=%d", len(chunk))
             else:
                 logger.debug("Audio RMS=%.1f; len=%d", r, len(chunk))
-            
+
             # Process audio
             result = await voice_manager.process_audio_chunk(session_id, chunk)
-            
+
             if result.get("partial"):
                 await websocket.send_json({"type": "stt_partial", "text": result["partial"]})
             if result.get("final"):
                 await websocket.send_json({"type": "stt_final", "text": result["final"]})
-                
+
     except WebSocketDisconnect:
         logger.info(f"STT WebSocket disconnected for session {session_id}")
 ```
@@ -83,15 +83,15 @@ handleAudioFrame(data) {
     if (this.halfDuplexMode === 'speaking' || this.micMuted) {
         return;
     }
-    
+
     if ((this.state === 'listening' || this.state === 'utterance_active') && this.sttSocket) {
         // CRITICAL FIX: Properly handle the ArrayBuffer from worklet
         const frameBuffer = data.data; // This is an ArrayBuffer from the worklet
-        
+
         if (frameBuffer && frameBuffer.byteLength === 640 && // Exact 20ms frame = 640 bytes
-            this.sttSocket.readyState === WebSocket.OPEN && 
+            this.sttSocket.readyState === WebSocket.OPEN &&
             this.sttSocket.bufferedAmount < this.maxBufferedAmount) {
-            
+
             // CRITICAL FIX: Send the exact ArrayBuffer (already properly sliced by worklet)
             this.sttSocket.send(frameBuffer);
         }
@@ -113,7 +113,7 @@ this.sttSocket.binaryType = 'arraybuffer'; // CRITICAL: Ensure binary frames are
 ```python
 def rms16le(b: bytes) -> float:
     """Calculate RMS of 16-bit little-endian PCM audio."""
-    if not b: 
+    if not b:
         return 0.0
     a = array.array('h')  # 16-bit signed
     a.frombytes(b)
@@ -157,7 +157,7 @@ Created comprehensive test script (`scripts/test_voice_fixes.py`) that:
 **Test Results:**
 ```
 ✅ Binary frame handling test passed
-✅ Recognizer created successfully  
+✅ Recognizer created successfully
 ✅ Test completed successfully
 🎉 All tests passed! Voice control fixes should be working.
 ```

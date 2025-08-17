@@ -7,16 +7,18 @@ This module demonstrates common usage patterns and API interactions.
 import asyncio
 import json
 
-import requests
 import websockets
+
+from improved_local_assistant.core.http import http_session
 
 
 def basic_rest_api_example() -> None:
     """Demonstrate basic REST API usage."""
     base_url = "http://localhost:8000"
+    session = http_session()
 
     # Health check
-    response = requests.get(f"{base_url}/api/health")
+    response = session.get(f"{base_url}/api/health")
     print(f"Health check: {response.json()}")
 
     # Send a chat message
@@ -26,7 +28,7 @@ def basic_rest_api_example() -> None:
         "use_kg": True,
     }
 
-    response = requests.post(f"{base_url}/api/chat", json=chat_data)
+    response = session.post(f"{base_url}/api/chat", json=chat_data)
     result = response.json()
 
     print(f"AI Response: {result['response']}")
@@ -64,7 +66,8 @@ async def websocket_streaming_example() -> None:
 
 def knowledge_graph_stats_example() -> None:
     """Demonstrate knowledge graph statistics retrieval."""
-    response = requests.get("http://localhost:8000/api/graph/stats")
+    session = http_session()
+    response = session.get("http://localhost:8000/api/graph/stats")
     stats = response.json()
 
     print("Knowledge Graph Statistics:")

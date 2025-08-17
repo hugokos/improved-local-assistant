@@ -144,7 +144,7 @@ def main():
         if health_response.status_code != 200:
             print("❌ Server not healthy - start with: python app.py")
             return
-    except:
+    except Exception:
         print("❌ Server not running - start with: python app.py")
         return
 

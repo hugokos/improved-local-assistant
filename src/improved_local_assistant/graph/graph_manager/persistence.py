@@ -182,7 +182,7 @@ class KnowledgeGraphPersistence:
                         try:
                             content = binary_content.decode(encoding, errors="replace")
                             break
-                        except:
+                        except UnicodeDecodeError:
                             continue
 
                     if content is None:

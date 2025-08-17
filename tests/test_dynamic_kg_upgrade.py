@@ -444,10 +444,11 @@ def run_basic_import_test():
     """Test that all the upgraded components can be imported."""
     try:
         # Test imports
-        from services.conversation_manager import ConversationManager
-        from services.graph_manager.construction import KnowledgeGraphConstruction
-        from services.graph_manager.persistence_simple import KnowledgeGraphPersistence
-        from services.hybrid_retriever import HybridEnsembleRetriever
+        # Test imports - just verify they can be imported
+        import services.conversation_manager
+        import services.graph_manager.construction
+        import services.graph_manager.persistence_simple
+        import services.hybrid_retriever  # noqa: F401  # Testing import
 
         print("✅ All imports successful")
         return True

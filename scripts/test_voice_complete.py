@@ -15,8 +15,8 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 # Import test modules
-from test_voice_phase1 import main as test_phase1
-from test_voice_phase2 import main as test_phase2
+from test_voice_phase1 import main as test_phase1  # noqa: E402
+from test_voice_phase2 import main as test_phase2  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)

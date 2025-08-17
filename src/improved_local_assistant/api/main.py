@@ -1,6 +1,7 @@
 """
 FastAPI application factory for Improved Local Assistant.
 """
+
 import asyncio
 import logging
 import sys
@@ -13,6 +14,7 @@ from fastapi.staticfiles import StaticFiles
 # Apply UTF-8 runtime patch for Windows compatibility
 try:
     from ..services.utf8_runtime_patch import apply_utf8_patch
+
     apply_utf8_patch()
 except ImportError:
     pass  # Service may not exist in new structure

@@ -2,6 +2,7 @@
 Smoke tests for end-to-end functionality.
 These tests verify the core system works with minimal setup.
 """
+
 import tempfile
 from unittest.mock import patch
 
@@ -17,7 +18,7 @@ async def test_app_startup_smoke():
     """Test that the FastAPI app can start without errors."""
     app = create_app()
     assert app is not None
-    assert hasattr(app, 'routes')
+    assert hasattr(app, "routes")
 
 
 @pytest.mark.smoke
@@ -26,16 +27,14 @@ async def test_graph_service_initialization():
     """Test that GraphService can initialize with minimal config."""
     with tempfile.TemporaryDirectory() as temp_dir:
         config = {
-            'storage_path': temp_dir,
-            'embedding_model': 'sentence-transformers/all-MiniLM-L6-v2',
-            'llm_model': 'llama3.2:1b'
+            "storage_path": temp_dir,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "llm_model": "llama3.2:1b",
         }
 
         # Mock Ollama client to avoid external dependency
-        with patch('ollama.Client') as mock_client:
-            mock_client.return_value.embeddings.return_value = {
-                'embedding': [0.1] * 384
-            }
+        with patch("ollama.Client") as mock_client:
+            mock_client.return_value.embeddings.return_value = {"embedding": [0.1] * 384}
 
             service = GraphService(config)
             assert service is not None
@@ -55,10 +54,10 @@ def test_basic_text_processing():
     assert all(isinstance(chunk, str) for chunk in chunks)
 
     # Test entity extraction (mock)
-    with patch.object(processor, 'extract_entities') as mock_extract:
+    with patch.object(processor, "extract_entities") as mock_extract:
         mock_extract.return_value = [
-            {'text': 'OpenAI', 'type': 'ORG'},
-            {'text': 'Python', 'type': 'TECH'}
+            {"text": "OpenAI", "type": "ORG"},
+            {"text": "Python", "type": "TECH"},
         ]
         entities = processor.extract_entities(text)
         assert len(entities) == 2
@@ -72,25 +71,23 @@ async def test_simple_query_flow():
 
     with tempfile.TemporaryDirectory() as temp_dir:
         config = {
-            'storage_path': temp_dir,
-            'embedding_model': 'sentence-transformers/all-MiniLM-L6-v2',
-            'llm_model': 'llama3.2:1b'
+            "storage_path": temp_dir,
+            "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "llm_model": "llama3.2:1b",
         }
 
         # Mock external dependencies
-        with patch('ollama.Client') as mock_ollama:
+        with patch("ollama.Client") as mock_ollama:
             mock_ollama.return_value.chat.return_value = {
-                'message': {'content': 'This is a test response.'}
+                "message": {"content": "This is a test response."}
             }
-            mock_ollama.return_value.embeddings.return_value = {
-                'embedding': [0.1] * 384
-            }
+            mock_ollama.return_value.embeddings.return_value = {"embedding": [0.1] * 384}
 
             service = QueryService(config)
             response = await service.query("What is Python?")
 
             assert response is not None
-            assert 'content' in response or 'answer' in response
+            assert "content" in response or "answer" in response
 
 
 @pytest.mark.smoke
@@ -101,13 +98,13 @@ def test_configuration_loading():
     # Test default config
     config = load_config()
     assert config is not None
-    assert 'storage_path' in config
-    assert 'embedding_model' in config
+    assert "storage_path" in config
+    assert "embedding_model" in config
 
     # Test config with overrides
-    overrides = {'llm_model': 'test-model'}
+    overrides = {"llm_model": "test-model"}
     config_with_overrides = load_config(overrides)
-    assert config_with_overrides['llm_model'] == 'test-model'
+    assert config_with_overrides["llm_model"] == "test-model"
 
 
 @pytest.mark.smoke
@@ -131,6 +128,7 @@ def test_cli_tools_import():
     """Test that CLI tools can be imported."""
     try:
         from improved_local_assistant.cli.graphrag_repl import main as repl_main
+
         assert repl_main is not None
     except ImportError as e:
         pytest.skip(f"CLI tools not available: {e}")
@@ -148,7 +146,8 @@ async def test_websocket_endpoint_exists():
     client = TestClient(app)
 
     # Test that the WebSocket route exists (will fail connection but route should exist)
-    with pytest.raises(Exception):  # Expected to fail without proper WebSocket client
+    # Test that the WebSocket route exists (will fail connection but route should exist)
+    with pytest.raises((Exception, ConnectionError, OSError)):
         with client.websocket_connect("/ws/chat"):
             pass
 

@@ -35,11 +35,14 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 # We're using the real Ollama implementation for testing
-from services import ModelConfig
-from services import ModelManager
+from services import ModelConfig  # noqa: E402
+from services import ModelManager  # noqa: E402
 
 # Load environment variables from .env file
 load_dotenv()
+
+# Configuration
+USE_MOCK = False  # Using real Ollama implementation
 
 # Configure logging
 logging.basicConfig(

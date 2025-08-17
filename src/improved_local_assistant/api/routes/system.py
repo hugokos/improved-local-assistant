@@ -114,9 +114,9 @@ async def health_check(request: Request):
             "status": overall_status,
             "status_reasons": reasons or None,
             "timestamp": datetime.now().isoformat(),
-            "uptime": system_monitor.metrics["system"]["uptime_seconds"]
-            if system_monitor
-            else None,
+            "uptime": (
+                system_monitor.metrics["system"]["uptime_seconds"] if system_monitor else None
+            ),
             "response_time_ms": response_time_ms,
             "services": {
                 "model_manager": "ok" if "error" not in model_status else "warning",

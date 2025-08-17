@@ -4,7 +4,6 @@ WebSocket message models for the Improved Local AI Assistant.
 This module defines Pydantic models for WebSocket message validation.
 """
 
-
 from pydantic import BaseModel
 from pydantic import validator
 from services import DEFAULTS

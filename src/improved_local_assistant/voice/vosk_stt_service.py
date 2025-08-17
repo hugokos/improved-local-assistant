@@ -237,7 +237,7 @@ class VoskSTTService:
             try:
                 if session_id in self.recognizers:
                     self.recognizers[session_id].Reset()
-            except:
+            except Exception:
                 pass
             return {"error": str(e)}
 
@@ -371,9 +371,7 @@ class VoskSTTService:
                 cmd_result = json.loads(command_recognizer.Result())
                 cmd_text = (cmd_result.get("text") or "").strip()
                 # Check if the command text contains any of our command phrases
-                if cmd_text and any(
-                    phrase in cmd_text.lower() for phrase in self.command_phrases
-                ):
+                if cmd_text and any(phrase in cmd_text.lower() for phrase in self.command_phrases):
                     self.logger.info(f"Voice command detected for {session_id}: '{cmd_text}'")
                     # Reset command recognizer for next command
                     command_recognizer.Reset()

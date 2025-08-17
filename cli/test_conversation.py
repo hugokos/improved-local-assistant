@@ -12,6 +12,7 @@ import json
 import logging
 import os
 import sys
+import time
 
 import yaml
 
@@ -392,7 +393,7 @@ async def interactive_session(conversation_manager, session_id):
                     continue
 
             # Process regular message
-            start_time = time.time()
+            start_time = time.time()  # noqa: F821
 
             # Detect topic changes
             is_topic_change = conversation_manager.handle_topic_change(
@@ -425,7 +426,7 @@ async def interactive_session(conversation_manager, session_id):
 
             # Show performance metrics in debug mode
             if debug_mode:
-                elapsed = time.time() - start_time
+                elapsed = time.time() - start_time  # noqa: F821
                 print(f"[DEBUG] Response time: {elapsed:.2f}s")
 
                 # Get session info

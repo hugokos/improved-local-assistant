@@ -12,7 +12,9 @@ import tarfile
 import zipfile
 from pathlib import Path
 
-import requests
+from improved_local_assistant.core.archive import safe_extract_tar
+from improved_local_assistant.core.archive import safe_extract_zip
+from improved_local_assistant.core.http import http_session
 
 # Configuration
 GRAPHS_CONFIG = {
@@ -61,7 +63,8 @@ def download_file(url: str, filepath: Path, description: str = "") -> bool:
         print(f"📥 Downloading {description}...")
         print(f"   URL: {url}")
 
-        response = requests.get(url, stream=True)
+        session = http_session()
+        response = session.get(url, stream=True)
         response.raise_for_status()
 
         total_size = int(response.headers.get("content-length", 0))
@@ -131,11 +134,11 @@ def extract_archive(filepath: Path, extract_dir: Path) -> bool:
         if filepath.suffix == ".gz" and filepath.stem.endswith(".tar"):
             # .tar.gz file
             with tarfile.open(filepath, "r:gz") as tar:
-                tar.extractall(extract_dir)
+                safe_extract_tar(tar, extract_dir)
         elif filepath.suffix == ".zip":
             # .zip file
             with zipfile.ZipFile(filepath, "r") as zip_ref:
-                zip_ref.extractall(extract_dir)
+                safe_extract_zip(zip_ref, extract_dir)
         else:
             print(f"   ⚠️  Unsupported archive format: {filepath.suffix}")
             return False

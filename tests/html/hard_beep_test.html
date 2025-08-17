@@ -61,15 +61,15 @@
         <h1>🔊 Hard Beep Test</h1>
         <p>This test creates a brand-new AudioContext and plays audio directly to the default output device.</p>
         <p><strong>If this doesn't work, the issue is browser/OS level, not your app.</strong></p>
-        
+
         <button id="hardBeep" class="hard-beep-btn">🔊 Test Speakers (Hard)</button>
-        
+
         <div id="status" class="status info">
             Click the button above to test audio output
         </div>
-        
+
         <div class="log" id="log"></div>
-        
+
         <h3>What to Check:</h3>
         <ul style="text-align: left;">
             <li>✅ <strong>Speaker icon appears</strong> in browser tab</li>
@@ -99,65 +99,65 @@
         document.getElementById('hardBeep').onclick = async () => {
             log('=== HARD BEEP TEST STARTING ===');
             setStatus('Testing audio output...', 'info');
-            
+
             try {
                 // Brand-new context for a clean test
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
                 if (!AudioContextClass) {
                     throw new Error('AudioContext not supported');
                 }
-                
+
                 const ctx = new AudioContextClass({ latencyHint: 'interactive' });
                 log(`AudioContext created: state=${ctx.state}, sampleRate=${ctx.sampleRate}`);
-                
+
                 // CRITICAL: Resume in user gesture call stack
                 log('Before resume: ' + ctx.state);
-                try { 
-                    await ctx.resume(); 
+                try {
+                    await ctx.resume();
                     log('After resume: ' + ctx.state);
-                } catch (e) { 
+                } catch (e) {
                     log('Resume failed: ' + e.message);
                     throw e;
                 }
-                
+
                 if (ctx.state !== 'running') {
                     throw new Error(`AudioContext state is ${ctx.state}, expected 'running'`);
                 }
-                
+
                 // Sine beep → Gain → destination
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 gain.gain.value = 0.2;
                 osc.type = 'sine';
                 osc.frequency.value = 880;
-                
+
                 log('Connecting audio graph: oscillator → gain → destination');
                 osc.connect(gain);
                 gain.connect(ctx.destination);
-                
+
                 const startTime = Math.max(ctx.currentTime + 0.02, 0);
                 log(`Starting oscillator at time: ${startTime}`);
                 osc.start(startTime);
                 osc.stop(startTime + 0.2);
-                
+
                 osc.onended = () => {
                     log('Beep ended. Final context state: ' + ctx.state);
                     log('=== HARD BEEP TEST COMPLETED ===');
-                    
+
                     // Keep context alive briefly so the tab speaker icon shows
                     setTimeout(() => {
                         ctx.close();
                         log('AudioContext closed');
                     }, 400);
                 };
-                
+
                 setStatus('✅ Beep played! Check for speaker icon in browser tab.', 'success');
                 log('SUCCESS: Audio should be playing now');
-                
+
             } catch (error) {
                 log('ERROR: ' + error.message);
                 setStatus('❌ Audio test failed: ' + error.message, 'error');
-                
+
                 // Additional diagnostics
                 log('Browser info: ' + navigator.userAgent);
                 log('Secure context: ' + window.isSecureContext);

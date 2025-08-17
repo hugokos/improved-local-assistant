@@ -125,7 +125,8 @@ class KnowledgeGraphInitializer:
         try:
             # Always use the embedding singleton to ensure consistency
             from services.embedding_singleton import configure_global_embedding
-            from services.embedding_singleton import get_embedding_model
+
+            # get_embedding_model import removed - not used in this function
 
             # Read metadata from prebuilt graphs to get embedding model info
             embed_model_name = self._get_embedding_model_from_metadata()
@@ -139,7 +140,7 @@ class KnowledgeGraphInitializer:
             self.logger.warning(f"Could not import embedding singleton: {e}")
             # Try to set a basic local embedding
             try:
-                from sentence_transformers import SentenceTransformer
+                # SentenceTransformer import removed - not used directly
 
                 self.logger.info("Using SentenceTransformer directly as fallback")
             except ImportError:

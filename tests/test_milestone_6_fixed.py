@@ -10,6 +10,7 @@ import logging
 import os
 import sys
 import unittest
+from pathlib import Path
 
 # Fix for Windows asyncio event loop issue
 if sys.platform == "win32":
@@ -21,11 +22,11 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 # Import services
-from services.conversation_manager import ConversationManager
-from services.graph_manager import KnowledgeGraphManager
-from services.model_mgr import ModelConfig
-from services.model_mgr import ModelManager
-from services.system_monitor import SystemMonitor
+from services.conversation_manager import ConversationManager  # noqa: E402
+from services.graph_manager import KnowledgeGraphManager  # noqa: E402
+from services.model_mgr import ModelConfig  # noqa: E402
+from services.model_mgr import ModelManager  # noqa: E402
+from services.system_monitor import SystemMonitor  # noqa: E402
 
 # Configure logging
 logging.basicConfig(

@@ -15,6 +15,7 @@ import os
 import sys
 import time
 import unittest
+from pathlib import Path
 
 import psutil
 import yaml
@@ -24,10 +25,10 @@ project_root = Path(__file__).resolve().parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from services import ModelConfig
-from services import ModelManager
-from services.conversation_manager import ConversationManager
-from services.graph_manager import KnowledgeGraphManager
+from services import ModelConfig  # noqa: E402
+from services import ModelManager  # noqa: E402
+from services.conversation_manager import ConversationManager  # noqa: E402
+from services.graph_manager import KnowledgeGraphManager  # noqa: E402
 
 # Configure logging
 logging.basicConfig(

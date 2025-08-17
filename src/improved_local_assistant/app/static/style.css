@@ -104,7 +104,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);}
 .message.assistant{background:var(--slot);box-shadow:var(--inset);margin-right:auto;line-height:1.6;}
 
 /* Fix word breaking and text wrapping */
-.message, 
+.message,
 .message .content {
     word-break: normal;
     overflow-wrap: break-word;
@@ -185,17 +185,17 @@ select:focus {
         padding: 16px;
         gap: 16px;
     }
-    
+
     .header {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
-    
+
     .titleBubble h1 {
         font-size: 20px;
     }
-    
+
     #chatBox {
         padding: 16px;
         font-size: 13px;
@@ -208,43 +208,43 @@ select:focus {
         padding: 24px;
         gap: 20px;
     }
-    
+
     .header {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 12px;
     }
-    
+
     .titleBubble h1 {
         font-size: 28px;
     }
-    
+
     #chatBox {
         padding: 20px;
     }
 }
-    
+
     #inputBar {
         padding: 10px 15px;
         gap: 10px;
     }
-    
+
     #messageInput {
         font-size: 14px;
     }
-    
+
     #sendButton, #gear {
         width: 40px;
         height: 40px;
     }
-    
 
-    
+
+
     .miniGauge {
         width: 60px;
         height: 60px;
     }
-    
+
     .metricCard {
         left: -40px;
         padding: 12px;
@@ -256,17 +256,17 @@ select:focus {
     .titleBubble {
         padding: 4px 12px;
     }
-    
+
     #inputBar {
         padding: 8px 12px;
         gap: 8px;
     }
-    
+
     #sendButton, #gear {
         width: 36px;
         height: 36px;
     }
-    
+
     .message {
         padding: 8px 12px;
         font-size: 13px;
@@ -576,7 +576,7 @@ el Toggle Controls */
     0% { background: var(--error-color); }
     100% { background: var(--slot); }
 }
-/* Side 
+/* Side
 Panels */
 .side-panels {
   display: flex;
@@ -696,11 +696,11 @@ Panels */
     grid-template-columns: 1fr 300px;
     gap: 16px;
   }
-  
+
   .panel-content.expanded {
     max-height: 250px;
   }
-  
+
   .panel-scroll {
     max-height: 234px;
   }
@@ -713,15 +713,15 @@ Panels */
     margin: 20px auto;
     padding: 0 20px;
   }
-  
+
   .side-panels {
     order: -1; /* Move panels above chat on mobile */
   }
-  
+
   .panel-content.expanded {
     max-height: 200px;
   }
-  
+
   .panel-scroll {
     max-height: 184px;
   }
@@ -732,19 +732,19 @@ Panels */
     margin: 10px auto;
     padding: 0 10px;
   }
-  
+
   .panel-header {
     padding: 10px 12px;
   }
-  
+
   .panel-scroll {
     padding: 12px;
   }
-  
+
   .panel-content.expanded {
     max-height: 150px;
   }
-  
+
   .panel-scroll {
     max-height: 138px;
   }
@@ -767,12 +767,12 @@ Panels */
   animation: dotFlash 1s infinite ease-in-out;
 }
 
-.typing-spinner .dot:nth-child(2) { 
-  animation-delay: 0.2s; 
+.typing-spinner .dot:nth-child(2) {
+  animation-delay: 0.2s;
 }
 
-.typing-spinner .dot:nth-child(3) { 
-  animation-delay: 0.4s; 
+.typing-spinner .dot:nth-child(3) {
+  animation-delay: 0.4s;
 }
 
 @keyframes dotFlash {
@@ -781,8 +781,8 @@ Panels */
 }/* Mobile
  optimization for card height */
 @media (max-width: 600px) {
-  .card { 
-    height: calc(100vh - 48px); /* less outer margin on mobile */ 
+  .card {
+    height: calc(100vh - 48px); /* less outer margin on mobile */
   }
 }
 /* V
@@ -872,8 +872,8 @@ oice Components Styles */
 .mic-orb {
     --level: 0;                /* 0..1 from JS */
     --hue: calc(140 - 60 * var(--level)); /* green→amber as level rises */
-    width: 84px; 
-    height: 84px; 
+    width: 84px;
+    height: 84px;
     border-radius: 50%;
     background: radial-gradient(35% 35% at 50% 50%, rgba(255,255,255,.6), rgba(255,255,255,.2) 60%, transparent 61%),
                 conic-gradient(from -90deg, hsl(var(--hue) 90% 55% / .9) 0% calc(var(--level)*100%),
@@ -886,9 +886,9 @@ oice Components Styles */
 }
 
 .mic-orb::after { /* center dot */
-    content:""; 
-    position:absolute; 
-    inset:16px; 
+    content:"";
+    position:absolute;
+    inset:16px;
     border-radius:50%;
     background: radial-gradient(circle at 35% 35%, rgba(255,255,255,.9), rgba(255,255,255,.2));
 }
@@ -916,9 +916,9 @@ oice Components Styles */
 }
 
 /* Enhanced state styles */
-.mic-orb.listening { 
+.mic-orb.listening {
     --hue: 140; /* green for listening */
-    transform: scale(1.02); 
+    transform: scale(1.02);
     filter: saturate(1.1);
     animation: listeningBreath 3s ease-in-out infinite;
 }
@@ -937,7 +937,7 @@ oice Components Styles */
 
 .mic-orb.speaking {
     --hue: 140; /* green for TTS */
-    animation: speakPulse .9s ease-in-out infinite; 
+    animation: speakPulse .9s ease-in-out infinite;
 }
 
 .mic-orb.waiting {
@@ -1005,8 +1005,8 @@ oice Components Styles */
 
 .voice-toggle:hover {
     transform: translateY(-1px);
-    box-shadow: 
-        10px 10px 20px var(--dark), 
+    box-shadow:
+        10px 10px 20px var(--dark),
         -10px -10px 20px var(--light);
 }
 
@@ -1054,29 +1054,29 @@ oice Components Styles */
 }
 
 /* Voice Commands Panel Styles */
-.cmd-list { 
-    list-style:none; 
-    padding:0; 
-    margin:0; 
-    display:grid; 
-    gap:6px; 
+.cmd-list {
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:grid;
+    gap:6px;
 }
 
-.cmd-list li { 
-    display:flex; 
-    align-items:center; 
-    gap:8px; 
+.cmd-list li {
+    display:flex;
+    align-items:center;
+    gap:8px;
     padding: 4px 0;
     font-size: 13px;
     line-height: 1.4;
 }
 
-kbd { 
-    padding:2px 6px; 
-    border-radius:6px; 
-    background:var(--slot); 
-    box-shadow:var(--inset); 
-    font: 600 12px/1.2 ui-monospace, SFMono-Regular, monospace; 
+kbd {
+    padding:2px 6px;
+    border-radius:6px;
+    background:var(--slot);
+    box-shadow:var(--inset);
+    font: 600 12px/1.2 ui-monospace, SFMono-Regular, monospace;
     color: var(--accent);
     white-space: nowrap;
 }
@@ -1287,27 +1287,27 @@ kbd {
         padding: 12px;
         gap: 12px;
     }
-    
+
     .mic-orb {
         width: 60px;
         height: 60px;
     }
-    
+
     .mic-orb svg {
         width: 40px;
         height: 40px;
     }
-    
+
     .live-transcription {
         padding: 10px 16px;
         min-height: 40px;
     }
-    
+
     .voice-toggle {
         padding: 10px 12px;
         font-size: 13px;
     }
-    
+
     .voice-toggle span {
         display: none;
     }
@@ -1487,7 +1487,7 @@ omponents */
 .voice-mode .mic-orb {
     display: block !important;
 }
-/* 
+/*
 Enhanced Voice Chat Fixes - UI Improvements */
 
 /* Live transcription improvements for better feedback */
@@ -1570,44 +1570,44 @@ Enhanced Voice Chat Fixes - UI Improvements */
 
 /* Voice state animations */
 @keyframes pulse-listening {
-    0%, 100% { 
+    0%, 100% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
         transform: scale(1);
     }
-    50% { 
+    50% {
         box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
         transform: scale(1.05);
     }
 }
 
 @keyframes pulse-speaking {
-    0%, 100% { 
+    0%, 100% {
         box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
         transform: scale(1);
     }
-    50% { 
+    50% {
         box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
         transform: scale(1.03);
     }
 }
 
 @keyframes pulse-active {
-    0%, 100% { 
+    0%, 100% {
         box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4);
         transform: scale(1);
     }
-    50% { 
+    50% {
         box-shadow: 0 0 0 4px rgba(245, 158, 11, 0);
         transform: scale(1.02);
     }
 }
 
 @keyframes pulse-finalizing {
-    0%, 100% { 
+    0%, 100% {
         box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4);
         transform: scale(1);
     }
-    50% { 
+    50% {
         box-shadow: 0 0 0 6px rgba(168, 85, 247, 0);
         transform: scale(1.04);
     }
@@ -1684,14 +1684,14 @@ Enhanced Voice Chat Fixes - UI Improvements */
         font-size: 13px;
         padding: 6px 10px;
     }
-    
+
     .audio-context-status {
         top: 5px;
         right: 5px;
         font-size: 10px;
         padding: 3px 6px;
     }
-}/* 
+}/*
 Level-Reactive Mic Orb - Inspired by modern voice interfaces */
 .mic-orb {
     --level: 0; /* 0..1 from JS */
@@ -1699,11 +1699,11 @@ Level-Reactive Mic Orb - Inspired by modern voice interfaces */
     width: 84px;
     height: 84px;
     border-radius: 50%;
-    background: radial-gradient(35% 35% at 50% 50%, 
-                               rgba(255,255,255,.6), 
-                               rgba(255,255,255,.2) 60%, 
+    background: radial-gradient(35% 35% at 50% 50%,
+                               rgba(255,255,255,.6),
+                               rgba(255,255,255,.2) 60%,
                                transparent 61%),
-                conic-gradient(from -90deg, 
+                conic-gradient(from -90deg,
                               hsl(var(--hue) 90% 55% / .9) 0% calc(var(--level)*100%),
                               hsl(240 10% 70% / .2) 0);
     box-shadow: 0 0 calc(12px + 18px * var(--level)) hsl(var(--hue) 90% 55% / .35),
@@ -1720,8 +1720,8 @@ Level-Reactive Mic Orb - Inspired by modern voice interfaces */
     position: absolute;
     inset: 16px;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 35%, 
-                               rgba(255,255,255,.9), 
+    background: radial-gradient(circle at 35% 35%,
+                               rgba(255,255,255,.9),
                                rgba(255,255,255,.2));
 }
 

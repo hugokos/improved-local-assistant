@@ -39,7 +39,7 @@ def install_pywin32():
 
         # Verify installation
         try:
-            import win32api
+            import win32api  # noqa: F401  # Testing availability
 
             logger.info("pywin32 installed successfully")
             return True

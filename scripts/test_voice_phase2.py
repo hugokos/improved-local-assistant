@@ -15,8 +15,8 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from services.voice_manager import VoiceManager
-from services.webrtc_vad_service import WebRTCVADService
+from services.voice_manager import VoiceManager  # noqa: E402
+from services.webrtc_vad_service import WebRTCVADService  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)

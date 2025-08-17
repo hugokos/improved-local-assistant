@@ -18,12 +18,14 @@ import os
 import sys
 import time
 from datetime import datetime
+from pathlib import Path
 from pprint import pprint
 
 import psutil
-import requests
 import websockets
 import yaml
+
+from improved_local_assistant.core.http import http_session
 
 # Add project root to Python path for imports
 project_root = Path(__file__).resolve().parent.parent
@@ -90,7 +92,7 @@ class ValidationCLI:
         self.config = load_config()
         self.api_url = DEFAULT_API_URL
         self.ws_url = DEFAULT_WS_URL
-        self.session = requests.Session()
+        self.session = http_session()
         self.session_id = None
         self.debug_mode = False
         self.memory_tracking = False
@@ -173,7 +175,7 @@ class ValidationCLI:
                     if response.status_code == 200:
                         logger.info("Server started successfully")
                         return True
-                except (ConnectionError, requests.RequestException) as e:
+                except ConnectionError as e:
                     logger.info(
                         f"Waiting for server to start ({i+1}/{max_retries})... Error: {str(e)}"
                     )
@@ -799,7 +801,8 @@ class ValidationCLI:
 
             # Test invalid JSON payload
             logger.info("Testing invalid JSON payload...")
-            invalid_json = requests.post(
+            session = http_session()
+            invalid_json = session.post(
                 f"{self.api_url}/api/chat",
                 data="invalid json",
                 headers={"Content-Type": "application/json"},
@@ -898,7 +901,7 @@ class ValidationCLI:
             try:
                 system_response = self.session.get(f"{self.api_url}/api/system/info")
                 system_info = system_response.json() if system_response.status_code == 200 else {}
-            except (ConnectionError, requests.RequestException, json.JSONDecodeError) as e:
+            except (ConnectionError, json.JSONDecodeError) as e:
                 logger.warning(f"Could not get system info: {str(e)}")
                 system_info = {}
 

@@ -156,9 +156,9 @@ def query_with_keyword_search(index, query: str, top_k: int = 10) -> list[dict[s
                 result = {
                     "rank": i + 1,
                     "score": f"keyword_count:{match['count']}",
-                    "text": match["text"][:200] + "..."
-                    if len(match["text"]) > 200
-                    else match["text"],
+                    "text": (
+                        match["text"][:200] + "..." if len(match["text"]) > 200 else match["text"]
+                    ),
                     "full_text": match["text"],
                     "metadata": getattr(match["doc"], "metadata", {}),
                     "node_id": match["doc_id"],
@@ -181,7 +181,6 @@ def query_graph_relationships(index, query: str) -> list[dict[str, Any]]:
         results = []
 
         if hasattr(index, "storage_context") and hasattr(index.storage_context, "graph_store"):
-
             # Check if it's a property graph store
             if hasattr(index.storage_context, "property_graph_store"):
                 prop_graph_store = index.storage_context.property_graph_store
@@ -199,9 +198,11 @@ def query_graph_relationships(index, query: str) -> list[dict[str, Any]]:
                                     {
                                         "type": "node",
                                         "content": str(node),
-                                        "data": graph.nodes[node]
-                                        if hasattr(graph.nodes[node], "__dict__")
-                                        else {},
+                                        "data": (
+                                            graph.nodes[node]
+                                            if hasattr(graph.nodes[node], "__dict__")
+                                            else {}
+                                        ),
                                     }
                                 )
 

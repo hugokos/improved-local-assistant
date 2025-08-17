@@ -121,7 +121,7 @@ def fix_windows_issues():
 
     # Check for win32api
     try:
-        import win32api
+        import win32api  # noqa: F401  # Testing availability
 
         print("✅ win32api is available")
     except ImportError:

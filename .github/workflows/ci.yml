@@ -64,6 +64,7 @@ jobs:
           cache: 'pip'
       - name: Install PortAudio (Linux)
         if: runner.os == 'Linux'
+        shell: bash
         run: |
           sudo apt-get update
           sudo apt-get install -y libportaudio2
@@ -73,19 +74,25 @@ jobs:
           python -m pip install -U pip
           pip install -r requirements.txt
           pip install -e . -c constraints.txt
-          pip install pytest-cov
+          pip install -U pytest pytest-cov
+      - name: Verify pytest-cov installation
+        shell: bash
+        run: |
+          python -c "import importlib, sys; [importlib.import_module(mod) or print(f'{mod}: OK') for mod in ('pytest','pytest_cov','coverage')]"
+      - name: "Sanity: pytest + plugins"
+        shell: bash
+        run: |
+          pytest --version
+          pytest --help | grep -- --cov || echo "pytest-cov NOT loaded"
       - name: Check dependency health
         shell: bash
         run: |
           python -m pip check
           pip install -U pipdeptree
           pipdeptree --warn fail -p llama-index,llama-index-core,llama-index-embeddings-ollama
-      - name: Sanity check pytest-cov
-        shell: bash
-        run: pytest --help | grep -- --cov
       - name: Run tests
         shell: bash
-        run: pytest -q -vv -ra --cov=improved_local_assistant --cov-report=xml --fail-under=70
+        run: pytest -q -vv -ra --cov=improved_local_assistant --cov-report=xml --cov-fail-under=70
 
   security:
     runs-on: ubuntu-latest

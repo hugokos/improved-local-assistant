@@ -92,7 +92,7 @@ def main():
 
     # Check if server dependencies are available
     try:
-        import vosk
+        import vosk  # noqa: F401  # Testing availability
 
         print("✅ Vosk library available")
     except ImportError:
@@ -101,7 +101,7 @@ def main():
         print()
 
     try:
-        import fastapi
+        import fastapi  # noqa: F401  # Testing availability
 
         print("✅ FastAPI available")
     except ImportError:

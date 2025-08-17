@@ -10,7 +10,7 @@ The system continuously monitors memory usage and automatically switches to the 
 ### Automatic Error Detection
 The system also monitors for memory-related errors including:
 - "model requires more system memory"
-- "500 Internal Server Error" 
+- "500 Internal Server Error"
 - "out of memory"
 - "insufficient memory"
 
@@ -83,7 +83,7 @@ python cli/test_memory_fallback.py test
 
 ### Memory Management
 - Primary model (hermes3:3b): ~1.2GB memory requirement
-- Fallback model (tinyllama): ~0.6GB memory requirement  
+- Fallback model (tinyllama): ~0.6GB memory requirement
 - Fallback model unloads immediately after response
 - Primary model can be kept resident with `keep_alive`
 

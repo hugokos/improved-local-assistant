@@ -493,7 +493,7 @@ class KnowledgeGraphConstruction:
                                 # Multiple indices - prefer the right type
                                 for idx in indices:
                                     if graph_type == "property" and isinstance(
-                                        idx, PropertyGraphIndex
+                                        idx, PropertyGraphIndex  # noqa: F823
                                     ):
                                         self.dynamic_kg = idx
                                         self.logger.info(

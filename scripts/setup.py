@@ -177,10 +177,10 @@ def check_dependencies():
     print("\n📚 Checking Python dependencies...")
 
     try:
-        import fastapi
-        import llama_index
-        import psutil
-        import requests
+        import fastapi  # noqa: F401  # Testing availability
+        import llama_index  # noqa: F401  # Testing availability
+        import psutil  # noqa: F401  # Testing availability
+        import requests  # noqa: F401  # Testing availability
 
         print("   ✅ Core dependencies available")
         return True

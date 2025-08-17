@@ -22,9 +22,7 @@ def set_python_utf8_env():
         print("✅ Set PYTHONUTF8=1 for current session")
 
         # Set permanently for user
-        subprocess.run(
-            ["setx", "PYTHONUTF8", "1"], capture_output=True, text=True, check=True
-        )
+        subprocess.run(["setx", "PYTHONUTF8", "1"], capture_output=True, text=True, check=True)
 
         print("✅ Set PYTHONUTF8=1 permanently for user")
         print("💡 This will take effect for new Python processes")

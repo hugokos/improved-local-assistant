@@ -39,7 +39,7 @@
         .test-button:disabled { background: #ccc; cursor: not-allowed; }
         .test-button.success { background: #28a745; }
         .test-button.error { background: #dc3545; }
-        
+
         .status {
             padding: 12px;
             margin: 10px 0;
@@ -50,7 +50,7 @@
         .status.error { background: #f8d7da; color: #721c24; }
         .status.info { background: #d1ecf1; color: #0c5460; }
         .status.warning { background: #fff3cd; color: #856404; }
-        
+
         .browser-badge {
             display: inline-block;
             padding: 4px 8px;
@@ -63,7 +63,7 @@
         .browser-chrome { background: #4285f4; color: white; }
         .browser-firefox { background: #ff9500; color: white; }
         .browser-safari { background: #000; color: white; }
-        
+
         .log-container {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
@@ -75,7 +75,7 @@
             font-family: monospace;
             font-size: 12px;
         }
-        
+
         .compatibility-matrix {
             width: 100%;
             border-collapse: collapse;
@@ -98,7 +98,7 @@
 </head>
 <body>
     <h1>🔧 Cross-Browser Audio Compatibility Test</h1>
-    
+
     <div class="test-card">
         <h3>🌐 Browser Detection</h3>
         <div id="browserInfo">Detecting...</div>
@@ -215,7 +215,7 @@
             };
 
             currentBrowser = Object.keys(browsers).find(b => browsers[b]) || 'unknown';
-            
+
             const info = {
                 browser: currentBrowser,
                 userAgent: ua,
@@ -247,7 +247,7 @@
                 cell.className = passed ? 'compat-pass' : 'compat-fail';
                 cell.textContent = passed ? '✅' : '❌';
             }
-            
+
             if (!testResults[test]) testResults[test] = {};
             testResults[test][browser] = passed;
         }
@@ -261,21 +261,21 @@
             try {
                 const AudioContextClass = window.AudioContext || window.webkitAudioContext;
                 testAudioContext = new AudioContextClass();
-                
+
                 if (testAudioContext.state === 'suspended') {
                     await testAudioContext.resume();
                 }
 
                 const oscillator = testAudioContext.createOscillator();
                 const gainNode = testAudioContext.createGain();
-                
+
                 oscillator.frequency.setValueAtTime(800, testAudioContext.currentTime);
                 gainNode.gain.setValueAtTime(0.3, testAudioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, testAudioContext.currentTime + 0.3);
-                
+
                 oscillator.connect(gainNode);
                 gainNode.connect(testAudioContext.destination);
-                
+
                 oscillator.start();
                 oscillator.stop(testAudioContext.currentTime + 0.3);
 
@@ -301,7 +301,7 @@
             try {
                 const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
                 audio.volume = 0.3;
-                
+
                 audio.oncanplaythrough = () => {
                     audio.play().then(() => {
                         statusEl.textContent = '✅ HTML5 Audio test passed';
@@ -390,7 +390,7 @@
 
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                
+
                 statusEl.textContent = '✅ Microphone access granted';
                 statusEl.className = 'status success';
                 updateResult('mic', currentBrowser, true);
@@ -410,18 +410,18 @@
         // Run all tests
         async function runAllTests() {
             log('Starting comprehensive test suite...');
-            
+
             await testWebAudioSpeaker();
             await new Promise(resolve => setTimeout(resolve, 500));
-            
+
             testHTML5Audio();
             await new Promise(resolve => setTimeout(resolve, 500));
-            
+
             await testTTSSimulation();
             await new Promise(resolve => setTimeout(resolve, 500));
-            
+
             await testMicrophoneAccess();
-            
+
             log('All tests completed');
         }
 
@@ -433,7 +433,7 @@
                 userAgent: navigator.userAgent,
                 results: testResults
             };
-            
+
             const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');

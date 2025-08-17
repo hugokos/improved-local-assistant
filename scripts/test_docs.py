@@ -2,6 +2,7 @@
 """
 Test script to validate MkDocs configuration.
 """
+
 import subprocess
 import sys
 from pathlib import Path
@@ -21,7 +22,7 @@ def test_mkdocs_config():
             ["mkdocs", "build", "--config-file", str(config_path), "--site-dir", "test_site"],
             capture_output=True,
             text=True,
-            check=False
+            check=False,
         )
 
         if result.returncode == 0:
@@ -30,6 +31,7 @@ def test_mkdocs_config():
 
             # Clean up test site
             import shutil
+
             test_site = Path("test_site")
             if test_site.exists():
                 shutil.rmtree(test_site)
@@ -42,7 +44,9 @@ def test_mkdocs_config():
             return False
 
     except FileNotFoundError:
-        print("❌ MkDocs not installed. Install with: pip install mkdocs mkdocs-material mkdocstrings[python]")
+        print(
+            "❌ MkDocs not installed. Install with: pip install mkdocs mkdocs-material mkdocstrings[python]"
+        )
         return False
     except Exception as e:
         print(f"❌ Error testing MkDocs: {e}")

@@ -25,11 +25,11 @@ from typing import Any
 project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, project_root)
 
-from app.core.config import load_config
-from services.conversation_manager import ConversationManager
-from services.graph_manager import KnowledgeGraphManager
-from services.model_manager import ModelConfig
-from services.model_manager import ModelManager
+from app.core.config import load_config  # noqa: E402
+from services.conversation_manager import ConversationManager  # noqa: E402
+from services.graph_manager import KnowledgeGraphManager  # noqa: E402
+from services.model_manager import ModelConfig  # noqa: E402
+from services.model_manager import ModelManager  # noqa: E402
 
 
 class GraphRAGBenchmark:
@@ -286,15 +286,21 @@ class GraphRAGBenchmark:
                 "avg_ttft": statistics.mean([r["ttft"] for r in all_results]),
                 "avg_total_time": statistics.mean([r["ttlt"] for r in all_results]),
                 "avg_tokens": statistics.mean([r["tokens"] for r in all_results]),
-                "retrieval_std": statistics.stdev([r["retrieval"] for r in all_results])
-                if len(all_results) > 1
-                else 0,
-                "ttft_std": statistics.stdev([r["ttft"] for r in all_results])
-                if len(all_results) > 1
-                else 0,
-                "total_std": statistics.stdev([r["ttlt"] for r in all_results])
-                if len(all_results) > 1
-                else 0,
+                "retrieval_std": (
+                    statistics.stdev([r["retrieval"] for r in all_results])
+                    if len(all_results) > 1
+                    else 0
+                ),
+                "ttft_std": (
+                    statistics.stdev([r["ttft"] for r in all_results])
+                    if len(all_results) > 1
+                    else 0
+                ),
+                "total_std": (
+                    statistics.stdev([r["ttlt"] for r in all_results])
+                    if len(all_results) > 1
+                    else 0
+                ),
             }
         else:
             overall_stats = {

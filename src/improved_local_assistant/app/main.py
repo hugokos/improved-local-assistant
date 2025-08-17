@@ -18,20 +18,20 @@ project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-from app.api import api_router
-from app.api.models import router as models_router
-from app.core import ConnectionManager
-from app.core import load_config
-from app.core import setup_logging
-from app.services.init import init_app
-from app.ws.chat import chat_websocket
-from app.ws.monitor import monitor_websocket
-from fastapi import FastAPI
-from fastapi import WebSocket
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
+from app.api import api_router  # noqa: E402
+from app.api.models import router as models_router  # noqa: E402
+from app.core import ConnectionManager  # noqa: E402
+from app.core import load_config  # noqa: E402
+from app.core import setup_logging  # noqa: E402
+from app.services.init import init_app  # noqa: E402
+from app.ws.chat import chat_websocket  # noqa: E402
+from app.ws.monitor import monitor_websocket  # noqa: E402
+from fastapi import FastAPI  # noqa: E402
+from fastapi import WebSocket  # noqa: E402
+from fastapi.middleware.cors import CORSMiddleware  # noqa: E402
+from fastapi.responses import FileResponse  # noqa: E402
+from fastapi.responses import HTMLResponse  # noqa: E402
+from fastapi.staticfiles import StaticFiles  # noqa: E402
 
 # Setup logging
 logger = setup_logging()

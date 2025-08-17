@@ -314,10 +314,12 @@ class KnowledgeGraphOptimizer:
         return {
             **self.metrics,
             "cache_size": len(self.query_cache),
-            "cache_hit_ratio": self.metrics["cache_hits"]
-            / (self.metrics["cache_hits"] + self.metrics["cache_misses"])
-            if (self.metrics["cache_hits"] + self.metrics["cache_misses"]) > 0
-            else 0,
+            "cache_hit_ratio": (
+                self.metrics["cache_hits"]
+                / (self.metrics["cache_hits"] + self.metrics["cache_misses"])
+                if (self.metrics["cache_hits"] + self.metrics["cache_misses"]) > 0
+                else 0
+            ),
         }
 
 

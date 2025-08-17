@@ -26,9 +26,9 @@ project_root = Path(__file__).resolve().parent.parent
 if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
-from services import KnowledgeGraphManager
-from services.model_mgr import ModelConfig
-from services.model_mgr import ModelManager
+from services import KnowledgeGraphManager  # noqa: E402
+from services.model_mgr import ModelConfig  # noqa: E402
+from services.model_mgr import ModelManager  # noqa: E402
 
 # Configure logging
 logging.basicConfig(

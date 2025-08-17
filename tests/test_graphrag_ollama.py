@@ -397,7 +397,7 @@ class OllamaGraphRAGBot:
                     continue_choice = input("\nDo you want to continue? (y/n): ").strip().lower()
                     if continue_choice not in ("y", "yes"):
                         break
-                except:
+                except (KeyboardInterrupt, EOFError):
                     break
 
         print("\nSession summary:")

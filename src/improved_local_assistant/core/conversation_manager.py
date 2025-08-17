@@ -1110,34 +1110,6 @@ class ConversationManager:
 
         return triples
 
-    def get_session_info(self, session_id: str) -> dict[str, Any]:
-        """
-        Get information about a session.
-
-        Args:
-            session_id: Session ID
-
-        Returns:
-            Dict[str, Any]: Session information
-        """
-        if session_id not in self.sessions:
-            return {"error": f"Session {session_id} not found"}
-
-        session = self.sessions[session_id]
-
-        # Calculate session duration
-        duration = (datetime.now() - session["created_at"]).total_seconds()
-
-        return {
-            "session_id": session_id,
-            "created_at": session["created_at"].isoformat(),
-            "updated_at": session["updated_at"].isoformat(),
-            "duration_seconds": duration,
-            "message_count": len(session["messages"]),
-            "has_summary": bool(session.get("summary")),
-            "metadata": session["metadata"],
-        }
-
     def list_sessions(self) -> list[dict[str, Any]]:
         """
         List all active sessions.
@@ -1219,7 +1191,8 @@ class ConversationManager:
         # This directly uses the ModelManager's concurrent processing capabilities
         # with proper resource management and prioritization
         conversation_stream, bg_task = await self.model_manager.run_concurrent_queries(
-            user_message, priority_mode=True  # Ensure conversation has priority
+            user_message,
+            priority_mode=True,  # Ensure conversation has priority
         )
 
         # Stream response from conversation model

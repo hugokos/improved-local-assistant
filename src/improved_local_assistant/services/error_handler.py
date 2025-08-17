@@ -230,9 +230,7 @@ class ErrorHandler:
 
         # Network errors
         elif category == ErrorCategory.NETWORK and "timeout" in error_str:
-            return (
-                "The request timed out. The server might be under heavy load, try again later."
-            )
+            return "The request timed out. The server might be under heavy load, try again later."
 
         # Default to the first suggestion
         return suggestions[0]

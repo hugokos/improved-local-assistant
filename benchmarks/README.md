@@ -150,7 +150,7 @@ hermes3:3b:
   GPU: NVIDIA GeForce RTX 4070 (12288 MB VRAM)
 
 tinyllama:
-  System: Windows 11  
+  System: Windows 11
   CPU: 8C/16T @ 3600MHz
   Memory: 32.0 GB total, 24.1 GB available
   GPU: NVIDIA GeForce RTX 4070 (12288 MB VRAM)
@@ -158,18 +158,18 @@ tinyllama:
 ================================================================================
 MODEL COMPARISON
 ================================================================================
-Model                Avg TTFT     Avg Throughput  Max Throughput  Min TTFT    
+Model                Avg TTFT     Avg Throughput  Max Throughput  Min TTFT
 --------------------------------------------------------------------------------
-hermes3:3b           0.245        28.4            32.1            0.198       
-phi3:mini            0.312        24.7            27.3            0.287       
-tinyllama            0.156        45.2            48.9            0.134       
+hermes3:3b           0.245        28.4            32.1            0.198
+phi3:mini            0.312        24.7            27.3            0.287
+tinyllama            0.156        45.2            48.9            0.134
 
 Context Size: 1024 tokens
-Model                TTFT (s)     TTLT (s)     Throughput      Tokens    
+Model                TTFT (s)     TTLT (s)     Throughput      Tokens
 ----------------------------------------------------------------------
-tinyllama            0.134        2.847        45.2            128.5     
-hermes3:3b           0.198        4.234        28.4            119.8     
-phi3:mini            0.287        5.123        24.7            126.3     
+tinyllama            0.134        2.847        45.2            128.5
+hermes3:3b           0.198        4.234        28.4            119.8
+phi3:mini            0.287        5.123        24.7            126.3
 ```
 
 This shows tinyllama is fastest but hermes3:3b might provide better quality responses. The hardware context shows all tests ran on identical hardware, making the comparison valid.

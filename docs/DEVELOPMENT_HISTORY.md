@@ -33,7 +33,7 @@ The Improved Local AI Assistant represents a complete transformation from protot
 - Hybrid retrieval combining graph, semantic, and keyword search
 - Automatic source citation and reference tracking
 
-**Impact**: 
+**Impact**:
 - Sub-second knowledge retrieval performance
 - Contextual responses with full source attribution
 - Persistent knowledge retention across sessions
@@ -43,7 +43,7 @@ The Improved Local AI Assistant represents a complete transformation from protot
 
 **Solution**: Specialized model architecture:
 - **Hermes 3:3B**: Primary conversational AI model
-- **TinyLlama**: Specialized knowledge extraction model  
+- **TinyLlama**: Specialized knowledge extraction model
 - **BGE-Small**: Embedding model for semantic search
 
 **Impact**:

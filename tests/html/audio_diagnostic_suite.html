@@ -40,7 +40,7 @@
         .test-button.critical { background: #dc3545; }
         .test-button.success { background: #28a745; }
         .test-button.info { background: #17a2b8; }
-        
+
         .status {
             padding: 12px;
             margin: 10px 0;
@@ -51,7 +51,7 @@
         .status.error { background: #f8d7da; color: #721c24; }
         .status.info { background: #d1ecf1; color: #0c5460; }
         .status.warning { background: #fff3cd; color: #856404; }
-        
+
         .log-container {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
@@ -63,7 +63,7 @@
             font-family: monospace;
             font-size: 12px;
         }
-        
+
         .checklist {
             background: #e3f2fd;
             padding: 15px;
@@ -77,7 +77,7 @@
         .checklist li {
             margin: 5px 0;
         }
-        
+
         .browser-info {
             background: #f1f3f4;
             padding: 15px;
@@ -91,9 +91,9 @@
 <body>
     <h1>🔧 Audio Diagnostic Suite</h1>
     <p>Comprehensive audio testing for Edge/Chrome compatibility issues</p>
-    
+
     <div class="browser-info" id="browserInfo">Loading browser information...</div>
-    
+
     <div class="diagnostic-grid">
         <!-- Step 1: Hard Beep Test -->
         <div class="test-card">
@@ -101,7 +101,7 @@
             <p>Tests basic AudioContext functionality with isolated context</p>
             <button class="test-button critical" onclick="runHardBeepTest()">Hard Beep Test</button>
             <div id="hardBeepStatus" class="status info">Click to test basic audio output</div>
-            
+
             <div class="checklist">
                 <strong>Success Indicators:</strong>
                 <ul>
@@ -174,11 +174,11 @@
             const timestamp = new Date().toLocaleTimeString();
             const entry = `[${timestamp}] ${level.toUpperCase()}: ${message}`;
             logEntries.push(entry);
-            
+
             const logEl = document.getElementById('diagnosticLog');
             logEl.textContent += entry + '\n';
             logEl.scrollTop = logEl.scrollHeight;
-            
+
             console.log(`🔍 ${entry}`);
         }
 
@@ -200,7 +200,7 @@
                 results: testResults,
                 log: logEntries
             };
-            
+
             const blob = new Blob([JSON.stringify(logData, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -214,40 +214,40 @@
         async function runHardBeepTest() {
             log('=== HARD BEEP TEST STARTING ===');
             setStatus('hardBeepStatus', 'Running hard beep test...', 'info');
-            
+
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)({ latencyHint: 'interactive' });
                 log(`AudioContext created: state=${ctx.state}, sampleRate=${ctx.sampleRate}`);
-                
+
                 log('Before resume: ' + ctx.state);
                 await ctx.resume();
                 log('After resume: ' + ctx.state);
-                
+
                 if (ctx.state !== 'running') {
                     throw new Error(`AudioContext state is ${ctx.state}, expected 'running'`);
                 }
-                
+
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 gain.gain.value = 0.2;
                 osc.type = 'sine';
                 osc.frequency.value = 880;
-                
+
                 osc.connect(gain).connect(ctx.destination);
-                
+
                 const t = Math.max(ctx.currentTime + 0.02, 0);
                 osc.start(t);
                 osc.stop(t + 0.2);
-                
+
                 osc.onended = () => {
                     log('Beep ended. Final context state: ' + ctx.state);
                     setTimeout(() => ctx.close(), 400);
                 };
-                
+
                 testResults.hardBeep = true;
                 setStatus('hardBeepStatus', '✅ Hard beep test passed! Check for speaker icon.', 'success');
                 log('SUCCESS: Hard beep test completed');
-                
+
             } catch (error) {
                 testResults.hardBeep = false;
                 log('ERROR: Hard beep test failed - ' + error.message, 'error');
@@ -259,7 +259,7 @@
         function testAudioChain() {
             log('=== AUDIO CHAIN TEST ===');
             setStatus('chainStatus', 'Testing audio chain...', 'info');
-            
+
             // This would integrate with your voice controller
             // For now, just log the test
             log('Audio chain test - would test TTS gain node routing');
@@ -280,24 +280,24 @@
         function testWebSocketBinary() {
             log('=== WEBSOCKET BINARY TEST ===');
             setStatus('wsStatus', 'Testing WebSocket binary handling...', 'info');
-            
+
             // Test WebSocket binary type setting
             try {
                 const ws = new WebSocket('ws://localhost:8000/test');
                 ws.binaryType = 'arraybuffer';
                 log('WebSocket binaryType set to: ' + ws.binaryType);
-                
+
                 ws.onopen = () => {
                     log('Test WebSocket connected');
                     ws.close();
                 };
-                
+
                 ws.onerror = (error) => {
                     log('WebSocket test error (expected if no server): ' + error);
                 };
-                
+
                 setStatus('wsStatus', '✅ WebSocket binary type configuration OK', 'success');
-                
+
             } catch (error) {
                 log('WebSocket test error: ' + error.message, 'error');
                 setStatus('wsStatus', '❌ WebSocket test failed: ' + error.message, 'error');
@@ -313,7 +313,7 @@
         function testSyntheticSpeech() {
             log('=== SYNTHETIC SPEECH TEST ===');
             setStatus('syntheticStatus', 'Testing synthetic speech...', 'info');
-            
+
             // This would use your voice controller's playSyntheticSpeech method
             log('Synthetic speech test - would generate and play PCM audio');
             setStatus('syntheticStatus', '⚠️ Requires voice controller integration', 'warning');
@@ -321,19 +321,19 @@
 
         function testPCMProcessing() {
             log('Testing PCM processing pipeline...');
-            
+
             try {
                 // Test PCM16LE to Float32 conversion
                 const pcm16 = new Int16Array([16384, -16384, 0, 32767, -32768]);
                 const float32 = new Float32Array(pcm16.length);
-                
+
                 for (let i = 0; i < pcm16.length; i++) {
                     float32[i] = pcm16[i] / 32768;
                 }
-                
+
                 log(`PCM conversion test: ${pcm16.length} samples converted`);
                 setStatus('syntheticStatus', '✅ PCM processing test passed', 'success');
-                
+
             } catch (error) {
                 log('PCM processing test failed: ' + error.message, 'error');
                 setStatus('syntheticStatus', '❌ PCM processing failed: ' + error.message, 'error');
@@ -344,47 +344,47 @@
         function checkBrowserSettings() {
             log('=== BROWSER SETTINGS CHECK ===');
             setStatus('browserStatus', 'Checking browser settings...', 'info');
-            
+
             const isEdge = /Edg/.test(navigator.userAgent);
             const isChrome = /Chrome/.test(navigator.userAgent) && !/Edg/.test(navigator.userAgent);
             const isSecureContext = window.isSecureContext;
-            
+
             log(`Browser: ${isEdge ? 'Edge' : isChrome ? 'Chrome' : 'Other'}`);
             log(`Secure context: ${isSecureContext}`);
             log(`Protocol: ${window.location.protocol}`);
             log(`AudioContext support: ${!!(window.AudioContext || window.webkitAudioContext)}`);
             log(`getUserMedia support: ${!!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)}`);
-            
+
             if (isEdge && !isSecureContext) {
                 log('WARNING: Edge without secure context may have limited audio features', 'warning');
             }
-            
+
             setStatus('browserStatus', '✅ Browser settings checked', 'success');
         }
 
         function checkAutoplayPolicy() {
             log('Checking autoplay policy...');
-            
+
             // Note: There's no direct API to check autoplay policy
             // This is inferred from AudioContext behavior
             log('Autoplay policy check - create AudioContext and check initial state');
-            
+
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
             log(`Initial AudioContext state: ${ctx.state}`);
-            
+
             if (ctx.state === 'suspended') {
                 log('AudioContext starts suspended - autoplay policy active');
             } else {
                 log('AudioContext starts running - autoplay policy may be disabled');
             }
-            
+
             ctx.close();
             setStatus('browserStatus', 'Autoplay policy checked', 'info');
         }
 
         function checkSecureContext() {
             log('Checking secure context requirements...');
-            
+
             const checks = {
                 secureContext: window.isSecureContext,
                 https: window.location.protocol === 'https:',
@@ -392,11 +392,11 @@
                 audioWorklet: 'audioWorklet' in AudioContext.prototype,
                 setSinkId: 'setSinkId' in HTMLMediaElement.prototype
             };
-            
+
             Object.entries(checks).forEach(([key, value]) => {
                 log(`${key}: ${value ? '✅' : '❌'}`);
             });
-            
+
             setStatus('browserStatus', '✅ Security context checked', 'success');
         }
 
@@ -404,27 +404,27 @@
         async function runAllTests() {
             log('=== COMPREHENSIVE DIAGNOSTIC SUITE STARTING ===');
             setStatus('comprehensiveStatus', 'Running all tests...', 'info');
-            
+
             try {
                 await runHardBeepTest();
                 await new Promise(resolve => setTimeout(resolve, 500));
-                
+
                 testAudioChain();
                 await new Promise(resolve => setTimeout(resolve, 500));
-                
+
                 testWebSocketBinary();
                 await new Promise(resolve => setTimeout(resolve, 500));
-                
+
                 testSyntheticSpeech();
                 await new Promise(resolve => setTimeout(resolve, 500));
-                
+
                 checkBrowserSettings();
                 checkAutoplayPolicy();
                 checkSecureContext();
-                
+
                 log('=== COMPREHENSIVE DIAGNOSTIC SUITE COMPLETED ===');
                 setStatus('comprehensiveStatus', '✅ All tests completed! Check individual results.', 'success');
-                
+
             } catch (error) {
                 log('Comprehensive test suite error: ' + error.message, 'error');
                 setStatus('comprehensiveStatus', '❌ Test suite failed: ' + error.message, 'error');
@@ -442,12 +442,12 @@
                 hardwareConcurrency: navigator.hardwareConcurrency,
                 deviceMemory: navigator.deviceMemory || 'unknown'
             };
-            
-            document.getElementById('browserInfo').innerHTML = 
+
+            document.getElementById('browserInfo').innerHTML =
                 Object.entries(browserInfo)
                     .map(([key, value]) => `${key}: ${value}`)
                     .join('<br>');
-            
+
             log('Audio Diagnostic Suite loaded');
             log('Browser: ' + navigator.userAgent);
         });

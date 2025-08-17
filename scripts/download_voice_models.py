@@ -11,7 +11,9 @@ import tarfile
 import zipfile
 from pathlib import Path
 
-import requests
+from improved_local_assistant.core.archive import safe_extract_tar
+from improved_local_assistant.core.archive import safe_extract_zip
+from improved_local_assistant.core.http import http_session
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -52,7 +54,8 @@ def download_file(url: str, destination: Path, description: str = ""):
     try:
         logger.info(f"Downloading {description or url} to {destination}")
 
-        response = requests.get(url, stream=True)
+        session = http_session()
+        response = session.get(url, stream=True)
         response.raise_for_status()
 
         total_size = int(response.headers.get("content-length", 0))
@@ -90,10 +93,10 @@ def extract_archive(archive_path: Path, extract_to: Path):
 
         if archive_path.suffix == ".zip":
             with zipfile.ZipFile(archive_path, "r") as zip_ref:
-                zip_ref.extractall(extract_to)
+                safe_extract_zip(zip_ref, extract_to)
         elif archive_path.suffix in [".tar", ".gz", ".tgz"]:
             with tarfile.open(archive_path, "r:*") as tar_ref:
-                tar_ref.extractall(extract_to)
+                safe_extract_tar(tar_ref, extract_to)
         else:
             logger.error(f"Unsupported archive format: {archive_path.suffix}")
             return False

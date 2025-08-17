@@ -4,7 +4,6 @@ Request models for the Improved Local AI Assistant API.
 This module defines Pydantic models for API request validation.
 """
 
-
 from pydantic import BaseModel
 
 

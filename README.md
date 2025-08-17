@@ -350,7 +350,7 @@ pytest --help | grep -- --cov  # sanity check
 pytest -q -vv -ra --cov=improved_local_assistant --cov-report=xml --fail-under=70
 ```
 
-**Run dev server**: `ila api --reload` (on Windows, ensure venv is active; `.\.venv\Scripts\ila.exe` works too).  
+**Run dev server**: `ila api --reload` (on Windows, ensure venv is active; `.\.venv\Scripts\ila.exe` works too).
 **Docs preview**: `mkdocs serve`
 
 ---

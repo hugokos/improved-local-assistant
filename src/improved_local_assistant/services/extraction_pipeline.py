@@ -549,7 +549,9 @@ Relationships:"""
             triple.confidence = max(0.0, min(1.0, triple.confidence))
 
         # Check for reasonable length (avoid very long extractions)
-        return not (len(triple.subject) > 50 or len(triple.predicate) > 30 or len(triple.object) > 50)
+        return not (
+            len(triple.subject) > 50 or len(triple.predicate) > 30 or len(triple.object) > 50
+        )
 
     async def _unload_model(self) -> None:
         """Unload the knowledge model to free resources."""
@@ -599,9 +601,7 @@ Relationships:"""
             self.logger.debug(f"Error checking CPU pressure: {e}")
             return False
 
-    async def _persist_triples(
-        self, triples: list[Triple], session_id: str | None = None
-    ) -> None:
+    async def _persist_triples(self, triples: list[Triple], session_id: str | None = None) -> None:
         """
         Persist extracted triples to the knowledge graph.
 

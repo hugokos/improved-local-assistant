@@ -3,6 +3,7 @@
 Code formatting script to fix style violations.
 """
 
+import shlex
 import subprocess
 from pathlib import Path
 
@@ -11,7 +12,7 @@ def run_command(cmd, description):
     """Run a command and report results."""
     print(f"🔧 {description}...")
     try:
-        result = subprocess.run(cmd, shell=True, capture_output=True, text=True, cwd=".")
+        result = subprocess.run(shlex.split(cmd), capture_output=True, text=True, cwd=".")
         if result.returncode == 0:
             print(f"✅ {description} - COMPLETED")
             if result.stdout.strip():

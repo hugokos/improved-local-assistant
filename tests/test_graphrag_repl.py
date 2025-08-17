@@ -21,7 +21,7 @@ if sys.platform == "win32":
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-from cli.graphrag_repl import GraphRAGREPL
+from cli.graphrag_repl import GraphRAGREPL  # noqa: E402
 
 
 async def test_initialization():

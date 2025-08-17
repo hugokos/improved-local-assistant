@@ -17,7 +17,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from services.vosk_stt_service import VoskSTTService
+from services.vosk_stt_service import VoskSTTService  # noqa: E402
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)

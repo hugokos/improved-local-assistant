@@ -28,12 +28,14 @@ def test_imports():
     print("🔍 Testing imports...")
 
     try:
-        # Core components
-        from services.conversation_manager import ConversationManager
-        from services.graph_manager.construction import KnowledgeGraphConstruction
-        from services.graph_manager.init_config import KnowledgeGraphInitializer
-        from services.graph_manager.persistence_simple import KnowledgeGraphPersistence
-        from services.hybrid_retriever import HybridEnsembleRetriever
+        # Core components - testing imports
+        from services.conversation_manager import ConversationManager  # noqa: F401
+        from services.graph_manager.construction import KnowledgeGraphConstruction  # noqa: F401
+        from services.graph_manager.init_config import KnowledgeGraphInitializer  # noqa: F401
+        from services.graph_manager.persistence_simple import (
+            KnowledgeGraphPersistence,  # noqa: F401
+        )
+        from services.hybrid_retriever import HybridEnsembleRetriever  # noqa: F401
 
         print("✅ All core imports successful")
         return True
