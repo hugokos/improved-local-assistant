@@ -50,7 +50,7 @@ webrtcvad==2.0.10 ; platform_system != "Darwin"              # Voice activity de
 piper-tts ; platform_system != "Darwin"                       # Local text-to-speech
 
 # Development
-black==23.11.0
+black==25.1.0
 flake8==6.1.0
 mypy==1.7.1
 
