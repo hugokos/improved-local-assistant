@@ -45,7 +45,7 @@ prompt-toolkit>=3.0.0  # For enhanced REPL experience
 
 # Voice processing dependencies (Windows + Linux only)
 vosk>=0.3.45 ; platform_system != "Darwin"                    # Offline speech recognition
-sounddevice==0.4 ; platform_system != "Darwin"               # Audio capture and playback
+sounddevice==0.5.2 ; platform_system != "Darwin"               # Audio capture and playback
 webrtcvad==2.0.10 ; platform_system != "Darwin"              # Voice activity detection (Phase 2)
 piper-tts ; platform_system != "Darwin"                       # Local text-to-speech
 
