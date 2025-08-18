@@ -12,6 +12,6 @@ webrtcvad==2.0.10 ; platform_system != "Darwin"
 vosk==0.3.45 ; platform_system != "Darwin"
 
 # Core framework - allow minor updates within range
-fastapi>=0.110.0,<0.115.0
-uvicorn>=0.27.0,<0.30.0
+fastapi>=0.110.0,<0.117.0
+uvicorn>=0.27.0,<0.36.0
 pydantic>=2.8.0,<3.0.0
