@@ -100,8 +100,8 @@ dev = [
     "types-setuptools",
 
     # Security
-    "bandit[toml]>=1.7.0",
-    "safety>=2.3.0",
+    "bandit[toml]>=1.9.4",
+    "safety>=3.7.0",
 
     # Documentation
     "mkdocs>=1.5.0",
