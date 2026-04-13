@@ -104,9 +104,9 @@ dev = [
     "safety>=2.3.0",
 
     # Documentation
-    "mkdocs>=1.5.0",
-    "mkdocs-material>=9.2.0",
-    "mkdocstrings[python]>=0.23.0",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.7.6",
+    "mkdocstrings[python]>=1.0.3",
 ]
 test = [
     "pytest>=7.4.0",
@@ -115,9 +115,9 @@ test = [
     "tomli>=1.2.0; python_version<'3.11'",
 ]
 docs = [
-    "mkdocs>=1.5.0",
-    "mkdocs-material>=9.2.0",
-    "mkdocstrings[python]>=0.23.0",
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.7.6",
+    "mkdocstrings[python]>=1.0.3",
 ]
 
 [project.scripts]
