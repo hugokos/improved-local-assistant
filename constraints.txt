@@ -1,6 +1,6 @@
 # Dependency constraints - single source of truth for tricky libs
-llama-index>=0.13,<0.14
-llama-index-core>=0.13,<0.14
+llama-index>=0.13,<0.15
+llama-index-core>=0.14.21,<0.15
 llama-index-embeddings-ollama>=0.7,<0.8
 
 # Network graph - keep at current stable version
